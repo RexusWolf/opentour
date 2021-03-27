@@ -1,4 +1,3 @@
-import { AccessTokenInterface } from '@boilerplate/contracts';
 import {
   Body,
   Controller,
@@ -7,6 +6,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { AccessTokenInterface } from '@opentour/contracts';
 
 import { LoginDTO } from '../dto/login.dto';
 import { AuthService } from '../services/auth.service';

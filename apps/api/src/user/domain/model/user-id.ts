@@ -1,4 +1,4 @@
-import { Id } from '@boilerplate/domain';
+import { Id } from '@opentour/domain';
 import * as uuid from 'uuid';
 
 export class UserId extends Id {

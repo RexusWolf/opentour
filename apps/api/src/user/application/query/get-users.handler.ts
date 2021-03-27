@@ -1,6 +1,6 @@
-import { UserDTO } from '@boilerplate/contracts';
 import { Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
+import { UserDTO } from '@opentour/contracts';
 
 import { USERS, Users } from '../../domain';
 import { UserMapper } from '../../infrastructure/repository/user.mapper';

@@ -1,4 +1,4 @@
-import { ValueObject } from '@boilerplate/domain';
+import { ValueObject } from '@opentour/domain';
 
 interface Props {
   value: string;

@@ -1,11 +1,11 @@
+import { Injectable } from '@nestjs/common';
+import { QueryBus } from '@nestjs/cqrs';
+import { JwtService } from '@nestjs/jwt';
 import {
   AccessTokenInterface,
   JwtPayloadInterface,
   UserDTO,
-} from '@boilerplate/contracts';
-import { Injectable } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
-import { JwtService } from '@nestjs/jwt';
+} from '@opentour/contracts';
 import * as bcrypt from 'bcrypt';
 
 import { GetUserByUsernameQuery } from '../../user/application';

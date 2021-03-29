@@ -1,14 +1,30 @@
 import red from '@material-ui/core/colors/red';
-import { createMuiTheme, makeStyles } from '@material-ui/core/styles';
+import {
+  createMuiTheme,
+  makeStyles,
+  responsiveFontSizes,
+} from '@material-ui/core/styles';
 
 const drawerWidth = 240;
 
 export const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
+    flexGrow: 1,
+  },
+  content: {
+    height: '100vh',
+    flexGrow: 1,
+    overflow: 'auto',
+  },
+  container: {
+    display: 'flex',
+    height: '100vh',
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
   },
   toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
+    paddingRight: 24,
   },
   toolbarIcon: {
     display: 'flex',
@@ -62,33 +78,20 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   appBarSpacer: theme.mixins.toolbar,
-  content: {
-    flexGrow: 1,
-    height: '100vh',
-    overflow: 'auto',
-  },
-  container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
-  },
-  paper: {
-    padding: theme.spacing(2),
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column',
-  },
-  fixedHeight: {
-    height: 240,
+  homeButton: {
+    width: '60%',
+    aspectRatio: '3/1',
+    margin: '10px',
   },
 }));
 
-export const theme = createMuiTheme({
+let muiTheme = createMuiTheme({
   palette: {
     primary: {
-      main: '#556cd6',
+      main: '#414BB2',
     },
     secondary: {
-      main: '#19857b',
+      main: '#32936F',
     },
     error: {
       main: red.A400,
@@ -98,3 +101,6 @@ export const theme = createMuiTheme({
     },
   },
 });
+
+muiTheme = responsiveFontSizes(muiTheme);
+export const theme = muiTheme;

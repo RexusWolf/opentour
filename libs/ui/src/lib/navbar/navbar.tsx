@@ -34,15 +34,6 @@ export function Navbar({
       className={clsx(classes.appBar, open && classes.appBarShift)}
     >
       <Toolbar className={classes.toolbar}>
-        <IconButton
-          edge="start"
-          color="inherit"
-          aria-label="open drawer"
-          onClick={onOpenDrawer}
-          className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-        >
-          <MenuIcon />
-        </IconButton>
         <Typography
           component="h1"
           variant="h6"
@@ -50,7 +41,7 @@ export function Navbar({
           noWrap
           className={classes.title}
         >
-          Boilerplate
+          OpenTour
         </Typography>
         {session && (
           <Link href="/api/auth/signout">

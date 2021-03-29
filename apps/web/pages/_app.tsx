@@ -19,7 +19,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     <NextAuthProvider session={pageProps.session}>
       <React.Fragment>
         <Head>
-          <title>NX Boilerplate</title>
+          <title>OpenTour</title>
           <meta
             name="viewport"
             content="minimum-scale=1, initial-scale=1, width=device-width"

@@ -15,10 +15,13 @@ import Sidebar from '../sidebar/sidebar';
 import { useStyles } from '../theme';
 
 export interface LayoutProps {
-  session?: Session
+  session?: Session;
 }
 
-export const Layout: React.FunctionComponent<LayoutProps> = ({session, children}) => {
+export const Layout: React.FunctionComponent<LayoutProps> = ({
+  session,
+  children,
+}) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
@@ -30,15 +33,14 @@ export const Layout: React.FunctionComponent<LayoutProps> = ({session, children}
         session={session}
         onOpenSidebar={() => setOpen(true)}
       />
-      <Sidebar open={open} onCloseSidebar={() => setOpen(false)} />
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
+        <Container className={classes.container} maxWidth={false}>
           {children}
         </Container>
       </main>
     </div>
   );
-}
+};
 
 export default Layout;

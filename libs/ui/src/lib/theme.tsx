@@ -18,10 +18,11 @@ export const useStyles = makeStyles((theme) => ({
     overflow: 'auto',
   },
   container: {
+    padding: theme.spacing(2),
+  },
+  fullContainer: {
     display: 'flex',
     height: '100vh',
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
   },
   toolbar: {
     paddingRight: 24,
@@ -83,6 +84,26 @@ export const useStyles = makeStyles((theme) => ({
     aspectRatio: '3/1',
     margin: '10px',
   },
+  competitionContainer: {
+    backgroundColor: theme.palette.background.paper,
+  },
+  tabsContainer: {
+    backgroundColor: theme.palette.background.paper,
+  },
+  tabs: {
+    backgroundColor: theme.palette.background.paper,
+  },
+  containerItem: {
+    margin: '4px',
+  },
+  calendarMatch: {
+    padding: '4px',
+    border: 'solid 1px whitesmoke',
+  },
+  errorButton: {
+    backgroundColor: '#FF1744',
+    color: 'white',
+  },
 }));
 
 let muiTheme = createMuiTheme({
@@ -97,7 +118,7 @@ let muiTheme = createMuiTheme({
       main: red.A400,
     },
     background: {
-      default: '#fff',
+      default: 'whitesmoke',
     },
   },
 });

@@ -1,11 +1,21 @@
 import { Button, Grid, Typography } from '@material-ui/core';
-import { authorize } from 'passport';
 import React from 'react';
 
+import { CompetitionWizard } from '../competition/competitionWizard';
 import { useStyles } from '../theme';
 
 export const Homepage: React.FunctionComponent = () => {
   const classes = useStyles();
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <Grid container>
@@ -36,9 +46,11 @@ export const Homepage: React.FunctionComponent = () => {
           className={classes.homeButton}
           variant="contained"
           color="primary"
+          onClick={handleClickOpen}
         >
           <Typography variant="h4">Create competition</Typography>
         </Button>
+        <CompetitionWizard open={open} onClose={handleClose} />
       </Grid>
       <Grid item container justify="center" md={6} xs={12}>
         <img

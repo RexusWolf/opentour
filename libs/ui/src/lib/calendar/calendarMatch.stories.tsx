@@ -17,6 +17,7 @@ export const Default = Template.bind({});
 Default.args = {
   localTeam: teams[0],
   visitorTeam: teams[1],
-  date: { day: 'Mar, 9/3', hour: '21:00' },
+  date: new Date(),
   isScheduled: false,
+  result: { localTeam: 0, visitorTeam: 0 },
 };

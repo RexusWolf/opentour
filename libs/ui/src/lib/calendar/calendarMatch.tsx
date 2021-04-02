@@ -1,7 +1,9 @@
-import { Button, Grid, Typography } from '@material-ui/core';
+import { Button, Dialog, Grid, Typography } from '@material-ui/core';
+import { format } from 'date-fns';
 import React from 'react';
 
 import { Team } from '../competition/teams';
+import { MatchManager } from '../matchManager/matchManager';
 import { TeamSlot } from '../teamSlot/teamSlot';
 import { useStyles } from '../theme';
 
@@ -9,11 +11,42 @@ export type Props = {
   localTeam: Team;
   visitorTeam: Team;
   isScheduled: boolean;
-  date: { day: string; hour: string };
+  date: Date;
+  result: { localTeam: number; visitorTeam: number };
 };
 
 export const CalendarMatch: React.FunctionComponent<Props> = (props) => {
   const classes = useStyles();
+
+  const { localTeam, visitorTeam } = props;
+  const [result, setResult] = React.useState(props.result);
+  const [date, setDate] = React.useState(props.date);
+  const [isScheduled, setIsScheduled] = React.useState(props.isScheduled);
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleLocalTeamScore = (value: string) => {
+    setResult({ ...result, localTeam: Number(value) });
+  };
+
+  const handleVisitorTeamScore = (value: string) => {
+    setResult({ ...result, visitorTeam: Number(value) });
+  };
+
+  const handleDateChange = (date: Date) => {
+    setDate(date);
+  };
+
+  const handleWasScheduled = () => {
+    setIsScheduled(true);
+  };
 
   return (
     <Grid
@@ -26,23 +59,50 @@ export const CalendarMatch: React.FunctionComponent<Props> = (props) => {
       sm={12}
     >
       <Grid container item direction="column" xs={8}>
-        <TeamSlot name={props.localTeam.name} logo={props.localTeam.logo} />
-        <TeamSlot name={props.visitorTeam.name} logo={props.visitorTeam.logo} />
+        {isScheduled && (
+          <Typography color="textSecondary" className={classes.containerItem}>
+            Match result: {result.localTeam} - {result.visitorTeam}
+          </Typography>
+        )}
+        <TeamSlot name={localTeam.name} logo={localTeam.logo} />
+        <TeamSlot name={visitorTeam.name} logo={visitorTeam.logo} />
       </Grid>
       <Grid container item direction="column" alignItems="center" xs={4}>
-        {props.isScheduled ? (
+        {isScheduled ? (
           <>
-            <Typography>{props.date.day}</Typography>
-            <Typography>{props.date.hour}</Typography>
-            <Button size="small" color="secondary" variant="contained">
+            <Typography>{format(date, 'MMM, dd')}</Typography>
+            <Typography>{format(date, 'kk:mm')}</Typography>
+            <Button
+              size="small"
+              color="secondary"
+              variant="contained"
+              onClick={handleClickOpen}
+            >
               Modify
             </Button>
           </>
         ) : (
-          <Button size="small" color="primary" variant="contained">
+          <Button
+            size="small"
+            color="primary"
+            variant="contained"
+            onClick={handleClickOpen}
+          >
             Schedule
           </Button>
         )}
+        <Dialog onClose={handleClose} open={open}>
+          <MatchManager
+            date={date}
+            isScheduled={isScheduled}
+            result={result}
+            handleLocalTeamScore={handleLocalTeamScore}
+            handleVisitorTeamScore={handleVisitorTeamScore}
+            handleDateChange={handleDateChange}
+            handleWasScheduled={handleWasScheduled}
+            onClose={handleClose}
+          />
+        </Dialog>
       </Grid>
     </Grid>
   );

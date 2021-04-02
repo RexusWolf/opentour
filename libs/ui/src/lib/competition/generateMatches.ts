@@ -1,4 +1,4 @@
-import { Match } from '../calendarMatch.tsx/calendarMatch';
+import { Props as Match } from '../calendar/calendarMatch';
 import { Team } from './teams';
 
 export function generateMatches(teams: Team[]): Match[] {
@@ -10,7 +10,8 @@ export function generateMatches(teams: Team[]): Match[] {
         localTeam,
         visitorTeam,
         isScheduled: localTeam.id > visitorTeam.id,
-        date: { day: 'Mar, 9/3', hour: '21:00' },
+        date: new Date(),
+        result: { localTeam: 0, visitorTeam: 0 },
       })
     );
   });

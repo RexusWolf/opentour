@@ -10,8 +10,9 @@ describe('Calendar', () => {
       {
         localTeam: aTeam(),
         visitorTeam: aTeam(),
-        date: { day: 'Mar, 9/3', hour: '21:00' },
+        date: new Date(),
         isScheduled: true,
+        result: { localTeam: 0, visitorTeam: 0 },
       },
     ],
   };
@@ -25,8 +26,6 @@ describe('Calendar', () => {
     const { getByText } = render(<Calendar {...defaultProps} />);
     getByText(defaultProps.matches[0].localTeam.name);
     getByText(defaultProps.matches[0].visitorTeam.name);
-    getByText(defaultProps.matches[0].date.day);
-    getByText(defaultProps.matches[0].date.hour);
   });
 });
 

@@ -8,8 +8,9 @@ describe('CalendarMatch', () => {
   const defaultProps = {
     localTeam: aTeam(),
     visitorTeam: aTeam(),
-    date: { day: 'Mar, 9/3', hour: '21:00' },
+    date: new Date(),
     isScheduled: false,
+    result: { localTeam: 0, visitorTeam: 0 },
   };
 
   it('should render successfully', () => {

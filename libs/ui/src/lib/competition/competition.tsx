@@ -33,7 +33,7 @@ function TabPanel(props: TabPanelProps) {
 
 export const Competition: React.FunctionComponent = () => {
   const classes = useStyles();
-  const [tabIndex, setTabIndex] = React.useState(2);
+  const [tabIndex, setTabIndex] = React.useState(1);
   const matches = generateMatches(teams);
   const handleChange = (
     event: React.ChangeEvent<unknown>,

@@ -14,7 +14,7 @@ function getSortedRanking(ranking: TeamStatistics[]): TeamStatistics[] {
   return ranking.sort((a, b) => (a.pts < b.pts ? 1 : b.pts < a.pts ? -1 : 0));
 }
 
-type Props = {
+export type Props = {
   ranking: TeamStatistics[];
 };
 

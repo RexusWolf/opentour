@@ -5,14 +5,14 @@ import { Team } from '../competition/teams';
 import { TeamSlot } from '../teamSlot/teamSlot';
 import { useStyles } from '../theme';
 
-export type Match = {
+export type Props = {
   localTeam: Team;
   visitorTeam: Team;
   isScheduled: boolean;
   date: { day: string; hour: string };
 };
 
-export const CalendarMatch: React.FunctionComponent<Match> = (props) => {
+export const CalendarMatch: React.FunctionComponent<Props> = (props) => {
   const classes = useStyles();
 
   return (

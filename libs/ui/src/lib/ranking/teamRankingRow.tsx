@@ -1,6 +1,7 @@
 import { Icon } from '@material-ui/core';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
+import CancelIcon from '@material-ui/icons/Cancel';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import RemoveCircle from '@material-ui/icons/RemoveCircle';
 import React from 'react';
@@ -8,7 +9,7 @@ import React from 'react';
 import { TeamStatistics } from '../competition/ranking';
 import { TeamSlot } from '../teamSlot/teamSlot';
 
-type Props = {
+export type Props = {
   team: TeamStatistics;
 };
 
@@ -41,7 +42,7 @@ export const TeamRankingRow: React.FunctionComponent<Props> = (props) => {
             </Icon>
           ) : matchResult === 'defeat' ? (
             <Icon key={index} color="error">
-              <CheckCircle />
+              <CancelIcon />
             </Icon>
           ) : (
             <Icon key={index} color="disabled">

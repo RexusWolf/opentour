@@ -14,6 +14,6 @@ const Template: Story<Props> = (args) => <CompetitionWizard {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  open: false,
+  open: true,
   onClose: {},
 };

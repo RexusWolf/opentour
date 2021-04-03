@@ -8,6 +8,7 @@ import { useStyles } from '../theme';
 import { generateMatches } from './generateMatches';
 import { ranking } from './ranking';
 import { teams } from './teams';
+import { TeamWizard } from './teamWizard';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -33,6 +34,17 @@ function TabPanel(props: TabPanelProps) {
 
 export const Competition: React.FunctionComponent = () => {
   const classes = useStyles();
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const [tabIndex, setTabIndex] = React.useState(1);
   const matches = generateMatches(teams);
   const handleChange = (
@@ -67,9 +79,11 @@ export const Competition: React.FunctionComponent = () => {
           className={classes.containerItem}
           color="secondary"
           variant="contained"
+          onClick={handleClickOpen}
         >
           Create team for competition
         </Button>
+        <TeamWizard open={open} onClose={handleClose} />
         <Button
           className={classes.containerItem}
           color="primary"

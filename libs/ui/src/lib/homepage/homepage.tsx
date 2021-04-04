@@ -1,7 +1,7 @@
 import { Button, Grid, Typography } from '@material-ui/core';
 import React from 'react';
 
-import { CompetitionWizard } from '../competition/competitionWizard';
+import { CompetitionWizard } from '../competition/competitionWizard/competitionWizard';
 import { useStyles } from '../theme';
 
 export const Homepage: React.FunctionComponent = () => {
@@ -32,6 +32,7 @@ export const Homepage: React.FunctionComponent = () => {
           className={classes.homeButton}
           variant="contained"
           color="primary"
+          href="/competition/competitions"
         >
           <Typography variant="h4">Competitions list</Typography>
         </Button>

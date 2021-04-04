@@ -1,15 +1,7 @@
-import {
-  AppBar,
-  Button,
-  IconButton,
-  Toolbar,
-  Typography,
-} from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
+import { AppBar, Button, Toolbar, Typography } from '@material-ui/core';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { Session } from 'next-auth';
-import { useSession } from 'next-auth/client';
 import React from 'react';
 
 import { useStyles } from '../theme';

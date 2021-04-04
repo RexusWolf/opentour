@@ -1,14 +1,14 @@
 import { Box, Button, Grid, Tab, Tabs } from '@material-ui/core';
 import React from 'react';
 
-import { Calendar } from '../calendar/calendar';
-import { Ranking } from '../ranking/ranking';
-import { TeamList } from '../teamsList/teamsList';
 import { useStyles } from '../theme';
-import { generateMatches } from './generateMatches';
-import { ranking } from './ranking';
-import { teams } from './teams';
-import { TeamWizard } from './teamWizard';
+import { Calendar } from './calendar/calendar';
+import { Ranking } from './ranking/ranking';
+import { ranking } from './shared/ranking';
+import { teams } from './shared/teams';
+import { TeamList } from './teamsList/teamsList';
+import { TeamWizard } from './teamWizard/teamWizard';
+import { generateMatches } from './utils/generateMatches';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -45,7 +45,7 @@ export const Competition: React.FunctionComponent = () => {
     setOpen(false);
   };
 
-  const [tabIndex, setTabIndex] = React.useState(1);
+  const [tabIndex, setTabIndex] = React.useState(0);
   const matches = generateMatches(teams);
   const handleChange = (
     event: React.ChangeEvent<unknown>,

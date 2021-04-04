@@ -1,5 +1,4 @@
-import { getByAltText, render } from '@testing-library/react';
-import faker from 'faker';
+import { render } from '@testing-library/react';
 import React from 'react';
 
 import { Competition } from './competition';

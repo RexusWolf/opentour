@@ -1,17 +1,8 @@
-import {
-  Box,
-  Container,
-  CssBaseline,
-  Drawer,
-  Grid,
-  Paper,
-  Typography,
-} from '@material-ui/core';
+import { Container, CssBaseline } from '@material-ui/core';
 import { Session } from 'next-auth';
 import React from 'react';
 
 import Navbar from '../navbar/navbar';
-import Sidebar from '../sidebar/sidebar';
 import { useStyles } from '../theme';
 
 export interface LayoutProps {

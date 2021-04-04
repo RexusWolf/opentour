@@ -25,7 +25,8 @@
     "dep-graph": "nx dep-graph",
     "help": "nx help",
     "devtools:cucumber:report": "node ./tools/generate-cucumber-report.js",
-    "release": "standard-version"
+    "release": "standard-version",
+    "storybook": "nx run ui:storybook"
   },
   "private": true,
   "dependencies": {

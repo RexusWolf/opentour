@@ -1,6 +1,7 @@
 import { Button, Grid, Paper, Typography } from '@material-ui/core';
 import { theme, useStyles } from '@opentour/ui';
 import { getProviders, signIn } from 'next-auth/client';
+import React from 'react';
 
 export default function SignIn({ providers }) {
   const classes = useStyles();

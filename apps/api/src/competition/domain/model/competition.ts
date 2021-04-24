@@ -1,7 +1,8 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 
-import { SportId } from '../../../sport/domain/sport-id';
+import { SportId } from '../../../sport/domain/model/sport-id';
 import { UserId } from '../../../user/domain';
+import { CompetitionModeratorWasRemoved } from '../event/competition-moderator-was-removed.event';
 import { CompetitionWasCreated } from '../event/competition-was-created.event';
 import { CompetitionWasDeleted } from '../event/competition-was-deleted.event';
 import { ModeratorWasAddedToCompetition } from '../event/moderator-was-added-to-competition.event';
@@ -26,19 +27,12 @@ export class Competition extends AggregateRoot {
     id: CompetitionId,
     name: CompetitionName,
     type: CompetitionType,
-    sportId: SportId,
-    moderatorId: UserId
+    sportId: SportId
   ): Competition {
     const competition = new Competition();
 
     competition.apply(
-      new CompetitionWasCreated(
-        id.value,
-        name.value,
-        type.value,
-        sportId.value,
-        moderatorId.value
-      )
+      new CompetitionWasCreated(id.value, name.value, type.value, sportId.value)
     );
 
     return competition;
@@ -78,6 +72,18 @@ export class Competition extends AggregateRoot {
     }
 
     this.apply(new ModeratorWasAddedToCompetition(this.id.value, userId.value));
+  }
+
+  hasModerator(userId: UserId): boolean {
+    return this._moderatorIds.some((item: UserId) => item.equals(userId));
+  }
+
+  removeModerator(userId: UserId): void {
+    if (!this.hasModerator(userId)) {
+      return;
+    }
+
+    this.apply(new CompetitionModeratorWasRemoved(this.id.value, userId.value));
   }
 
   delete(): void {

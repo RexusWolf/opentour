@@ -74,6 +74,6 @@ const isLogged = (): boolean => !!getToken();
 
 const getToken = (): string | null => localStorage.getItem('auth');
 
-const getDecodedToken = (): JwtPayloadInterface => jwt(getToken());
+const getDecodedToken = (): JwtPayloadInterface => jwt(getToken()!);
 
 export { authProvider, getToken };

@@ -7,7 +7,8 @@ import { CompetitionMapper } from '../../infrastructure/repository/competition.m
 import { GetCompetitionsQuery } from './get-competitions.query';
 
 @QueryHandler(GetCompetitionsQuery)
-export class GetUsersHandler implements IQueryHandler<GetCompetitionsQuery> {
+export class GetCompetitionsHandler
+  implements IQueryHandler<GetCompetitionsQuery> {
   constructor(
     @Inject(COMPETITIONS) private competitions: Competitions,
     private competitionMapper: CompetitionMapper

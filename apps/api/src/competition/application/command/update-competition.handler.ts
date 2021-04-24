@@ -37,9 +37,11 @@ export class UpdateCompetitionHandler
   ) {
     competition.moderatorIds.map(
       (moderatorId) =>
-        command.moderatorId === moderatorId.value &&
+        !command.moderatorIds.includes(moderatorId.value) &&
         competition.removeModerator(moderatorId)
     );
-    competition.addModerator(UserId.fromString(command.moderatorId));
+    command.moderatorIds.map((moderatorId) =>
+      competition.addModerator(UserId.fromString(moderatorId))
+    );
   }
 }

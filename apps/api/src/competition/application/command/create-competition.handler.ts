@@ -17,7 +17,7 @@ import { CompetitionMapper } from '../../infrastructure/repository/competition.m
 import { CreateCompetitionCommand } from './create-competition.command';
 
 @CommandHandler(CreateCompetitionCommand)
-export class CreateUserHandler
+export class CreateCompetitionHandler
   implements ICommandHandler<CreateCompetitionCommand> {
   constructor(
     @Inject(COMPETITIONS) private competitions: Competitions,

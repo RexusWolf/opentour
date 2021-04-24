@@ -8,7 +8,7 @@ import { CompetitionMapper } from '../../infrastructure/repository/competition.m
 import { DeleteCompetitionCommand } from './delete-competition.command';
 
 @CommandHandler(DeleteCompetitionCommand)
-export class DeleteUserHandler
+export class DeleteCompetitionHandler
   implements ICommandHandler<DeleteCompetitionCommand> {
   constructor(
     @Inject(COMPETITIONS) private competitions: Competitions,

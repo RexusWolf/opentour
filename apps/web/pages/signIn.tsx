@@ -15,7 +15,7 @@ export default function SignIn({ providers }) {
         objectFit: 'cover',
       }}
     >
-      <Grid sm={6}></Grid>
+      <Grid item sm={6}></Grid>
       <Grid
         container
         item
@@ -72,7 +72,6 @@ export default function SignIn({ providers }) {
   );
 }
 
-// This is the recommended way for Next.js 9.3 or newer
 export async function getServerSideProps(context) {
   const providers = await getProviders();
   return {

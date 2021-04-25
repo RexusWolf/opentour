@@ -6,5 +6,13 @@
   "/api/competitions/(create|update|findAll|find|delete)": {
     "target": "http://localhost:3333",
     "secure": false
+  },
+  "/api/teams/(create|update|findAll|find|delete)": {
+    "target": "http://localhost:3333",
+    "secure": false
+  },
+  "/api/matches/(create|update|findAll|find|delete)": {
+    "target": "http://localhost:3333",
+    "secure": false
   }
 }

@@ -12,7 +12,12 @@ import {
   Res,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CreateTeamDTO, EditTeamDTO, TeamDTO } from '@opentour/contracts';
 import { Response } from 'express';
 
@@ -26,6 +31,7 @@ import {
 import { TeamIdNotFoundError } from '../../domain/exception';
 
 @ApiBearerAuth()
+@ApiTags('teams')
 @Controller('teams')
 export class TeamController {
   constructor(private queryBus: QueryBus, private commandBus: CommandBus) {}

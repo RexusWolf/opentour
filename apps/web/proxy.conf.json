@@ -2,5 +2,9 @@
   "/api/(users|login)": {
     "target": "http://localhost:3333",
     "secure": false
+  },
+  "/api/competitions/(create|update|findAll|find|delete)": {
+    "target": "http://localhost:3333",
+    "secure": false
   }
 }

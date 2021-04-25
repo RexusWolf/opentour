@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Body,
+  Controller,
   Delete,
   Get,
   HttpCode,
@@ -11,7 +12,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import {
   CompetitionDTO,
   CreateCompetitionDTO,
@@ -28,6 +29,8 @@ import {
 } from '../../application';
 import { CompetitionIdNotFoundError } from '../../domain/exception';
 
+@ApiBearerAuth()
+@Controller('competitions')
 export class CompetitionController {
   constructor(private queryBus: QueryBus, private commandBus: CommandBus) {}
 

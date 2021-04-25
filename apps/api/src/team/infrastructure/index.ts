@@ -1,1 +1,1 @@
-export * from './competition.module';
+export * from './team.module';

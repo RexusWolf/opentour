@@ -1,12 +1,14 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 
-import { CompetitionId } from '../../competition/domain/model';
-import { TeamId } from '../../team/model/team-id';
+import { CompetitionId } from '../../../competition/domain/model';
+import { TeamId } from '../../../team/model';
 import { LocalTeamWasAddedToMatch } from '../event/local-team-was-added-to-match';
 import { MatchResultWasModified } from '../event/match-result-was-modified';
 import { MatchResultWasRegistered } from '../event/match-result-was-registered';
+import { MatchScheduleWasModified } from '../event/match-schedule-was-modified';
 import { MatchWasCreated } from '../event/match-was-created';
 import { MatchWasDeleted } from '../event/match-was-deleted';
+import { MatchWasScheduled } from '../event/match-was-scheduled';
 import { VisitorTeamWasAddedToMatch } from '../event/visitor-team-was-added-to-match';
 import { MatchId } from './match-id';
 import { MatchIndex } from './match-index';
@@ -122,6 +124,20 @@ export class Match extends AggregateRoot {
       return;
     }
     this.apply(new MatchResultWasModified(this.id.value, result));
+  }
+
+  schedule(date: Date): void {
+    if (this.isScheduled()) {
+      return;
+    }
+    this.apply(new MatchWasScheduled(this.id.value, date));
+  }
+
+  modifySchedule(date: Date): void {
+    if (!this.isScheduled() || this._date === date) {
+      return;
+    }
+    this.apply(new MatchScheduleWasModified(this.id.value, date));
   }
 
   delete(): void {

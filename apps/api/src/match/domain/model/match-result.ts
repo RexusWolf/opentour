@@ -21,4 +21,12 @@ export class MatchResult {
       visitorTeamScore: TeamScore.fromNumber(visitorTeamScore),
     });
   }
+
+  get localTeamScore() {
+    return this._localTeamScore;
+  }
+
+  get visitorTeamScore() {
+    return this._visitorTeamScore;
+  }
 }

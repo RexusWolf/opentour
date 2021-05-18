@@ -116,7 +116,7 @@
           }
         },
         "serve-test": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "commands": ["yarn run nx serve api"],
             "parallel": false,

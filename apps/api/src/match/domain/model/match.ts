@@ -1,7 +1,7 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 
 import { CompetitionId } from '../../../competition/domain/model';
-import { TeamId } from '../../../team/model';
+import { TeamId } from '../../../team/domain/model';
 import { LocalTeamWasAddedToMatch } from '../event/local-team-was-added-to-match';
 import { MatchResultWasModified } from '../event/match-result-was-modified';
 import { MatchResultWasRegistered } from '../event/match-result-was-registered';

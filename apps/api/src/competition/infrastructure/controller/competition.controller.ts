@@ -34,7 +34,7 @@ import { CompetitionIdNotFoundError } from '../../domain/exception';
 export class CompetitionController {
   constructor(private queryBus: QueryBus, private commandBus: CommandBus) {}
 
-  @Post()
+  @Post('create')
   @ApiResponse({ status: 200, description: 'Competition created' })
   async create(
     @Body() createCompetitionDto: CreateCompetitionDTO
@@ -58,7 +58,7 @@ export class CompetitionController {
     }
   }
 
-  @Get()
+  @Get('findAll')
   @ApiResponse({ status: 200, description: 'Competitions found' })
   async findAll(@Res({ passthrough: true }) res: Response) {
     try {
@@ -78,7 +78,7 @@ export class CompetitionController {
     }
   }
 
-  @Get(':id')
+  @Get('find:id')
   @ApiResponse({ status: 200, description: 'Competition found' })
   @ApiResponse({ status: 404, description: 'Not found' })
   async findOne(@Param('id') id: string): Promise<CompetitionDTO> {
@@ -102,7 +102,7 @@ export class CompetitionController {
     }
   }
 
-  @Put(':id')
+  @Put('update:id')
   @ApiOperation({ summary: 'Updated competition' })
   @ApiResponse({ status: 200, description: 'Competition updated' })
   @ApiResponse({ status: 404, description: 'Not found' })
@@ -140,7 +140,7 @@ export class CompetitionController {
   @ApiResponse({ status: 200, description: 'Delete competition' })
   @ApiResponse({ status: 404, description: 'Not found' })
   @HttpCode(200)
-  @Delete(':id')
+  @Delete('remove:id')
   async remove(@Param('id') id: string): Promise<CompetitionDTO> {
     try {
       return this.commandBus.execute(new DeleteCompetitionCommand(id));

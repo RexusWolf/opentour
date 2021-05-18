@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 
-import { CompetitionId } from '../../competition/domain/model';
-import { TeamId } from '../../team/model';
-import { Match, MatchId, MatchIndex, MatchJourney } from '../domain/model';
+import { CompetitionId } from '../../../competition/domain/model';
+import { TeamId } from '../../../team/domain/model';
+import { Match, MatchId, MatchIndex, MatchJourney } from '../../domain';
 import { MatchEntity } from '../entity/match.entity';
 
 @Injectable()

@@ -1,7 +1,7 @@
-export class CompetitionDTO {
+export class TeamDTO {
   id: string;
+  competitionId: string;
   name: string;
-  type: string;
-  sportId: string;
-  moderatorIds: string[];
+  captainId: string;
+  membersIds: string[];
 }

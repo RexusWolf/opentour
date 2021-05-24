@@ -30,20 +30,26 @@ export class CreateCompetitionHandler
     const type = CompetitionType.fromString(command.type);
     const sportId = SportId.fromString(command.sportId);
     const moderatorId = UserId.fromString(command.moderatorId);
+    try {
+      if (await this.competitions.find(competitionId)) {
+        throw CompetitionIdAlreadyTakenError.with(competitionId);
+      }
+      if (await this.competitions.findOneByName(name)) {
+        throw CompetitionNameAlreadyTakenError.with(name);
+      }
 
-    if (await this.competitions.find(competitionId)) {
-      throw CompetitionIdAlreadyTakenError.with(competitionId);
+      const competition = Competition.create({
+        id: competitionId,
+        name,
+        type,
+        sportId,
+        moderatorId,
+      });
+
+      await this.competitions.save(competition);
+    } catch (error) {
+      console.log(error);
+      throw error;
     }
-
-    if (await this.competitions.findOneByName(name)) {
-      throw CompetitionNameAlreadyTakenError.with(name);
-    }
-
-    const competition = Competition.add(competitionId, name, type, sportId);
-    competition.addModerator(moderatorId);
-
-    this.competitions.save(competition);
-
-    return this.competitionMapper.aggregateToEntity(competition);
   }
 }

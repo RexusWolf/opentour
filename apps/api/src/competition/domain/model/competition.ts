@@ -23,17 +23,24 @@ export class Competition extends AggregateRoot {
     super();
   }
 
-  public static add(
-    id: CompetitionId,
-    name: CompetitionName,
-    type: CompetitionType,
-    sportId: SportId
-  ): Competition {
+  public static create(params: {
+    id: CompetitionId;
+    name: CompetitionName;
+    type: CompetitionType;
+    sportId: SportId;
+    moderatorId: UserId;
+  }): Competition {
+    const { id, name, type, sportId, moderatorId } = params;
     const competition = new Competition();
 
-    competition.apply(
-      new CompetitionWasCreated(id.value, name.value, type.value, sportId.value)
+    const event = new CompetitionWasCreated(
+      id.value,
+      name.value,
+      type.value,
+      sportId.value,
+      moderatorId.value
     );
+    competition.apply(event);
 
     return competition;
   }
@@ -70,7 +77,7 @@ export class Competition extends AggregateRoot {
     if (this.isModerator(userId)) {
       return;
     }
-
+    console.log(this);
     this.apply(new ModeratorWasAddedToCompetition(this.id.value, userId.value));
   }
 

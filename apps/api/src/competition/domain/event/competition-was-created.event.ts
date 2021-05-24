@@ -8,7 +8,8 @@ export class CompetitionWasCreated extends StorableEvent {
     public readonly id: string,
     public readonly name: string,
     public readonly type: string,
-    public readonly sportId: string
+    public readonly sportId: string,
+    public readonly moderatorId: string
   ) {
     super();
   }

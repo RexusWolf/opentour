@@ -41,13 +41,13 @@ export class CompetitionController {
   ): Promise<CompetitionDTO> {
     try {
       return await this.commandBus.execute(
-        new CreateCompetitionCommand(
-          createCompetitionDto.id,
-          createCompetitionDto.name,
-          createCompetitionDto.type,
-          createCompetitionDto.sportId,
-          createCompetitionDto.moderatorId
-        )
+        new CreateCompetitionCommand({
+          competitionId: createCompetitionDto.id,
+          name: createCompetitionDto.name,
+          type: createCompetitionDto.type,
+          sportId: createCompetitionDto.sportId,
+          moderatorId: createCompetitionDto.moderatorId,
+        })
       );
     } catch (error) {
       if (error instanceof Error) {

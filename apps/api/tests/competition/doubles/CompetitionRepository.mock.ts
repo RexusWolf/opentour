@@ -12,12 +12,13 @@ import { Competitions } from '../../../src/competition/domain/repository';
 export class CompetitionRepositoryDouble implements Competitions {
   readonly mockSave = jest.fn();
   private throwOnFind = false;
-  private throwOnFindOne = false;
+  private throwOnFindByName = false;
 
-  constructor(params?: { throwOnFindOne: boolean; throwOnFind: boolean }) {
+  constructor(params?: { throwOnFindByName?: boolean; throwOnFind?: boolean }) {
     if (params) {
-      this.throwOnFind = params.throwOnFind;
-      this.throwOnFindOne = params.throwOnFindOne;
+      this.throwOnFind = params.throwOnFind != undefined && params?.throwOnFind;
+      this.throwOnFindByName =
+        params?.throwOnFindByName != undefined && params?.throwOnFindByName;
     }
   }
   async find(competitionId: CompetitionId): Promise<Competition | null> {
@@ -30,7 +31,7 @@ export class CompetitionRepositoryDouble implements Competitions {
     throw new Error();
   }
   async findOneByName(name: CompetitionName): Promise<Competition | null> {
-    if (this.throwOnFindOne) {
+    if (this.throwOnFindByName) {
       throw CompetitionNameAlreadyTakenError.with(name);
     }
     return null;

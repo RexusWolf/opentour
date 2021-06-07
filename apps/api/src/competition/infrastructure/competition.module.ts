@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { EventSourcingModule } from 'event-sourcing-nestjs';
 
-import { AuthModule } from '../../auth/auth.module';
+import { DatabaseModule } from '../../common/database/database.module';
 import {
   CreateCompetitionHandler,
   DeleteCompetitionHandler,
@@ -13,9 +13,9 @@ import {
 } from '../application';
 import { competitionProviders } from './competition.providers';
 import { CompetitionController } from './controller/competition.controller';
-import { CompetitionEntity } from './entity/competition.entity';
-import { CompetitionMapper } from './repository/competition.mapper';
-import { CompetitionWasDeletedSaga } from './saga/competition-was-deleted.saga';
+import { CompetitionEventStore } from './eventstore/competitions.event-store';
+import { ProjectionHandlers } from './read-model/projection';
+import { CompetitionService } from './service/competition.service';
 
 const CommandHandlers = [
   CreateCompetitionHandler,
@@ -27,21 +27,17 @@ const QueryHandlers = [
   GetCompetitionHandler,
   GetCompetitionsHandler,
 ];
-const Sagas = [CompetitionWasDeletedSaga];
 
 @Module({
   controllers: [CompetitionController],
-  imports: [
-    AuthModule,
-    CqrsModule,
-    TypeOrmModule.forFeature([CompetitionEntity]),
-  ],
+  imports: [CqrsModule, DatabaseModule, EventSourcingModule.forFeature()],
   providers: [
     ...competitionProviders,
+    ...ProjectionHandlers,
     ...CommandHandlers,
     ...QueryHandlers,
-    ...Sagas,
-    CompetitionMapper,
+    CompetitionService,
+    CompetitionEventStore,
   ],
 })
 export class CompetitionModule {}

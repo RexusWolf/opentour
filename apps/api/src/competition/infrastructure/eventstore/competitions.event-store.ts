@@ -14,12 +14,11 @@ export class CompetitionEventStore implements Competitions {
     private readonly eventStore: EventStore,
     private readonly publisher: StoreEventPublisher
   ) {}
-
-  findOneByName(name: CompetitionName): Promise<Competition | null> {
+  findAll(): Promise<Competition[]> {
     throw new Error('Method not implemented.');
   }
 
-  findAll(): Promise<Competition[]> {
+  findOneByName(name: CompetitionName): Promise<Competition | null> {
     throw new Error('Method not implemented.');
   }
 

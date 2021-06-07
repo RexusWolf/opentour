@@ -1,23 +1,21 @@
 import { Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { CompetitionDTO } from '@opentour/contracts';
+import { Model } from 'mongoose';
 
-import { COMPETITIONS, Competitions } from '../../domain/repository';
-import { CompetitionMapper } from '../../infrastructure/repository/competition.mapper';
+import {
+  COMPETITION_MODEL,
+  CompetitionView,
+} from '../../infrastructure/read-model/schema/competition.schema';
 import { GetCompetitionsQuery } from './get-competitions.query';
 
 @QueryHandler(GetCompetitionsQuery)
 export class GetCompetitionsHandler
   implements IQueryHandler<GetCompetitionsQuery> {
   constructor(
-    @Inject(COMPETITIONS) private competitions: Competitions,
-    private competitionMapper: CompetitionMapper
+    @Inject(COMPETITION_MODEL) private competitionModel: Model<CompetitionView>
   ) {}
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async execute(query: GetCompetitionsQuery): Promise<CompetitionDTO[] | null> {
-    const competitions = await this.competitions.findAll();
-
-    return competitions.map(this.competitionMapper.aggregateToEntity);
+  async execute(query: GetCompetitionsQuery): Promise<CompetitionView[]> {
+    return await this.competitionModel.find().exec();
   }
 }

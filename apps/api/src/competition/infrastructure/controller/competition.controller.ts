@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Body,
+  ConflictException,
   Controller,
   Delete,
   Get,
@@ -9,9 +10,9 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Res,
 } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import {
   CompetitionDTO,
@@ -21,52 +22,53 @@ import {
 import { Response } from 'express';
 
 import {
-  CreateCompetitionCommand,
-  DeleteCompetitionCommand,
-  GetCompetitionQuery,
-  GetCompetitionsQuery,
-  UpdateCompetitionCommand,
-} from '../../application';
-import { CompetitionIdNotFoundError } from '../../domain/exception';
+  CompetitionIdAlreadyTakenError,
+  CompetitionIdNotFoundError,
+  CompetitionNameAlreadyTakenError,
+} from '../../domain/exception';
+import { CompetitionView } from '../read-model/schema/competition.schema';
+import { CompetitionService } from '../service/competition.service';
 
 @ApiBearerAuth()
 @Controller('competitions')
 export class CompetitionController {
-  constructor(private queryBus: QueryBus, private commandBus: CommandBus) {}
+  constructor(private readonly competitionService: CompetitionService) {}
 
-  @Post('create')
-  @ApiResponse({ status: 200, description: 'Competition created' })
+  @ApiOperation({ summary: 'Create competition' })
+  @ApiResponse({ status: 204, description: 'Create competition' })
+  @Post('')
   async create(
     @Body() createCompetitionDto: CreateCompetitionDTO
   ): Promise<CompetitionDTO> {
     try {
-      return await this.commandBus.execute(
-        new CreateCompetitionCommand({
-          id: createCompetitionDto.id,
-          name: createCompetitionDto.name,
-          type: createCompetitionDto.type,
-          sportId: createCompetitionDto.sportId,
-          moderatorId: createCompetitionDto.moderatorId,
-        })
-      );
+      return await this.competitionService.createCompetition({
+        id: createCompetitionDto.id,
+        name: createCompetitionDto.name,
+        type: createCompetitionDto.type,
+        sportId: createCompetitionDto.sportId,
+        moderatorId: createCompetitionDto.moderatorId,
+      });
     } catch (error) {
+      if (error instanceof CompetitionIdAlreadyTakenError) {
+        throw new ConflictException(error.message);
+      }
+      if (error instanceof CompetitionNameAlreadyTakenError) {
+        throw new ConflictException(error.message);
+      }
       if (error instanceof Error) {
-        throw new BadRequestException(error.message);
+        throw new BadRequestException(`Unexpected error: ${error.message}`);
       } else {
         throw new BadRequestException('Server error');
       }
     }
   }
 
-  @Get('findAll')
-  @ApiResponse({ status: 200, description: 'Competitions found' })
+  @Get()
+  @ApiOperation({ summary: 'Get competitions' })
+  @ApiResponse({ status: 200, description: 'Returns all competitions' })
   async findAll(@Res({ passthrough: true }) res: Response) {
     try {
-      const competitions = await this.queryBus.execute<
-        GetCompetitionsQuery,
-        CompetitionDTO[]
-      >(new GetCompetitionsQuery());
-
+      const competitions = await this.competitionService.getCompetitions();
       res.setHeader('X-Total-Count', competitions.length);
       return competitions;
     } catch (error) {
@@ -78,22 +80,15 @@ export class CompetitionController {
     }
   }
 
-  @Get('find:id')
+  @Get(':id')
   @ApiResponse({ status: 200, description: 'Competition found' })
   @ApiResponse({ status: 404, description: 'Not found' })
-  async findOne(@Param('id') id: string): Promise<CompetitionDTO> {
+  async findOne(@Query('id') id: string): Promise<CompetitionView | null> {
     try {
-      const competition = await this.queryBus.execute<
-        GetCompetitionQuery,
-        CompetitionDTO
-      >(new GetCompetitionQuery(id));
-
-      if (!competition) throw new NotFoundException();
-
-      return competition;
+      return await this.competitionService.getCompetition(id);
     } catch (error) {
       if (error instanceof CompetitionIdNotFoundError) {
-        throw new NotFoundException('Competition not found');
+        throw new NotFoundException('Competition with provided id not found');
       } else if (error instanceof Error) {
         throw new BadRequestException(error.message);
       } else {
@@ -102,29 +97,20 @@ export class CompetitionController {
     }
   }
 
-  @Put('update:id')
-  @ApiOperation({ summary: 'Updated competition' })
-  @ApiResponse({ status: 200, description: 'Competition updated' })
+  @Put(':id')
+  @ApiOperation({ summary: 'Update competition' })
+  @ApiResponse({ status: 204, description: 'Competition updated' })
   @ApiResponse({ status: 404, description: 'Not found' })
   async update(
-    @Param('id') id: string,
+    @Query('id') id: string,
     @Body() editCompetitionDTO: EditCompetitionDTO
-  ): Promise<EditCompetitionDTO> {
+  ) {
     try {
-      const competition = await this.queryBus.execute<
-        GetCompetitionQuery,
-        CompetitionDTO
-      >(new GetCompetitionQuery(id));
-
-      if (!competition) throw new NotFoundException();
-
-      return this.commandBus.execute(
-        new UpdateCompetitionCommand({
-          id,
-          name: editCompetitionDTO.name,
-          moderatorIds: editCompetitionDTO.moderatorIds,
-        })
-      );
+      return await this.competitionService.updateCompetition({
+        id,
+        name: editCompetitionDTO.name,
+        moderatorIds: editCompetitionDTO.moderatorIds,
+      });
     } catch (error) {
       if (error instanceof CompetitionIdNotFoundError) {
         throw new NotFoundException('Competition not found');
@@ -140,10 +126,10 @@ export class CompetitionController {
   @ApiResponse({ status: 200, description: 'Delete competition' })
   @ApiResponse({ status: 404, description: 'Not found' })
   @HttpCode(200)
-  @Delete('remove:id')
-  async remove(@Param('id') id: string): Promise<CompetitionDTO> {
+  @Delete(':id')
+  async remove(@Query('id') id: string): Promise<CompetitionDTO> {
     try {
-      return this.commandBus.execute(new DeleteCompetitionCommand(id));
+      return this.competitionService.deleteCompetition(id);
     } catch (error) {
       if (error instanceof CompetitionIdNotFoundError) {
         throw new NotFoundException('Competition not found');

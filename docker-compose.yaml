@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  mongo:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+
+  mongo-express:
+    image: mongo-express
+    ports:
+      - 8081:8081
+
+  db:
+    image: mariadb:10.5
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=1234
+      - MYSQL_DATABASE=opentourdb
+      - MYSQL_USER=opentour
+      - MYSQL_PASSWORD=opentour
+    volumes:
+      - dev_db_data:/var/lib/mysql
+
+volumes:
+  dev_db_data:
+    driver: local

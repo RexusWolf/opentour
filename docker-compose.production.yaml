@@ -1,0 +1,92 @@
+version: '3'
+
+services:
+  mongo:
+    image: mongo:latest
+
+  mongo-express:
+    image: mongo-express
+    ports:
+      - 8081:8081
+
+  db:
+    image: mariadb:10.5
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-1234}
+      MYSQL_DATABASE: ${DB_DATABASE:-opentourdb}
+      MYSQL_USER: ${DB_USER:-opentour}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-opentour}
+
+  api:
+    image: ghcr.io/aulasoftwarelibre/opentour-api:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: api
+    depends_on:
+      - db
+      - mongo
+    environment:
+      NODE_JWT_SECRET: ${JWT_SECRET:-secret}
+      NODE_DB_HOST: ${DB_HOST:-db}
+      NODE_DB_PORT: ${DB_PORT:-3306}
+      NODE_DB_DATABASE: ${DB_DATABASE:-opentourdb}
+      NODE_DB_USER: ${DB_USER:-opentour}
+      NODE_DB_PASSWORD: ${DB_PASSWORD:-opentour}
+      NODE_MONGODB_URI: mongodb://${MONGO_HOST:-mongo}:${MONGO_PORT:-27017}/${DB_DATABASE:-opentourdb}
+      NODE_EVENTSOURCING_URI: mongodb://${MONGO_HOST:-mongo}:${MONGO_PORT:-27017}/${DB_DATABASE:-opentourdb}_es
+
+  web:
+    image: ghcr.io/aulasoftwarelibre/opentour-web:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: web
+      args:
+        API_URL: https://opentour-api.aulasoftwarelibre.uco.es
+        API_URL_INTERNAL: http://opentour-api.tfg-opentour.svc.cluster.local:3333
+        NEXTAUTH_URL: https://opentour.aulasoftwarelibre.uco.es
+        NEXTAUTH_URL_INTERNAL: http://localhost:3000
+        JWT_SECRET: a43c2e1c1532ee363bfe922097a78dcda9ddd5dc67989e794eae5bb4
+    depends_on:
+      - api
+    environment:
+      NEXT_PUBLIC_API_URL: http://${API_SERVER_NAME:-api.localhost}
+      NODE_API_URL_INTERNAL: http://${API_SERVER_NAME_INTERNAL:-api}:3333
+      NODE_JWT_SECRET: ${JWT_SECRET:-secret}
+      NODE_NEXTAUTH_URL: http://${WEB_SERVER_NAME:-web.localhost}
+      NODE_NEXTAUTH_URL_INTERNAL: http://localhost:3000
+
+  admin:
+    image: ghcr.io/aulasoftwarelibre/opentour-admin:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: admin
+    depends_on:
+      - api
+    environment:
+      NODE_API_URL: http://${API_SERVER_NAME:-api.localhost}
+
+  server:
+    image: opentour:server
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: server
+    depends_on:
+      - web
+      - api
+      - admin
+    ports:
+      - 80:80
+    environment:
+      API_SERVER_NAME: ${API_SERVER_NAME:-api.localhost}
+      WEB_SERVER_NAME: ${WEB_SERVER_NAME:-web.localhost}
+      ADMIN_SERVER_NAME: ${ADMIN_SERVER_NAME:-admin.localhost}
+
+volumes:
+  db_data:
+    driver: local

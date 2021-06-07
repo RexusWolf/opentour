@@ -1,11 +1,11 @@
 import { Provider } from '@nestjs/common';
 
 import { COMPETITIONS } from '../domain/repository';
-import { CompetitionRepository } from './repository/competition.repository';
+import { CompetitionEventStore } from './eventstore/competitions.event-store';
 
 export const competitionProviders: Provider[] = [
   {
     provide: COMPETITIONS,
-    useClass: CompetitionRepository,
+    useClass: CompetitionEventStore,
   },
 ];

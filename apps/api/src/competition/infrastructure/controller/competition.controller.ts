@@ -42,7 +42,7 @@ export class CompetitionController {
     try {
       return await this.commandBus.execute(
         new CreateCompetitionCommand({
-          competitionId: createCompetitionDto.id,
+          id: createCompetitionDto.id,
           name: createCompetitionDto.name,
           type: createCompetitionDto.type,
           sportId: createCompetitionDto.sportId,
@@ -119,11 +119,11 @@ export class CompetitionController {
       if (!competition) throw new NotFoundException();
 
       return this.commandBus.execute(
-        new UpdateCompetitionCommand(
+        new UpdateCompetitionCommand({
           id,
-          editCompetitionDTO.name,
-          editCompetitionDTO.moderatorIds
-        )
+          name: editCompetitionDTO.name,
+          moderatorIds: editCompetitionDTO.moderatorIds,
+        })
       );
     } catch (error) {
       if (error instanceof CompetitionIdNotFoundError) {

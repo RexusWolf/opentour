@@ -5,16 +5,12 @@ import { UserId } from '../../../user/domain';
 import { CompetitionIdNotFoundError } from '../../domain/exception';
 import { Competition, CompetitionId } from '../../domain/model';
 import { COMPETITIONS, Competitions } from '../../domain/repository';
-import { CompetitionMapper } from '../../infrastructure/repository/competition.mapper';
 import { UpdateCompetitionCommand } from './update-competition.command';
 
 @CommandHandler(UpdateCompetitionCommand)
 export class UpdateCompetitionHandler
   implements ICommandHandler<UpdateCompetitionCommand> {
-  constructor(
-    @Inject(COMPETITIONS) private competitions: Competitions,
-    private competitionMapper: CompetitionMapper
-  ) {}
+  constructor(@Inject(COMPETITIONS) private competitions: Competitions) {}
 
   async execute(command: UpdateCompetitionCommand) {
     const competitionId = CompetitionId.fromString(command.competitionId);
@@ -27,8 +23,6 @@ export class UpdateCompetitionHandler
     this.updateModerators(competition, command);
 
     this.competitions.save(competition);
-
-    return this.competitionMapper.aggregateToEntity(competition);
   }
 
   private updateModerators(

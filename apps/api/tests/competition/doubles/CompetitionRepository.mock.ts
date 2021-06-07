@@ -13,6 +13,7 @@ export class CompetitionRepositoryDouble implements Competitions {
   readonly mockSave = jest.fn();
   private throwOnFind = false;
   private throwOnFindByName = false;
+  private savedCompetition: Competition;
 
   constructor(params?: { throwOnFindByName?: boolean; throwOnFind?: boolean }) {
     if (params) {
@@ -21,15 +22,18 @@ export class CompetitionRepositoryDouble implements Competitions {
         params?.throwOnFindByName != undefined && params?.throwOnFindByName;
     }
   }
+
   async find(competitionId: CompetitionId): Promise<Competition | null> {
     if (this.throwOnFind) {
       throw CompetitionIdAlreadyTakenError.with(competitionId);
     }
-    return null;
+    return this.savedCompetition;
   }
+
   async findAll(): Promise<Competition[]> {
     throw new Error();
   }
+
   async findOneByName(name: CompetitionName): Promise<Competition | null> {
     if (this.throwOnFindByName) {
       throw CompetitionNameAlreadyTakenError.with(name);
@@ -37,6 +41,7 @@ export class CompetitionRepositoryDouble implements Competitions {
     return null;
   }
   async save(competition: Competition): Promise<void> {
+    this.savedCompetition = competition;
     this.mockSave(competition);
   }
 }

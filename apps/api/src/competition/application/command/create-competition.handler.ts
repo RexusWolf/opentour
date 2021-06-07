@@ -13,43 +13,34 @@ import {
   CompetitionType,
 } from '../../domain/model';
 import { COMPETITIONS, Competitions } from '../../domain/repository';
-import { CompetitionMapper } from '../../infrastructure/repository/competition.mapper';
 import { CreateCompetitionCommand } from './create-competition.command';
 
 @CommandHandler(CreateCompetitionCommand)
 export class CreateCompetitionHandler
   implements ICommandHandler<CreateCompetitionCommand> {
-  constructor(
-    @Inject(COMPETITIONS) private competitions: Competitions,
-    private competitionMapper: CompetitionMapper
-  ) {}
+  constructor(@Inject(COMPETITIONS) private competitions: Competitions) {}
 
   async execute(command: CreateCompetitionCommand) {
-    const competitionId = CompetitionId.fromString(command.competitionId);
+    const competitionId = CompetitionId.fromString(command.id);
     const name = Username.fromString(command.name);
     const type = CompetitionType.fromString(command.type);
     const sportId = SportId.fromString(command.sportId);
     const moderatorId = UserId.fromString(command.moderatorId);
-    try {
-      if (await this.competitions.find(competitionId)) {
-        throw CompetitionIdAlreadyTakenError.with(competitionId);
-      }
-      if (await this.competitions.findOneByName(name)) {
-        throw CompetitionNameAlreadyTakenError.with(name);
-      }
-
-      const competition = Competition.create({
-        id: competitionId,
-        name,
-        type,
-        sportId,
-        moderatorId,
-      });
-
-      await this.competitions.save(competition);
-    } catch (error) {
-      console.log(error);
-      throw error;
+    if (await this.competitions.find(competitionId)) {
+      throw CompetitionIdAlreadyTakenError.with(competitionId);
     }
+    if (await this.competitions.findOneByName(name)) {
+      throw CompetitionNameAlreadyTakenError.with(name);
+    }
+
+    const competition = Competition.create({
+      id: competitionId,
+      name,
+      type,
+      sportId,
+      moderatorId,
+    });
+
+    this.competitions.save(competition);
   }
 }

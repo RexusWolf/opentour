@@ -77,7 +77,6 @@ export class Competition extends AggregateRoot {
     if (this.isModerator(userId)) {
       return;
     }
-    console.log(this);
     this.apply(new ModeratorWasAddedToCompetition(this.id.value, userId.value));
   }
 
@@ -98,6 +97,14 @@ export class Competition extends AggregateRoot {
       return;
     }
 
-    this.apply(new CompetitionWasDeleted(this.id.value));
+    this.apply(new CompetitionWasDeleted(this._id.value));
+  }
+
+  private onCompetitionWasCreated(event: CompetitionWasCreated) {
+    (this._id = CompetitionId.fromString(event.id)),
+      (this._name = CompetitionName.fromString(event.name)),
+      (this._type = CompetitionType.fromString(event.type)),
+      (this._sportId = SportId.fromString(event.sportId)),
+      (this._moderatorIds = [UserId.fromString(event.moderatorId)]);
   }
 }

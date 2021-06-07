@@ -51,7 +51,7 @@ export class CompetitionRepository implements Competitions {
     return this.competitionMapper.entityToAggregate(competition);
   }
 
-  save(competition: Competition): void {
+  async save(competition: Competition): Promise<void> {
     this.competitionRepository.save(
       this.competitionMapper.aggregateToEntity(competition)
     );

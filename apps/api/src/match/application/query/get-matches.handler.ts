@@ -1,9 +1,10 @@
 import { Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Model } from 'mongoose';
+
 import {
-  MatchView,
   MATCH_MODEL,
+  MatchView,
 } from '../../infrastructure/read-model/schema/match.schema';
 import { GetMatchesQuery } from './get-matches.query';
 

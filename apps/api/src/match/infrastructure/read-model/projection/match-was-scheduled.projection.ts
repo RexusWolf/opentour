@@ -1,8 +1,8 @@
 import { Inject } from '@nestjs/common';
 import { IViewUpdater } from 'event-sourcing-nestjs';
 import { Model } from 'mongoose';
-import { MatchWasScheduled } from '../../../domain/event/match-was-scheduled';
 
+import { MatchWasScheduled } from '../../../domain/event/match-was-scheduled';
 import { MatchView } from '../schema/match.schema';
 
 export class MatchWasScheduledProjection

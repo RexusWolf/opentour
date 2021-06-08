@@ -2,9 +2,10 @@ import { Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { MatchDTO } from '@opentour/contracts';
 import { Model } from 'mongoose';
+
 import {
-  MatchView,
   MATCH_MODEL,
+  MatchView,
 } from '../../infrastructure/read-model/schema/match.schema';
 import { GetMatchQuery } from './get-match.query';
 

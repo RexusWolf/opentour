@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { EventStore, StoreEventPublisher } from 'event-sourcing-nestjs';
-import { CompetitionId } from '../../../competition/domain/model';
 
+import { CompetitionId } from '../../../competition/domain/model';
 import { Match, MatchId } from '../../domain/model';
 import { Matches } from '../../domain/repository';
 

@@ -26,7 +26,6 @@ import { Response } from 'express';
 
 import { MatchIdAlreadyTakenError } from '../../domain/exception';
 import { MatchIdNotFoundError } from '../../domain/exception/match-id-not-found.error';
-import { MatchView } from '../read-model/schema/match.schema';
 import { MatchService } from '../service/match.service';
 
 @ApiBearerAuth()
@@ -79,7 +78,7 @@ export class MatchController {
   @Get(':id')
   @ApiResponse({ status: 200, description: 'Match found' })
   @ApiResponse({ status: 404, description: 'Not found' })
-  async findOne(@Query('id') id: string): Promise<MatchView | null> {
+  async findOne(@Query('id') id: string): Promise<MatchDTO | null> {
     try {
       return await this.matchService.getMatch(id);
     } catch (e) {

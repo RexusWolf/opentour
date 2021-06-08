@@ -12,15 +12,6 @@ export class MatchEventStore implements Matches {
     private readonly publisher: StoreEventPublisher
   ) {}
 
-  async get(matchId: MatchId): Promise<Match> {
-    const match = Reflect.construct(Match, []);
-    match.loadFromHistory(
-      await this.eventStore.getEvents('match', matchId.value)
-    );
-
-    return match;
-  }
-
   async find(matchId: MatchId): Promise<Match | null> {
     const events = await this.eventStore.getEvents('match', matchId.value);
 
@@ -45,9 +36,5 @@ export class MatchEventStore implements Matches {
   save(match: Match): void {
     match = this.publisher.mergeObjectContext(match);
     match.commit();
-  }
-
-  nextIdentity(): MatchId {
-    return MatchId.generate();
   }
 }

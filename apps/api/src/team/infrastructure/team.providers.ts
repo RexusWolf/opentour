@@ -4,7 +4,8 @@ import { Connection } from 'mongoose';
 import { DATABASE_CONNECTION } from '../../common/database/database.provider';
 import { TEAMS } from '../domain/repository';
 import { TeamEventStore } from './eventstore/team.event-store';
-import { TEAM_MODEL,TeamSchema } from './read-model/schema/team.schema';
+import { TeamMapper } from './eventstore/team.mapper';
+import { TEAM_MODEL, TeamSchema } from './read-model/schema/team.schema';
 
 export const teamProviders: Provider[] = [
   {
@@ -16,5 +17,9 @@ export const teamProviders: Provider[] = [
   {
     provide: TEAMS,
     useClass: TeamEventStore,
+  },
+  {
+    provide: TeamMapper,
+    useClass: TeamMapper,
   },
 ];

@@ -22,15 +22,6 @@ export class CompetitionEventStore implements Competitions {
     throw new Error('Method not implemented.');
   }
 
-  async get(competitionId: CompetitionId): Promise<Competition> {
-    const competition = Reflect.construct(Competition, []);
-    competition.loadFromHistory(
-      await this.eventStore.getEvents('competition', competitionId.value)
-    );
-
-    return competition;
-  }
-
   async find(competitionId: CompetitionId): Promise<Competition | null> {
     const events = await this.eventStore.getEvents(
       'competition',
@@ -50,9 +41,5 @@ export class CompetitionEventStore implements Competitions {
   save(competition: Competition): void {
     competition = this.publisher.mergeObjectContext(competition);
     competition.commit();
-  }
-
-  nextIdentity(): CompetitionId {
-    return CompetitionId.generate();
   }
 }

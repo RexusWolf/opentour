@@ -13,6 +13,6 @@ export class GetTeamByNameHandler implements IQueryHandler<GetTeamByNameQuery> {
   constructor(@Inject(TEAM_MODEL) private teamModel: Model<TeamView>) {}
 
   async execute(query: GetTeamByNameQuery): Promise<TeamView | null> {
-    return await this.teamModel.findOne({ name: query.name });
+    return await this.teamModel.findOne({ name: query.name }).exec();
   }
 }

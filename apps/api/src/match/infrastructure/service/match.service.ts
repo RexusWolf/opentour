@@ -1,21 +1,24 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
-import { Model } from 'mongoose';
+import { Injectable } from '@nestjs/common';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { MatchDTO } from '@opentour/contracts';
 
 import {
   CreateMatchCommand,
   DeleteMatchCommand,
+  GetMatchesByCompetitionIdQuery,
+  GetMatchesQuery,
+  GetMatchQuery,
   UpdateMatchCommand,
 } from '../../application';
 import { MatchResult } from '../../domain';
-import { MATCH_MODEL, MatchView } from '../read-model/schema/match.schema';
+import { MatchMapper } from '../eventstore/match.mapper';
 
 @Injectable()
 export class MatchService {
   constructor(
     private readonly commandBus: CommandBus,
-    @Inject(MATCH_MODEL)
-    private readonly matchModel: Model<MatchView>
+    private readonly queryBus: QueryBus,
+    private readonly matchMapper: MatchMapper
   ) {}
 
   async createMatch(params: {
@@ -56,15 +59,22 @@ export class MatchService {
     );
   }
 
-  async getMatch(id: string): Promise<MatchView | null> {
-    return this.matchModel.findById(id).exec();
+  async getMatch(id: string): Promise<MatchDTO | null> {
+    const match = await this.queryBus.execute(new GetMatchQuery(id));
+    return this.matchMapper.viewToDto(match);
   }
 
-  async getMatches(): Promise<MatchView[]> {
-    return this.matchModel.find().exec();
+  async getMatches(): Promise<MatchDTO[]> {
+    const matches = await this.queryBus.execute(new GetMatchesQuery());
+    return matches.map(this.matchMapper.viewToDto);
   }
 
-  async getMatchByName(name: string): Promise<MatchView | null> {
-    return this.matchModel.findOne({ name: name }).exec();
+  async getMatchByCompetitionId(
+    competitionId: string
+  ): Promise<MatchDTO | null> {
+    const match = await this.queryBus.execute(
+      new GetMatchesByCompetitionIdQuery(competitionId)
+    );
+    return this.matchMapper.viewToDto(match);
   }
 }

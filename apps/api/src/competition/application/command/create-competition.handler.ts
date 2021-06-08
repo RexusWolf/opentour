@@ -29,9 +29,6 @@ export class CreateCompetitionHandler
     if (await this.competitions.find(competitionId)) {
       throw CompetitionIdAlreadyTakenError.with(competitionId);
     }
-    if (await this.competitions.findOneByName(name)) {
-      throw CompetitionNameAlreadyTakenError.with(name);
-    }
 
     const competition = Competition.create({
       id: competitionId,

@@ -1,23 +1,23 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
-import { Model } from 'mongoose';
+import { Injectable } from '@nestjs/common';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { CompetitionDTO } from '@opentour/contracts';
 
 import {
   CreateCompetitionCommand,
   DeleteCompetitionCommand,
+  GetCompetitionByNameQuery,
+  GetCompetitionQuery,
+  GetCompetitionsQuery,
   UpdateCompetitionCommand,
 } from '../../application';
-import {
-  COMPETITION_MODEL,
-  CompetitionView,
-} from '../read-model/schema/competition.schema';
+import { CompetitionMapper } from '../eventstore/competition.mapper';
 
 @Injectable()
 export class CompetitionService {
   constructor(
     private readonly commandBus: CommandBus,
-    @Inject(COMPETITION_MODEL)
-    private readonly competitionModel: Model<CompetitionView>
+    private readonly queryBus: QueryBus,
+    private competitionMapper: CompetitionMapper
   ) {}
 
   async createCompetition(params: {
@@ -48,15 +48,24 @@ export class CompetitionService {
     );
   }
 
-  async getCompetition(id: string): Promise<CompetitionView | null> {
-    return this.competitionModel.findById(id).exec();
+  async getCompetition(id: string): Promise<CompetitionDTO | null> {
+    const competition = await this.queryBus.execute(
+      new GetCompetitionQuery(id)
+    );
+    return this.competitionMapper.viewToDto(competition);
   }
 
-  async getCompetitions(): Promise<CompetitionView[]> {
-    return this.competitionModel.find().exec();
+  async getCompetitions(): Promise<CompetitionDTO[]> {
+    const competitions = await this.queryBus.execute(
+      new GetCompetitionsQuery()
+    );
+    return competitions.map(this.competitionMapper.viewToDto);
   }
 
-  async getCompetitionByName(name: string): Promise<CompetitionView | null> {
-    return this.competitionModel.findOne({ name: name }).exec();
+  async getCompetitionByName(name: string): Promise<CompetitionDTO | null> {
+    const competition = await this.queryBus.execute(
+      new GetCompetitionByNameQuery(name)
+    );
+    return this.competitionMapper.viewToDto(competition);
   }
 }

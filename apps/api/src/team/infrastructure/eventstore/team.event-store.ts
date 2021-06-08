@@ -23,13 +23,6 @@ export class TeamEventStore implements Teams {
     throw new Error('Method not implemented.');
   }
 
-  async get(teamId: TeamId): Promise<Team> {
-    const team = Reflect.construct(Team, []);
-    team.loadFromHistory(await this.eventStore.getEvents('team', teamId.value));
-
-    return team;
-  }
-
   async find(teamId: TeamId): Promise<Team | null> {
     const events = await this.eventStore.getEvents('team', teamId.value);
 
@@ -46,9 +39,5 @@ export class TeamEventStore implements Teams {
   save(team: Team): void {
     team = this.publisher.mergeObjectContext(team);
     team.commit();
-  }
-
-  nextIdentity(): TeamId {
-    return TeamId.generate();
   }
 }

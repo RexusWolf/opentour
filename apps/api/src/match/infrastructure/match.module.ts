@@ -13,7 +13,7 @@ import {
 } from '../application';
 import { MatchController } from './controller/match.controller';
 import { MatchEventStore } from './eventstore/matches.event-store';
-import { matchProviders } from './match.providers';
+import { MatchProviders } from './match.providers';
 import { ProjectionHandlers } from './read-model/projection';
 import { MatchService } from './service/match.service';
 
@@ -32,7 +32,7 @@ const QueryHandlers = [
   controllers: [MatchController],
   imports: [DatabaseModule, CqrsModule, EventSourcingModule.forFeature()],
   providers: [
-    ...matchProviders,
+    ...MatchProviders,
     ...ProjectionHandlers,
     ...CommandHandlers,
     ...QueryHandlers,

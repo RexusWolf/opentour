@@ -25,7 +25,6 @@ import {
   TeamIdNotFoundError,
   TeamNameAlreadyTakenError,
 } from '../../domain/exception';
-import { TeamView } from '../read-model/schema/team.schema';
 import { TeamService } from '../service/team.service';
 
 @ApiBearerAuth()
@@ -80,7 +79,7 @@ export class TeamController {
   @Get(':id')
   @ApiResponse({ status: 200, description: 'Team found' })
   @ApiResponse({ status: 404, description: 'Not found' })
-  async findOne(@Query('id') id: string): Promise<TeamView | null> {
+  async findOne(@Query('id') id: string): Promise<TeamDTO | null> {
     try {
       return await this.teamService.getTeam(id);
     } catch (error) {

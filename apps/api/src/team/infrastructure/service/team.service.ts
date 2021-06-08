@@ -1,16 +1,22 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
-import { Model } from 'mongoose';
+import { Injectable } from '@nestjs/common';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { TeamDTO } from '@opentour/contracts';
 
-import { CreateTeamCommand, DeleteTeamCommand } from '../../application';
-import { TEAM_MODEL, TeamView } from '../read-model/schema/team.schema';
+import {
+  CreateTeamCommand,
+  DeleteTeamCommand,
+  GetTeamByNameQuery,
+  GetTeamQuery,
+  GetTeamsQuery,
+} from '../../application';
+import { TeamMapper } from '../eventstore/team.mapper';
 
 @Injectable()
 export class TeamService {
   constructor(
     private readonly commandBus: CommandBus,
-    @Inject(TEAM_MODEL)
-    private readonly teamModel: Model<TeamView>
+    private readonly queryBus: QueryBus,
+    private readonly teamMapper: TeamMapper
   ) {}
 
   async createTeam(params: {
@@ -29,15 +35,18 @@ export class TeamService {
     return this.commandBus.execute(new DeleteTeamCommand(id));
   }
 
-  async getTeam(id: string): Promise<TeamView | null> {
-    return this.teamModel.findById(id).exec();
+  async getTeam(id: string): Promise<TeamDTO | null> {
+    const team = await this.queryBus.execute(new GetTeamQuery(id));
+    return this.teamMapper.viewToDto(team);
   }
 
-  async getTeams(): Promise<TeamView[]> {
-    return this.teamModel.find().exec();
+  async getTeams(): Promise<TeamDTO[]> {
+    const teams = await this.queryBus.execute(new GetTeamsQuery());
+    return teams.map(this.teamMapper.viewToDto);
   }
 
-  async getTeamByName(name: string): Promise<TeamView | null> {
-    return this.teamModel.findOne({ name: name }).exec();
+  async getTeamByName(name: string): Promise<TeamDTO | null> {
+    const team = await this.queryBus.execute(new GetTeamByNameQuery(name));
+    return this.teamMapper.viewToDto(team);
   }
 }

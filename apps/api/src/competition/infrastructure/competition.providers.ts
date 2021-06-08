@@ -3,6 +3,7 @@ import { Connection } from 'mongoose';
 
 import { DATABASE_CONNECTION } from '../../common/database/database.provider';
 import { COMPETITIONS } from '../domain/repository';
+import { CompetitionMapper } from './eventstore/competition.mapper';
 import { CompetitionEventStore } from './eventstore/competitions.event-store';
 import {
   COMPETITION_MODEL,
@@ -19,5 +20,9 @@ export const competitionProviders: Provider[] = [
   {
     provide: COMPETITIONS,
     useClass: CompetitionEventStore,
+  },
+  {
+    provide: CompetitionMapper,
+    useClass: CompetitionMapper,
   },
 ];

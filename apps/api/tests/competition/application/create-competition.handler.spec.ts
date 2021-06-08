@@ -29,7 +29,6 @@ describe('Create competition handler', () => {
 
     command$ = module.get<CreateCompetitionHandler>(CreateCompetitionHandler);
     competitions.find = jest.fn().mockResolvedValue(null);
-    competitions.findOneByName = jest.fn().mockResolvedValue(null);
     competitions.save = jest.fn();
   });
 
@@ -48,23 +47,6 @@ describe('Create competition handler', () => {
   });
   it('should not create a competition if there is an existing competition with same id', async () => {
     competitions.find = jest.fn().mockResolvedValue(competition);
-
-    await expect(() =>
-      command$.execute(
-        new CreateCompetitionCommand({
-          id: competition.id.value,
-          name: competition.name.value,
-          moderatorId: competition.moderatorIds[0].value,
-          type: competition.type.value,
-          sportId: competition.sportId.value,
-        })
-      )
-    ).rejects.toThrow();
-
-    expect(competitions.save).not.toHaveBeenCalled();
-  });
-  it('should not create a competition if there is an existing competition with same name', async () => {
-    competitions.findOneByName = jest.fn().mockResolvedValue(competition);
 
     await expect(() =>
       command$.execute(

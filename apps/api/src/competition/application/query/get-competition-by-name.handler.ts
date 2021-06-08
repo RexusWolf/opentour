@@ -18,8 +18,10 @@ export class GetCompetitionByNameHandler
   async execute(
     query: GetCompetitionByNameQuery
   ): Promise<CompetitionView | null> {
-    return this.competitionModel.findOne({
-      name: query.name,
-    });
+    return this.competitionModel
+      .findOne({
+        name: query.name,
+      })
+      .exec();
   }
 }

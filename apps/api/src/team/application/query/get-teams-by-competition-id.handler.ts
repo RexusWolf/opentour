@@ -15,6 +15,8 @@ export class GetTeamsByCompetitionIdHandler
   async execute(
     query: GetTeamsByCompetitionIdQuery
   ): Promise<TeamView[] | null> {
-    return await this.teamModel.find({ competitionId: query.competitionId });
+    return await this.teamModel
+      .find({ competitionId: query.competitionId })
+      .exec();
   }
 }

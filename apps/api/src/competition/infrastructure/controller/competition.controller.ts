@@ -30,7 +30,6 @@ import {
   CompetitionIdNotFoundError,
   CompetitionNameAlreadyTakenError,
 } from '../../domain/exception';
-import { CompetitionView } from '../read-model/schema/competition.schema';
 import { CompetitionService } from '../service/competition.service';
 
 @ApiBearerAuth()
@@ -88,7 +87,7 @@ export class CompetitionController {
   @Get(':id')
   @ApiResponse({ status: 200, description: 'Competition found' })
   @ApiResponse({ status: 404, description: 'Not found' })
-  async findOne(@Query('id') id: string): Promise<CompetitionView | null> {
+  async findOne(@Query('id') id: string): Promise<CompetitionDTO | null> {
     try {
       return await this.competitionService.getCompetition(id);
     } catch (error) {

@@ -1,10 +1,10 @@
 import { Provider } from '@nestjs/common';
 import { Connection } from 'mongoose';
-import { DATABASE_CONNECTION } from '../../common/database/database.provider';
 
+import { DATABASE_CONNECTION } from '../../common/database/database.provider';
 import { TEAMS } from '../domain/repository';
 import { TeamEventStore } from './eventstore/team.event-store';
-import { TeamSchema, TEAM_MODEL } from './read-model/schema/team.schema';
+import { TEAM_MODEL,TeamSchema } from './read-model/schema/team.schema';
 
 export const teamProviders: Provider[] = [
   {

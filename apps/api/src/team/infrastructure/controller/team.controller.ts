@@ -12,7 +12,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { TeamDTO, CreateTeamDTO } from '@opentour/contracts';
+import { CreateTeamDTO,TeamDTO } from '@opentour/contracts';
 import { Response } from 'express';
 
 import {

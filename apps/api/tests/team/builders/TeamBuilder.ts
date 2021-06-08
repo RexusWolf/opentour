@@ -1,7 +1,7 @@
-import faker = require('faker');
 import { CompetitionId } from '../../../src/competition/domain/model';
 import { Team, TeamId, TeamName } from '../../../src/team/domain/model';
 import { UserId } from '../../../src/user/domain';
+import faker = require('faker');
 
 export class TeamBuilder {
   private id: TeamId;

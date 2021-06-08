@@ -10,10 +10,6 @@ export class MatchJourney extends ValueObject<Props> {
       throw new Error('Match journey cannot be empty');
     }
 
-    if (!/^[a-zA-Z0-9ñÑ]+$/.test(name)) {
-      throw new Error('Invalid match journey characters');
-    }
-
     return new MatchJourney({ value: name });
   }
 

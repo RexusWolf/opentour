@@ -1,11 +1,12 @@
 import { Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { GetTeamByNameQuery } from '.';
-import {
-  TeamView,
-  TEAM_MODEL,
-} from '../../infrastructure/read-model/schema/team.schema';
 import { Model } from 'mongoose';
+
+import {
+  TEAM_MODEL,
+  TeamView,
+} from '../../infrastructure/read-model/schema/team.schema';
+import { GetTeamByNameQuery } from '.';
 
 @QueryHandler(GetTeamByNameQuery)
 export class GetTeamByNameHandler implements IQueryHandler<GetTeamByNameQuery> {

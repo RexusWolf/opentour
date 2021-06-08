@@ -1,5 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import faker = require('faker');
 
 import {
   UpdateTeamCommand,
@@ -7,6 +6,7 @@ import {
 } from '../../../src/team/application';
 import { TEAMS, Teams } from '../../../src/team/domain/repository';
 import { TeamBuilder } from '../builders/TeamBuilder';
+import faker = require('faker');
 
 describe.skip('Update team handler', () => {
   let command$: UpdateTeamHandler;

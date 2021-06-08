@@ -1,9 +1,10 @@
 import { Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Model } from 'mongoose';
+
 import {
-  TeamView,
   TEAM_MODEL,
+  TeamView,
 } from '../../infrastructure/read-model/schema/team.schema';
 import { GetTeamsQuery } from './get-teams.query';
 

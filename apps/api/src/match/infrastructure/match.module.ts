@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { EventSourcingModule } from 'event-sourcing-nestjs';
 
-import { AuthModule } from '../../auth/auth.module';
+import { DatabaseModule } from '../../common/database/database.module';
 import {
   CreateMatchHandler,
   DeleteMatchHandler,
@@ -12,10 +12,10 @@ import {
   UpdateMatchHandler,
 } from '../application';
 import { MatchController } from './controller/match.controller';
-import { MatchEntity } from './entity/match.entity';
+import { MatchEventStore } from './eventstore/matches.event-store';
 import { matchProviders } from './match.providers';
-import { MatchMapper } from './repository/match.mapper';
-import { MatchWasDeletedSaga } from './saga/match-was-deleted.saga';
+import { ProjectionHandlers } from './read-model/projection';
+import { MatchService } from './service/match.service';
 
 const CommandHandlers = [
   CreateMatchHandler,
@@ -27,17 +27,17 @@ const QueryHandlers = [
   GetMatchHandler,
   GetMatchesHandler,
 ];
-const Sagas = [MatchWasDeletedSaga];
 
 @Module({
   controllers: [MatchController],
-  imports: [AuthModule, CqrsModule, TypeOrmModule.forFeature([MatchEntity])],
+  imports: [DatabaseModule, CqrsModule, EventSourcingModule.forFeature()],
   providers: [
     ...matchProviders,
+    ...ProjectionHandlers,
     ...CommandHandlers,
     ...QueryHandlers,
-    ...Sagas,
-    MatchMapper,
+    MatchService,
+    MatchEventStore,
   ],
 })
 export class MatchModule {}

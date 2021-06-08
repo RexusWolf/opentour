@@ -2,18 +2,19 @@ import {
   BadRequestException,
   Body,
   ClassSerializerInterceptor,
+  ConflictException,
   Controller,
   Delete,
   Get,
   HttpCode,
   NotFoundException,
   Param,
+  Query,
   Post,
   Put,
   Res,
   UseInterceptors,
 } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -23,38 +24,34 @@ import {
 import { CreateMatchDTO, EditMatchDTO, MatchDTO } from '@opentour/contracts';
 import { Response } from 'express';
 
-import {
-  CreateMatchCommand,
-  DeleteMatchCommand,
-  GetMatchesQuery,
-  GetMatchQuery,
-  UpdateMatchCommand,
-} from '../../application';
+import { MatchIdAlreadyTakenError } from '../../domain/exception';
 import { MatchIdNotFoundError } from '../../domain/exception/match-id-not-found.error';
-import { MatchResult, TeamScore } from '../../domain/model';
+import { MatchView } from '../read-model/schema/match.schema';
+import { MatchService } from '../service/match.service';
 
 @ApiBearerAuth()
 @ApiTags('matches')
 @Controller('matches')
 @UseInterceptors(ClassSerializerInterceptor)
 export class MatchController {
-  constructor(private queryBus: QueryBus, private commandBus: CommandBus) {}
+  constructor(private readonly matchService: MatchService) {}
 
   @Post()
   @ApiResponse({ status: 200, description: 'Match created' })
   async create(@Body() createMatchDTO: CreateMatchDTO): Promise<MatchDTO> {
     try {
-      return await this.commandBus.execute(
-        new CreateMatchCommand({
-          id: createMatchDTO.id,
-          competitionId: createMatchDTO.competitionId,
-          index: createMatchDTO.index,
-          journey: createMatchDTO.journey,
-        })
-      );
-    } catch (e) {
-      if (e instanceof Error) {
-        throw new BadRequestException(e.message);
+      return await this.matchService.createMatch({
+        id: createMatchDTO.id,
+        competitionId: createMatchDTO.competitionId,
+        index: createMatchDTO.index,
+        journey: createMatchDTO.journey,
+      });
+    } catch (error) {
+      if (error instanceof MatchIdAlreadyTakenError) {
+        throw new ConflictException(error.message);
+      }
+      if (error instanceof Error) {
+        throw new BadRequestException(error.message);
       } else {
         throw new BadRequestException('Server error');
       }
@@ -65,9 +62,7 @@ export class MatchController {
   @ApiResponse({ status: 200, description: 'Matches found' })
   async findAll(@Res({ passthrough: true }) res: Response) {
     try {
-      const matches = await this.queryBus.execute<GetMatchesQuery, MatchDTO[]>(
-        new GetMatchesQuery()
-      );
+      const matches = await this.matchService.getMatches();
 
       res.setHeader('X-Total-Count', matches.length);
 
@@ -84,15 +79,9 @@ export class MatchController {
   @Get(':id')
   @ApiResponse({ status: 200, description: 'Match found' })
   @ApiResponse({ status: 404, description: 'Not found' })
-  async findOne(@Param('id') id: string): Promise<MatchDTO> {
+  async findOne(@Query('id') id: string): Promise<MatchView | null> {
     try {
-      const match = await this.queryBus.execute<GetMatchQuery, MatchDTO>(
-        new GetMatchQuery(id)
-      );
-
-      if (!match) throw new NotFoundException();
-
-      return match;
+      return await this.matchService.getMatch(id);
     } catch (e) {
       if (e instanceof MatchIdNotFoundError) {
         throw new NotFoundException('Match not found');
@@ -108,33 +97,15 @@ export class MatchController {
   @ApiOperation({ summary: 'Updated match' })
   @ApiResponse({ status: 200, description: 'Match updated' })
   @ApiResponse({ status: 404, description: 'Not found' })
-  async update(
-    @Param('id') id: string,
-    @Body() editMatchDTO: EditMatchDTO
-  ): Promise<MatchDTO> {
+  async update(@Query('id') id: string, @Body() editMatchDTO: EditMatchDTO) {
     try {
-      const match = await this.queryBus.execute<GetMatchQuery, MatchDTO>(
-        new GetMatchQuery(id)
-      );
-
-      if (!match) throw new NotFoundException();
-
-      return this.commandBus.execute(
-        new UpdateMatchCommand({
-          id,
-          localTeamId: editMatchDTO.localTeamId,
-          visitorTeamId: editMatchDTO.visitorTeamId,
-          date: editMatchDTO.date,
-          result: new MatchResult({
-            localTeamScore: TeamScore.fromNumber(
-              editMatchDTO.result.localTeamScore
-            ),
-            visitorTeamScore: TeamScore.fromNumber(
-              editMatchDTO.result.visitorTeamScore
-            ),
-          }),
-        })
-      );
+      return await this.matchService.updateMatch({
+        id,
+        localTeamId: editMatchDTO.localTeamId,
+        visitorTeamId: editMatchDTO.visitorTeamId,
+        date: editMatchDTO.date,
+        result: editMatchDTO.result,
+      });
     } catch (e) {
       if (e instanceof MatchIdNotFoundError) {
         throw new NotFoundException('Match not found');
@@ -151,9 +122,9 @@ export class MatchController {
   @ApiResponse({ status: 404, description: 'Not found' })
   @HttpCode(200)
   @Delete(':id')
-  async remove(@Param('id') id: string): Promise<MatchDTO> {
+  async remove(@Query('id') id: string): Promise<MatchDTO> {
     try {
-      return this.commandBus.execute(new DeleteMatchCommand(id));
+      return this.matchService.deleteMatch(id);
     } catch (e) {
       if (e instanceof MatchIdNotFoundError) {
         throw new NotFoundException('Match not found');

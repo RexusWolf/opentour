@@ -1,56 +1,53 @@
 import {
   BadRequestException,
   Body,
+  ConflictException,
   Controller,
   Delete,
   Get,
   HttpCode,
   NotFoundException,
-  Param,
   Post,
-  Put,
+  Query,
   Res,
 } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
-import { CreateTeamDTO, EditTeamDTO, TeamDTO } from '@opentour/contracts';
+import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { TeamDTO, CreateTeamDTO } from '@opentour/contracts';
 import { Response } from 'express';
 
 import {
-  CreateTeamCommand,
-  DeleteTeamCommand,
-  GetTeamQuery,
-  GetTeamsQuery,
-  UpdateTeamCommand,
-} from '../../application';
-import { TeamIdNotFoundError } from '../../domain/exception';
+  TeamIdAlreadyTakenError,
+  TeamIdNotFoundError,
+  TeamNameAlreadyTakenError,
+} from '../../domain/exception';
+import { TeamView } from '../read-model/schema/team.schema';
+import { TeamService } from '../service/team.service';
 
 @ApiBearerAuth()
-@ApiTags('teams')
 @Controller('teams')
 export class TeamController {
-  constructor(private queryBus: QueryBus, private commandBus: CommandBus) {}
+  constructor(private readonly teamService: TeamService) {}
 
-  @Post()
-  @ApiResponse({ status: 200, description: 'Team created' })
-  async create(@Body() createTeamDTO: CreateTeamDTO): Promise<TeamDTO> {
+  @ApiOperation({ summary: 'Create team' })
+  @ApiResponse({ status: 204, description: 'Create team' })
+  @Post('')
+  async create(@Body() createTeamDto: CreateTeamDTO): Promise<TeamDTO> {
     try {
-      return await this.commandBus.execute(
-        new CreateTeamCommand(
-          createTeamDTO.id,
-          createTeamDTO.competitionId,
-          createTeamDTO.name,
-          createTeamDTO.captainId
-        )
-      );
+      return await this.teamService.createTeam({
+        id: createTeamDto.id,
+        name: createTeamDto.name,
+        competitionId: createTeamDto.competitionId,
+        captainId: createTeamDto.captainId,
+      });
     } catch (error) {
+      if (error instanceof TeamIdAlreadyTakenError) {
+        throw new ConflictException(error.message);
+      }
+      if (error instanceof TeamNameAlreadyTakenError) {
+        throw new ConflictException(error.message);
+      }
       if (error instanceof Error) {
-        throw new BadRequestException(error.message);
+        throw new BadRequestException(`Unexpected error: ${error.message}`);
       } else {
         throw new BadRequestException('Server error');
       }
@@ -58,13 +55,11 @@ export class TeamController {
   }
 
   @Get()
-  @ApiResponse({ status: 200, description: 'Teams found' })
+  @ApiOperation({ summary: 'Get teams' })
+  @ApiResponse({ status: 200, description: 'Returns all teams' })
   async findAll(@Res({ passthrough: true }) res: Response) {
     try {
-      const teams = await this.queryBus.execute<GetTeamsQuery, TeamDTO[]>(
-        new GetTeamsQuery()
-      );
-
+      const teams = await this.teamService.getTeams();
       res.setHeader('X-Total-Count', teams.length);
       return teams;
     } catch (error) {
@@ -79,47 +74,12 @@ export class TeamController {
   @Get(':id')
   @ApiResponse({ status: 200, description: 'Team found' })
   @ApiResponse({ status: 404, description: 'Not found' })
-  async findOne(@Param('id') id: string): Promise<TeamDTO> {
+  async findOne(@Query('id') id: string): Promise<TeamView | null> {
     try {
-      const team = await this.queryBus.execute<GetTeamQuery, TeamDTO>(
-        new GetTeamQuery(id)
-      );
-
-      if (!team) throw new NotFoundException();
-
-      return team;
+      return await this.teamService.getTeam(id);
     } catch (error) {
       if (error instanceof TeamIdNotFoundError) {
-        throw new NotFoundException('Team not found');
-      } else if (error instanceof Error) {
-        throw new BadRequestException(error.message);
-      } else {
-        throw new BadRequestException('Server error');
-      }
-    }
-  }
-
-  @Put(':id')
-  @ApiOperation({ summary: 'Updated team' })
-  @ApiResponse({ status: 200, description: 'Team updated' })
-  @ApiResponse({ status: 404, description: 'Not found' })
-  async update(
-    @Param('id') id: string,
-    @Body() editTeamDTO: EditTeamDTO
-  ): Promise<EditTeamDTO> {
-    try {
-      const team = await this.queryBus.execute<GetTeamQuery, TeamDTO>(
-        new GetTeamQuery(id)
-      );
-
-      if (!team) throw new NotFoundException();
-
-      return this.commandBus.execute(
-        new UpdateTeamCommand(id, editTeamDTO.name, editTeamDTO.membersIds)
-      );
-    } catch (error) {
-      if (error instanceof TeamIdNotFoundError) {
-        throw new NotFoundException('Team not found');
+        throw new NotFoundException('Team with provided id not found');
       } else if (error instanceof Error) {
         throw new BadRequestException(error.message);
       } else {
@@ -133,9 +93,9 @@ export class TeamController {
   @ApiResponse({ status: 404, description: 'Not found' })
   @HttpCode(200)
   @Delete(':id')
-  async remove(@Param('id') id: string): Promise<TeamDTO> {
+  async remove(@Query('id') id: string): Promise<TeamDTO> {
     try {
-      return this.commandBus.execute(new DeleteTeamCommand(id));
+      return this.teamService.deleteTeam(id);
     } catch (error) {
       if (error instanceof TeamIdNotFoundError) {
         throw new NotFoundException('Team not found');

@@ -10,7 +10,7 @@ import { TeamId } from '../../../src/team/domain/model';
 import { MatchBuilder } from '../builders/MatchBuilder';
 import faker = require('faker');
 
-describe('Create match handler', () => {
+describe('Update match handler', () => {
   let command$: UpdateMatchHandler;
   const matches: Partial<Matches> = {};
 

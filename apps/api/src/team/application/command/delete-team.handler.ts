@@ -4,15 +4,11 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { TeamIdNotFoundError } from '../../domain/exception';
 import { TeamId } from '../../domain/model';
 import { TEAMS, Teams } from '../../domain/repository';
-import { TeamMapper } from '../../infrastructure/repository/team.mapper';
 import { DeleteTeamCommand } from './delete-team.command';
 
 @CommandHandler(DeleteTeamCommand)
 export class DeleteTeamHandler implements ICommandHandler<DeleteTeamCommand> {
-  constructor(
-    @Inject(TEAMS) private teams: Teams,
-    private teamMapper: TeamMapper
-  ) {}
+  constructor(@Inject(TEAMS) private teams: Teams) {}
 
   async execute(command: DeleteTeamCommand) {
     const teamId = TeamId.fromString(command.teamId);
@@ -25,7 +21,5 @@ export class DeleteTeamHandler implements ICommandHandler<DeleteTeamCommand> {
     team.delete();
 
     this.teams.save(team);
-
-    return this.teamMapper.aggregateToEntity(team);
   }
 }

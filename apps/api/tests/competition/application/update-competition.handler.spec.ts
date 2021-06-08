@@ -10,7 +10,7 @@ import {
 } from '../../../src/competition/domain/repository';
 import { CompetitionBuilder } from '../builders/CompetitionBuilder';
 
-describe('Create competition handler', () => {
+describe('Update competition handler', () => {
   let command$: UpdateCompetitionHandler;
   const competitions: Partial<Competitions> = {};
 

@@ -21,12 +21,13 @@ export class Team extends AggregateRoot {
     super();
   }
 
-  public static add(
-    id: TeamId,
-    competitionId: CompetitionId,
-    name: TeamName,
-    captain: UserId
-  ): Team {
+  public static create(params: {
+    id: TeamId;
+    competitionId: CompetitionId;
+    name: TeamName;
+    captainId: UserId;
+  }): Team {
+    const { id, competitionId, name, captainId } = params;
     const team = new Team();
 
     team.apply(
@@ -34,7 +35,7 @@ export class Team extends AggregateRoot {
         id.value,
         competitionId.value,
         name.value,
-        captain.value
+        captainId.value
       )
     );
 
@@ -91,5 +92,12 @@ export class Team extends AggregateRoot {
     }
 
     this.apply(new TeamWasDeleted(this.id.value));
+  }
+
+  private onTeamWasCreated(event: TeamWasCreated) {
+    this._id = TeamId.fromString(event.id);
+    this._competitionId = CompetitionId.fromString(event.competitionId);
+    this._name = TeamName.fromString(event.name);
+    this._captainId = UserId.fromString(event.captainId);
   }
 }

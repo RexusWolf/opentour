@@ -5,15 +5,11 @@ import { UserId } from '../../../user/domain';
 import { TeamIdNotFoundError } from '../../domain/exception';
 import { Team, TeamId } from '../../domain/model';
 import { TEAMS, Teams } from '../../domain/repository';
-import { TeamMapper } from '../../infrastructure/repository/team.mapper';
 import { UpdateTeamCommand } from './update-team.command';
 
 @CommandHandler(UpdateTeamCommand)
 export class UpdateTeamHandler implements ICommandHandler<UpdateTeamCommand> {
-  constructor(
-    @Inject(TEAMS) private teams: Teams,
-    private teamMapper: TeamMapper
-  ) {}
+  constructor(@Inject(TEAMS) private teams: Teams) {}
 
   async execute(command: UpdateTeamCommand) {
     const teamId = TeamId.fromString(command.teamId);
@@ -26,12 +22,10 @@ export class UpdateTeamHandler implements ICommandHandler<UpdateTeamCommand> {
     this.updateMembers(team, command);
 
     this.teams.save(team);
-
-    return this.teamMapper.aggregateToEntity(team);
   }
 
   private updateMembers(team: Team, command: UpdateTeamCommand) {
-    team.membersIds.map(
+    team.membersIds?.map(
       (memberId) =>
         !command.membersIds.includes(memberId.value) &&
         team.removeMember(memberId)

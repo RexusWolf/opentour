@@ -1,26 +1,18 @@
 import { Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { TeamDTO } from '@opentour/contracts';
+import { Model } from 'mongoose';
 
-import { TeamId } from '../../domain/model';
-import { TEAMS, Teams } from '../../domain/repository/teams';
-import { TeamMapper } from '../../infrastructure/repository/team.mapper';
+import {
+  TeamView,
+  TEAM_MODEL,
+} from '../../infrastructure/read-model/schema/team.schema';
 import { GetTeamQuery } from './get-team.query';
 
 @QueryHandler(GetTeamQuery)
 export class GetTeamHandler implements IQueryHandler<GetTeamQuery> {
-  constructor(
-    @Inject(TEAMS) private teams: Teams,
-    private teamMapper: TeamMapper
-  ) {}
+  constructor(@Inject(TEAM_MODEL) private teamModel: Model<TeamView>) {}
 
-  async execute(query: GetTeamQuery): Promise<TeamDTO | null> {
-    const team = await this.teams.find(TeamId.fromString(query.id));
-
-    if (!team) {
-      return null;
-    }
-
-    return this.teamMapper.aggregateToEntity(team);
+  async execute(query: GetTeamQuery): Promise<TeamView | null> {
+    return await this.teamModel.findOne({ id: query.id });
   }
 }

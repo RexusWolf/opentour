@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { EventSourcingModule } from 'event-sourcing-nestjs';
 
-import { AuthModule } from '../../auth/auth.module';
+import { DatabaseModule } from '../../common/database/database.module';
 import {
   CreateTeamHandler,
   DeleteTeamHandler,
@@ -13,9 +13,8 @@ import {
 } from '../application';
 import { GetTeamsByCompetitionIdHandler } from '../application/query/get-teams-by-competition-id.handler';
 import { TeamController } from './controller/team.controller';
-import { TeamEntity } from './entity/team.entity';
-import { TeamMapper } from './repository/team.mapper';
-import { TeamWasDeletedSaga } from './saga/team-was-deleted.saga';
+import { TeamEventStore } from './eventstore/team.event-store';
+import { TeamService } from './service/team.service';
 import { teamProviders } from './team.providers';
 
 const CommandHandlers = [
@@ -29,17 +28,16 @@ const QueryHandlers = [
   GetTeamHandler,
   GetTeamsHandler,
 ];
-const Sagas = [TeamWasDeletedSaga];
 
 @Module({
   controllers: [TeamController],
-  imports: [AuthModule, CqrsModule, TypeOrmModule.forFeature([TeamEntity])],
+  imports: [DatabaseModule, CqrsModule, EventSourcingModule.forFeature()],
   providers: [
     ...teamProviders,
     ...CommandHandlers,
     ...QueryHandlers,
-    ...Sagas,
-    TeamMapper,
+    TeamService,
+    TeamEventStore,
   ],
 })
 export class TeamModule {}

@@ -12,7 +12,12 @@ import {
   Query,
   Res,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import {
   CompetitionDTO,
   CreateCompetitionDTO,
@@ -29,6 +34,7 @@ import { CompetitionView } from '../read-model/schema/competition.schema';
 import { CompetitionService } from '../service/competition.service';
 
 @ApiBearerAuth()
+@ApiTags('competitions')
 @Controller('competitions')
 export class CompetitionController {
   constructor(private readonly competitionService: CompetitionService) {}

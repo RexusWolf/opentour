@@ -11,8 +11,13 @@ import {
   Query,
   Res,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { CreateTeamDTO,TeamDTO } from '@opentour/contracts';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { CreateTeamDTO, TeamDTO } from '@opentour/contracts';
 import { Response } from 'express';
 
 import {
@@ -24,6 +29,7 @@ import { TeamView } from '../read-model/schema/team.schema';
 import { TeamService } from '../service/team.service';
 
 @ApiBearerAuth()
+@ApiTags('teams')
 @Controller('teams')
 export class TeamController {
   constructor(private readonly teamService: TeamService) {}

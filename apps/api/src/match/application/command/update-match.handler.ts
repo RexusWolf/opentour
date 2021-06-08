@@ -5,22 +5,18 @@ import { TeamId } from '../../../team/domain/model';
 import { MatchIdNotFoundError } from '../../domain/exception/match-id-not-found.error';
 import { MatchId } from '../../domain/model';
 import { MATCHES, Matches } from '../../domain/repository';
-import { MatchMapper } from '../../infrastructure/repository/match.mapper';
 import { UpdateMatchCommand } from './update-match.command';
 
 @CommandHandler(UpdateMatchCommand)
 export class UpdateMatchHandler implements ICommandHandler<UpdateMatchCommand> {
-  constructor(
-    @Inject(MATCHES) private matches: Matches,
-    private matchMapper: MatchMapper
-  ) {}
+  constructor(@Inject(MATCHES) private matches: Matches) {}
 
   async execute(command: UpdateMatchCommand) {
-    const matchId = MatchId.fromString(command.matchId);
+    const id = MatchId.fromString(command.id);
 
-    const match = await this.matches.find(matchId);
+    const match = await this.matches.find(id);
     if (!match) {
-      throw MatchIdNotFoundError.with(matchId);
+      throw MatchIdNotFoundError.with(id);
     }
 
     match.isFinished()
@@ -37,7 +33,5 @@ export class UpdateMatchHandler implements ICommandHandler<UpdateMatchCommand> {
       : match.schedule(command.date);
 
     this.matches.save(match);
-
-    return this.matchMapper.aggregateToEntity(match);
   }
 }

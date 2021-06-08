@@ -4,19 +4,16 @@ import {
   DeleteCompetitionCommand,
   DeleteCompetitionHandler,
 } from '../../../src/competition/application';
-import { CompetitionId } from '../../../src/competition/domain/model';
 import {
   COMPETITIONS,
   Competitions,
 } from '../../../src/competition/domain/repository';
 import { CompetitionBuilder } from '../builders/CompetitionBuilder';
-import faker = require('faker');
 
 describe('Delete competition handler', () => {
   let command$: DeleteCompetitionHandler;
   const competitions: Partial<Competitions> = {};
-  const competitionId = CompetitionId.fromString(faker.datatype.uuid());
-  const competition = new CompetitionBuilder().withId(competitionId).build();
+  const competition = new CompetitionBuilder().build();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -34,12 +31,20 @@ describe('Delete competition handler', () => {
     competitions.save = jest.fn();
   });
 
-  it('should delete a competition with the provided command', async () => {
+  it('should delete a competition with the provided id', async () => {
     competitions.find = jest.fn().mockResolvedValue(competition);
 
-    await command$.execute(new DeleteCompetitionCommand(competitionId.value));
+    await command$.execute(new DeleteCompetitionCommand(competition.id.value));
 
     expect(competitions.save).toHaveBeenCalledTimes(1);
     expect(competitions.save).toHaveBeenCalledWith(competition);
+  });
+
+  it('should not delete a competition if there is no competition with the provided id', async () => {
+    await expect(() =>
+      command$.execute(new DeleteCompetitionCommand(competition.id.value))
+    ).rejects.toThrow();
+
+    expect(competitions.save).not.toHaveBeenCalled();
   });
 });

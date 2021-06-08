@@ -7,7 +7,6 @@ import {
   Get,
   HttpCode,
   NotFoundException,
-  Param,
   Post,
   Put,
   Query,

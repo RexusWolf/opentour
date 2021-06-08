@@ -1,6 +1,5 @@
 import { Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { CompetitionDTO } from '@opentour/contracts';
 import { Model } from 'mongoose';
 
 import {

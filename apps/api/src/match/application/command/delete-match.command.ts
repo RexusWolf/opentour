@@ -1,5 +1,9 @@
 import { ICommand } from '@nestjs/cqrs';
 
 export class DeleteMatchCommand implements ICommand {
-  constructor(public readonly matchId: string) {}
+  readonly matchId: string;
+
+  constructor(matchId: string) {
+    this.matchId = matchId;
+  }
 }

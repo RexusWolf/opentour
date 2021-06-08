@@ -101,10 +101,10 @@ export class Competition extends AggregateRoot {
   }
 
   private onCompetitionWasCreated(event: CompetitionWasCreated) {
-    (this._id = CompetitionId.fromString(event.id)),
-      (this._name = CompetitionName.fromString(event.name)),
-      (this._type = CompetitionType.fromString(event.type)),
-      (this._sportId = SportId.fromString(event.sportId)),
-      (this._moderatorIds = [UserId.fromString(event.moderatorId)]);
+    this._id = CompetitionId.fromString(event.id);
+    this._name = CompetitionName.fromString(event.name);
+    this._type = CompetitionType.fromString(event.type);
+    this._sportId = SportId.fromString(event.sportId);
+    this._moderatorIds = [UserId.fromString(event.moderatorId)];
   }
 }

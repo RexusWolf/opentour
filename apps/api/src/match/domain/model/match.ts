@@ -30,12 +30,14 @@ export class Match extends AggregateRoot {
     super();
   }
 
-  public static add(
-    id: MatchId,
-    competitionId: CompetitionId,
-    index: MatchIndex,
-    journey: MatchJourney
-  ): Match {
+  public static create(params: {
+    id: MatchId;
+    competitionId: CompetitionId;
+    index: MatchIndex;
+    journey: MatchJourney;
+  }): Match {
+    const { id, competitionId, index, journey } = params;
+
     const match = new Match();
 
     match.apply(
@@ -146,5 +148,12 @@ export class Match extends AggregateRoot {
     }
 
     this.apply(new MatchWasDeleted(this.id.value));
+  }
+
+  private onMatchWasCreated(event: MatchWasCreated) {
+    this._id = MatchId.fromString(event.id);
+    this._competitionId = CompetitionId.fromString(event.competitionId);
+    this._index = MatchIndex.fromNumber(event.index);
+    this._journey = MatchJourney.fromString(event.journey);
   }
 }

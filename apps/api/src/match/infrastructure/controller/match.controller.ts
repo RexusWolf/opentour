@@ -45,12 +45,12 @@ export class MatchController {
   async create(@Body() createMatchDTO: CreateMatchDTO): Promise<MatchDTO> {
     try {
       return await this.commandBus.execute(
-        new CreateMatchCommand(
-          createMatchDTO.id,
-          createMatchDTO.competitionId,
-          createMatchDTO.index,
-          createMatchDTO.journey
-        )
+        new CreateMatchCommand({
+          id: createMatchDTO.id,
+          competitionId: createMatchDTO.competitionId,
+          index: createMatchDTO.index,
+          journey: createMatchDTO.journey,
+        })
       );
     } catch (e) {
       if (e instanceof Error) {
@@ -120,20 +120,20 @@ export class MatchController {
       if (!match) throw new NotFoundException();
 
       return this.commandBus.execute(
-        new UpdateMatchCommand(
+        new UpdateMatchCommand({
           id,
-          editMatchDTO.localTeamId,
-          editMatchDTO.visitorTeamId,
-          editMatchDTO.date,
-          new MatchResult({
+          localTeamId: editMatchDTO.localTeamId,
+          visitorTeamId: editMatchDTO.visitorTeamId,
+          date: editMatchDTO.date,
+          result: new MatchResult({
             localTeamScore: TeamScore.fromNumber(
               editMatchDTO.result.localTeamScore
             ),
             visitorTeamScore: TeamScore.fromNumber(
               editMatchDTO.result.visitorTeamScore
             ),
-          })
-        )
+          }),
+        })
       );
     } catch (e) {
       if (e instanceof MatchIdNotFoundError) {

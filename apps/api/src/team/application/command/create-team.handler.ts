@@ -25,10 +25,6 @@ export class CreateTeamHandler implements ICommandHandler<CreateTeamCommand> {
       throw TeamIdAlreadyTakenError.with(id);
     }
 
-    if (await this.teams.findOneByName(name)) {
-      throw TeamNameAlreadyTakenError.with(name);
-    }
-
     const team = Team.create({ id, competitionId, name, captainId });
 
     this.teams.save(team);

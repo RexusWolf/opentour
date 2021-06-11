@@ -1,10 +1,10 @@
 import { Button, Dialog, Grid, TextField, Typography } from '@material-ui/core';
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
+import { CreateCompetitionDTO } from '@opentour/contracts';
 import axios from 'axios';
 import React from 'react';
 import { v4 as uuid } from 'uuid';
 
-import { CreateCompetitionDTO } from '../../../../../contracts/src';
 import { useStyles } from '../../theme';
 
 export type Props = {

@@ -4,19 +4,27 @@ import TableRow from '@material-ui/core/TableRow';
 import SportsBasketballIcon from '@material-ui/icons/SportsBasketball';
 import SportsSoccerIcon from '@material-ui/icons/SportsSoccer';
 import SportsVolleyballIcon from '@material-ui/icons/SportsVolleyball';
+import { CompetitionDTO } from '@opentour/contracts';
 import React from 'react';
 
-import { CompetitionDTO } from '../../../../../contracts/src';
 import { useStyles } from '../../theme';
 
 export type Props = {
   competition: CompetitionDTO;
 };
 
+const getSportIconByName = (sportName: string) => {
+  if (sportName === 'Fútbol') return <SportsSoccerIcon />;
+  if (sportName === 'Baloncesto') return <SportsBasketballIcon />;
+  if (sportName === 'Voleibol') return <SportsVolleyballIcon />;
+};
+
 export const CompetitionRow: React.FunctionComponent<Props> = (props) => {
   const classes = useStyles();
 
   const { id, name, type, sportName, moderatorIds } = props.competition;
+
+  const competitionRoute = '/competition/' + id;
 
   return (
     <TableRow key={name}>
@@ -25,9 +33,7 @@ export const CompetitionRow: React.FunctionComponent<Props> = (props) => {
       </TableCell>
       <TableCell width="20%" align="center">
         <Grid item container justify="center" alignItems="center">
-          {sportName === 'Fútbol' && <SportsSoccerIcon />}
-          {sportName === 'Baloncesto' && <SportsBasketballIcon />}
-          {sportName === 'Voleibol' && <SportsVolleyballIcon />}
+          {getSportIconByName(sportName)}
           <Typography className={classes.containerItem}>{sportName}</Typography>
         </Grid>
       </TableCell>
@@ -35,13 +41,7 @@ export const CompetitionRow: React.FunctionComponent<Props> = (props) => {
         {type}
       </TableCell>
       <TableCell width="20%" align="center">
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            window.location.href = '/competition/competition?id=' + id;
-          }}
-        >
+        <Button variant="contained" color="primary" href={competitionRoute}>
           View
         </Button>
       </TableCell>

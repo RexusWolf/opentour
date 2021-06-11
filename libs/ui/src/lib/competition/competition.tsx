@@ -1,5 +1,5 @@
 import { Box, Button, Grid, Tab, Tabs } from '@material-ui/core';
-import { useCompetition } from '@opentour/hooks';
+import { CompetitionDTO } from '@opentour/contracts';
 import React from 'react';
 
 import { useStyles } from '../theme';
@@ -33,9 +33,16 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-export const Competition: React.FunctionComponent = () => {
+export type Props = {
+  competition: CompetitionDTO;
+};
+
+export const Competition: React.FunctionComponent<Props> = ({
+  competition,
+}) => {
   const classes = useStyles();
 
+  const { name, type } = competition;
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -61,6 +68,11 @@ export const Competition: React.FunctionComponent = () => {
       direction="column"
       className={[classes.competitionContainer, classes.container].join(' ')}
     >
+      <Grid item container justify="center">
+        <h1>
+          {type} - {name}
+        </h1>
+      </Grid>
       <Tabs indicatorColor="primary" value={tabIndex} onChange={handleChange}>
         <Tab label="Teams" />
         <Tab label="Calendar" />

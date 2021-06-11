@@ -4,20 +4,28 @@ import React from 'react';
 import { competitions } from '../../shared/competitions';
 import { CompetitionRow } from './competitionRow';
 
+const defaultCompetition = {
+  id: 'testId',
+  sportName: 'Baloncesto',
+  type: 'Torneo',
+  name: 'Trofeo Rector',
+  moderatorIds: ['testId'],
+};
+
 describe('CompetitionRow', () => {
   it('should render successfully', () => {
     const { baseElement } = render(
-      <CompetitionRow competition={competitions[0]} />
+      <CompetitionRow competition={defaultCompetition} />
     );
     expect(baseElement).toBeTruthy();
   });
 
   it('should render a row with the competition information', () => {
     const { getByText } = render(
-      <CompetitionRow competition={competitions[0]} />
+      <CompetitionRow competition={defaultCompetition} />
     );
-    getByText(competitions[0].name);
-    getByText(competitions[0].sport);
-    getByText(competitions[0].numberOfTeams);
+    getByText(defaultCompetition.name);
+    getByText(defaultCompetition.sportName);
+    getByText(defaultCompetition.type);
   });
 });

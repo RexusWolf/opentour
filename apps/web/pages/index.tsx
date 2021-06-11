@@ -10,13 +10,7 @@ export default function Index() {
 
   return (
     <Layout session={session!}>
-      <Container maxWidth="sm">
-        <Box my={4}>
-          <Typography variant="h4" component="h1" gutterBottom>
-            <Homepage />
-          </Typography>
-        </Box>
-      </Container>
+      <Homepage />
     </Layout>
   );
 }

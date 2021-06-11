@@ -4,20 +4,20 @@ export class CreateCompetitionCommand implements ICommand {
   readonly id: string;
   readonly name: string;
   readonly type: string;
-  readonly sportId: string;
+  readonly sportName: string;
   readonly moderatorId: string;
 
   constructor(params: {
     id: string;
     name: string;
     type: string;
-    sportId: string;
+    sportName: string;
     moderatorId: string;
   }) {
     this.id = params.id;
     this.name = params.name;
     this.type = params.type;
-    this.sportId = params.sportId;
+    this.sportName = params.sportName;
     this.moderatorId = params.moderatorId;
   }
 }

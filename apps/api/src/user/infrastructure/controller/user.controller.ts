@@ -7,9 +7,9 @@ import {
   Get,
   HttpCode,
   NotFoundException,
-  Param,
   Post,
   Put,
+  Query,
   Res,
   UseInterceptors,
 } from '@nestjs/common';
@@ -96,7 +96,7 @@ export class UserController {
   @Roles(Role.Admin)
   @ApiResponse({ status: 200, description: 'User found' })
   @ApiResponse({ status: 404, description: 'Not found' })
-  async findOne(@Param('id') id: string): Promise<UserDTO> {
+  async findOne(@Query('id') id: string): Promise<UserDTO> {
     try {
       const user = await this.queryBus.execute<GetUserQuery, UserDTO>(
         new GetUserQuery(id)
@@ -122,7 +122,7 @@ export class UserController {
   @ApiResponse({ status: 200, description: 'User updated' })
   @ApiResponse({ status: 404, description: 'Not found' })
   async update(
-    @Param('id') id: string,
+    @Query('id') id: string,
     @Body() editUserDTO: EditUserDTO
   ): Promise<UserDTO> {
     try {
@@ -157,7 +157,7 @@ export class UserController {
   @HttpCode(200)
   @Delete(':id')
   @Roles(Role.Admin)
-  async remove(@Param('id') id: string): Promise<UserDTO> {
+  async remove(@Query('id') id: string): Promise<UserDTO> {
     try {
       return this.commandBus.execute(new DeleteUserCommand(id));
     } catch (e) {

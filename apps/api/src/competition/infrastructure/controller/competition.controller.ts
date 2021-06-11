@@ -7,6 +7,7 @@ import {
   Get,
   HttpCode,
   NotFoundException,
+  Param,
   Post,
   Put,
   Query,
@@ -40,7 +41,7 @@ export class CompetitionController {
 
   @ApiOperation({ summary: 'Create competition' })
   @ApiResponse({ status: 204, description: 'Create competition' })
-  @Post('')
+  @Post()
   async create(
     @Body() createCompetitionDto: CreateCompetitionDTO
   ): Promise<CompetitionDTO> {
@@ -49,7 +50,7 @@ export class CompetitionController {
         id: createCompetitionDto.id,
         name: createCompetitionDto.name,
         type: createCompetitionDto.type,
-        sportId: createCompetitionDto.sportId,
+        sportName: createCompetitionDto.sportName,
         moderatorId: createCompetitionDto.moderatorId,
       });
     } catch (error) {
@@ -70,7 +71,7 @@ export class CompetitionController {
   @Get()
   @ApiOperation({ summary: 'Get competitions' })
   @ApiResponse({ status: 200, description: 'Returns all competitions' })
-  async findAll(@Res({ passthrough: true }) res: Response) {
+  async getCompetitions(@Res({ passthrough: true }) res: Response) {
     try {
       const competitions = await this.competitionService.getCompetitions();
       res.setHeader('X-Total-Count', competitions.length);
@@ -85,9 +86,12 @@ export class CompetitionController {
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Get competition by ID' })
   @ApiResponse({ status: 200, description: 'Competition found' })
   @ApiResponse({ status: 404, description: 'Not found' })
-  async findOne(@Query('id') id: string): Promise<CompetitionDTO | null> {
+  async getCompetition(
+    @Query('id') id: string
+  ): Promise<CompetitionDTO | null> {
     try {
       return await this.competitionService.getCompetition(id);
     } catch (error) {
@@ -106,7 +110,7 @@ export class CompetitionController {
   @ApiResponse({ status: 204, description: 'Competition updated' })
   @ApiResponse({ status: 404, description: 'Not found' })
   async update(
-    @Query('id') id: string,
+    @Param('id') id: string,
     @Body() editCompetitionDTO: EditCompetitionDTO
   ) {
     try {

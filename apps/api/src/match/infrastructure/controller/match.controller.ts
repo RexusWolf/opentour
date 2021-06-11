@@ -59,7 +59,7 @@ export class MatchController {
 
   @Get()
   @ApiResponse({ status: 200, description: 'Matches found' })
-  async findAll(@Res({ passthrough: true }) res: Response) {
+  async getMatches(@Res({ passthrough: true }) res: Response) {
     try {
       const matches = await this.matchService.getMatches();
 
@@ -78,7 +78,7 @@ export class MatchController {
   @Get(':id')
   @ApiResponse({ status: 200, description: 'Match found' })
   @ApiResponse({ status: 404, description: 'Not found' })
-  async findOne(@Query('id') id: string): Promise<MatchDTO | null> {
+  async getMatch(@Query('id') id: string): Promise<MatchDTO | null> {
     try {
       return await this.matchService.getMatch(id);
     } catch (e) {
@@ -96,7 +96,7 @@ export class MatchController {
   @ApiOperation({ summary: 'Updated match' })
   @ApiResponse({ status: 200, description: 'Match updated' })
   @ApiResponse({ status: 404, description: 'Not found' })
-  async update(@Query('id') id: string, @Body() editMatchDTO: EditMatchDTO) {
+  async update(@Param('id') id: string, @Body() editMatchDTO: EditMatchDTO) {
     try {
       return await this.matchService.updateMatch({
         id,

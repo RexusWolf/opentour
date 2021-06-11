@@ -1,10 +1,11 @@
 import { Inject } from '@nestjs/common';
-import { IViewUpdater } from 'event-sourcing-nestjs';
+import { IViewUpdater, ViewUpdaterHandler } from 'event-sourcing-nestjs';
 import { Model } from 'mongoose';
 
 import { MatchWasCreated } from '../../../domain/event';
 import { MatchView } from '../schema/match.schema';
 
+@ViewUpdaterHandler(MatchWasCreated)
 export class MatchWasCreatedProjection
   implements IViewUpdater<MatchWasCreated> {
   constructor(

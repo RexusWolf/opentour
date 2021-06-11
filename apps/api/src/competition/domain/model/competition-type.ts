@@ -1,7 +1,14 @@
 import { ValueObject } from '@opentour/domain';
 
+import { InvalidCompetitionTypeError } from '../exception/invalid-competition-type-error';
+
 interface Props {
   value: string;
+}
+
+export enum COMPETITION_TYPES {
+  TORNEO = 'TORNEO',
+  LIGA = 'LIGA',
 }
 
 export class CompetitionType extends ValueObject<Props> {
@@ -10,9 +17,15 @@ export class CompetitionType extends ValueObject<Props> {
       throw new Error('Competition type cannot be empty');
     }
 
-    type = type.toUpperCase();
+    const typeIndex = Object.keys(COMPETITION_TYPES).indexOf(type);
 
-    return new CompetitionType({ value: type });
+    if (typeIndex === -1) {
+      throw new InvalidCompetitionTypeError();
+    }
+
+    const competitionTypeValues = Object.values(COMPETITION_TYPES);
+
+    return new CompetitionType({ value: competitionTypeValues[typeIndex] });
   }
 
   get value(): string {

@@ -11,6 +11,7 @@ import {
   UpdateCompetitionCommand,
 } from '../../application';
 import { CompetitionMapper } from '../eventstore/competition.mapper';
+import { CompetitionView } from '../read-model/schema/competition.schema';
 
 @Injectable()
 export class CompetitionService {
@@ -23,13 +24,13 @@ export class CompetitionService {
   async createCompetition(params: {
     id: string;
     name: string;
-    sportId: string;
+    sportName: string;
     type: string;
     moderatorId: string;
   }) {
-    const { id, name, sportId, type, moderatorId } = params;
+    const { id, name, sportName, type, moderatorId } = params;
     return this.commandBus.execute(
-      new CreateCompetitionCommand({ id, name, sportId, type, moderatorId })
+      new CreateCompetitionCommand({ id, name, sportName, type, moderatorId })
     );
   }
 
@@ -49,23 +50,26 @@ export class CompetitionService {
   }
 
   async getCompetition(id: string): Promise<CompetitionDTO | null> {
-    const competition = await this.queryBus.execute(
-      new GetCompetitionQuery(id)
-    );
+    const competition = await this.queryBus.execute<
+      GetCompetitionQuery,
+      CompetitionView
+    >(new GetCompetitionQuery(id));
     return this.competitionMapper.viewToDto(competition);
   }
 
   async getCompetitions(): Promise<CompetitionDTO[]> {
-    const competitions = await this.queryBus.execute(
-      new GetCompetitionsQuery()
-    );
+    const competitions = await this.queryBus.execute<
+      GetCompetitionsQuery,
+      CompetitionView[]
+    >(new GetCompetitionsQuery());
     return competitions.map(this.competitionMapper.viewToDto);
   }
 
   async getCompetitionByName(name: string): Promise<CompetitionDTO | null> {
-    const competition = await this.queryBus.execute(
-      new GetCompetitionByNameQuery(name)
-    );
+    const competition = await this.queryBus.execute<
+      GetCompetitionByNameQuery,
+      CompetitionView
+    >(new GetCompetitionByNameQuery(name));
     return this.competitionMapper.viewToDto(competition);
   }
 }

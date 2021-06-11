@@ -18,6 +18,6 @@ describe('CompetitionsList', () => {
     );
     getByText('Name');
     getByText('Sport');
-    getByText('Number of Teams');
+    getByText('Type');
   });
 });

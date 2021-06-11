@@ -16,10 +16,6 @@ export class GetCompetitionHandler
   ) {}
 
   async execute(query: GetCompetitionQuery): Promise<CompetitionView | null> {
-    return this.competitionModel
-      .findOne({
-        id: query.id,
-      })
-      .exec();
+    return this.competitionModel.findById(query.id).exec();
   }
 }

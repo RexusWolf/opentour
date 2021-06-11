@@ -1,10 +1,11 @@
 import { Inject } from '@nestjs/common';
-import { IViewUpdater } from 'event-sourcing-nestjs';
+import { IViewUpdater, ViewUpdaterHandler } from 'event-sourcing-nestjs';
 import { Model } from 'mongoose';
 
 import { CompetitionWasDeleted } from '../../../domain/event';
 import { CompetitionView } from '../schema/competition.schema';
 
+@ViewUpdaterHandler(CompetitionWasDeleted)
 export class CompetitionWasDeletedProjection
   implements IViewUpdater<CompetitionWasDeleted> {
   constructor(
@@ -13,10 +14,8 @@ export class CompetitionWasDeletedProjection
   ) {}
 
   async handle(event: CompetitionWasDeleted) {
-    const competitionView = new this.competitionModel({
-      _id: event.id,
-    });
-
-    await competitionView.save();
+    await this.competitionModel
+      .updateOne({ _id: event.id }, { $set: { deleted: new Date() } })
+      .exec();
   }
 }

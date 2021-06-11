@@ -10,9 +10,11 @@ import { GetTeamsQuery } from './get-teams.query';
 
 @QueryHandler(GetTeamsQuery)
 export class GetTeamsHandler implements IQueryHandler<GetTeamsQuery> {
-  constructor(@Inject(TEAM_MODEL) private teamModel: Model<TeamView>) {}
+  constructor(
+    @Inject(TEAM_MODEL) private readonly teamModel: Model<TeamView>
+  ) {}
 
-  async execute(query: GetTeamsQuery): Promise<TeamView[] | null> {
+  async execute(query: GetTeamsQuery): Promise<TeamView[]> {
     return await this.teamModel.find().exec();
   }
 }

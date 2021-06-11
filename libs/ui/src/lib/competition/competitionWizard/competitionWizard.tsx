@@ -1,7 +1,10 @@
 import { Button, Dialog, Grid, TextField, Typography } from '@material-ui/core';
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
+import axios from 'axios';
 import React from 'react';
+import { v4 as uuid } from 'uuid';
 
+import { CreateCompetitionDTO } from '../../../../../contracts/src';
 import { useStyles } from '../../theme';
 
 export type Props = {
@@ -9,15 +12,46 @@ export type Props = {
   onClose: () => void;
 };
 
+export async function createCompetition(competition: CreateCompetitionDTO) {
+  return await axios({
+    method: 'POST',
+    url: 'http://localhost:3333/api/competitions',
+    headers: {
+      'content-type': 'application/json',
+    },
+    data: competition,
+  });
+}
+
 export const CompetitionWizard: React.FunctionComponent<Props> = (props) => {
   const classes = useStyles();
+  const [sport, setSport] = React.useState<string>('');
+  const [type, setType] = React.useState<string>('');
+
+  const currentUserId = uuid();
+
+  const initialValues: CreateCompetitionDTO = {
+    id: currentUserId,
+    name: '',
+    sportName: sport,
+    moderatorId: currentUserId,
+    type,
+  };
+
+  const [competitionValues, setCompetitionValues] = React.useState(
+    initialValues
+  );
 
   const { open, onClose } = props;
 
-  const [sport, setSport] = React.useState<string | null>('');
-  const [competition, setCompetition] = React.useState<string | null>('');
-
-  const handleCreateCompetition = () => {
+  const handleChange = (property, value) => {
+    setCompetitionValues({
+      ...competitionValues,
+      [property]: value,
+    });
+  };
+  const handleCreateCompetition = async () => {
+    await createCompetition(competitionValues);
     onClose();
   };
 
@@ -25,86 +59,90 @@ export const CompetitionWizard: React.FunctionComponent<Props> = (props) => {
     onClose();
   };
 
-  const handleSport = (newSport: string) => {
-    setSport(newSport);
-  };
-
-  const handleCompetition = (newCompetition: string) => {
-    setCompetition(newCompetition);
-  };
-
   return (
     <Dialog onClose={handleClose} open={open}>
-      <Grid container className={classes.container}>
-        <Typography className={classes.containerItem} color="textSecondary">
-          Competition name
-        </Typography>
-        <Grid container item className={classes.containerItem}>
-          <TextField
-            fullWidth
-            id="standard-size-small"
-            placeholder="XV Edición Trofeo Rector - Baloncesto"
-            size="small"
-          />
-        </Grid>
-        <Typography className={classes.containerItem} color="textSecondary">
-          Select type of competition:
-        </Typography>
-        <Grid
-          item
-          container
-          justify="space-around"
-          className={classes.containerItem}
-        >
-          <ToggleButtonGroup
-            value={competition}
-            exclusive
-            onChange={(event, competition) => handleCompetition(competition)}
-          >
-            <ToggleButton disabled={true} value="tournament">
-              Tournament
-            </ToggleButton>
-            <ToggleButton value="freeForAll">Free For All</ToggleButton>
-          </ToggleButtonGroup>
-        </Grid>
-        <Typography className={classes.containerItem} color="textSecondary">
-          Select sport:
-        </Typography>
-        <Grid
-          item
-          container
-          justify="space-around"
-          className={classes.containerItem}
-        >
-          <ToggleButtonGroup
-            value={sport}
-            exclusive
-            onChange={(event, sport) => handleSport(sport)}
-          >
-            <ToggleButton value="basketball">Basketball</ToggleButton>
-            <ToggleButton value="football">Football</ToggleButton>
-            <ToggleButton value="voleyball">Voleyball</ToggleButton>
-          </ToggleButtonGroup>
-        </Grid>
-        <Grid container justify="flex-end" className={classes.container}>
-          <Button
+      <form>
+        <Grid container className={classes.container}>
+          <Typography className={classes.containerItem} color="textSecondary">
+            Competition name
+          </Typography>
+          <Grid container item className={classes.containerItem}>
+            <TextField
+              fullWidth
+              name="name"
+              id="standard-size-small"
+              placeholder="XV Edición Trofeo Rector - Baloncesto"
+              size="small"
+              onChange={(event) => {
+                handleChange('name', event.target.value);
+              }}
+            />
+          </Grid>
+          <Typography className={classes.containerItem} color="textSecondary">
+            Select type of competition:
+          </Typography>
+          <Grid
+            item
+            container
+            justify="space-around"
             className={classes.containerItem}
-            color="secondary"
-            variant="contained"
-            onClick={handleClose}
           >
-            Cancel
-          </Button>
-          <Button
+            <ToggleButtonGroup
+              value={type}
+              exclusive
+              onChange={(event, type) => {
+                setType(type);
+                handleChange('type', type);
+              }}
+            >
+              <ToggleButton disabled={true} value="TORNEO">
+                Torneo
+              </ToggleButton>
+              <ToggleButton value="LIGA">Liga</ToggleButton>
+            </ToggleButtonGroup>
+          </Grid>
+          <Typography className={classes.containerItem} color="textSecondary">
+            Select sport:
+          </Typography>
+          <Grid
+            item
+            container
+            justify="space-around"
             className={classes.containerItem}
-            color="primary"
-            variant="contained"
-            onClick={handleCreateCompetition}
           >
-            Create competition
-          </Button>
+            <ToggleButtonGroup
+              value={sport}
+              exclusive
+              onChange={(event, sport) => {
+                setSport(sport);
+                handleChange('sportName', sport);
+              }}
+            >
+              <ToggleButton value="Baloncesto">Baloncesto</ToggleButton>
+              <ToggleButton value="Fútbol">Fútbol</ToggleButton>
+              <ToggleButton value="Voleibol">Voleibol</ToggleButton>
+            </ToggleButtonGroup>
+          </Grid>
+          <Grid container justify="flex-end" className={classes.container}>
+            <Button
+              className={classes.containerItem}
+              color="secondary"
+              variant="contained"
+              onClick={handleClose}
+            >
+              Cancel
+            </Button>
+            <Button
+              className={classes.containerItem}
+              color="primary"
+              variant="contained"
+              onClick={async () => await handleCreateCompetition()}
+            >
+              Create competition
+            </Button>
+          </Grid>
         </Grid>
-      </Grid>
+      </form>
     </Dialog>
   );
 };

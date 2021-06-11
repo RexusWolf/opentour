@@ -1,20 +1,22 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 
-import { SportId } from '../../../sport/domain/model/sport-id';
+import { SportName } from '../../../sport/domain/model/sport-name';
 import { UserId } from '../../../user/domain';
+import { UpdateCompetitionCommand } from '../../application';
 import { CompetitionModeratorWasRemoved } from '../event/competition-moderator-was-removed.event';
 import { CompetitionWasCreated } from '../event/competition-was-created.event';
 import { CompetitionWasDeleted } from '../event/competition-was-deleted.event';
+import { CompetitionWasUpdated } from '../event/competition-was-updated.event';
 import { ModeratorWasAddedToCompetition } from '../event/moderator-was-added-to-competition.event';
 import { CompetitionId } from './competition-id';
 import { CompetitionName } from './competition-name';
-import { CompetitionType } from './competition-type';
+import { COMPETITION_TYPES,CompetitionType } from './competition-type';
 
 export class Competition extends AggregateRoot {
   private _id: CompetitionId;
   private _name: CompetitionName;
   private _type: CompetitionType;
-  private _sportId: SportId;
+  private _sportName: SportName;
   private _moderatorIds: UserId[];
   private _hasStarted: boolean;
   private _deleted?: Date;
@@ -27,17 +29,17 @@ export class Competition extends AggregateRoot {
     id: CompetitionId;
     name: CompetitionName;
     type: CompetitionType;
-    sportId: SportId;
+    sportName: SportName;
     moderatorId: UserId;
   }): Competition {
-    const { id, name, type, sportId, moderatorId } = params;
+    const { id, name, type, sportName, moderatorId } = params;
     const competition = new Competition();
 
     const event = new CompetitionWasCreated(
       id.value,
       name.value,
       type.value,
-      sportId.value,
+      sportName.value,
       moderatorId.value
     );
     competition.apply(event);
@@ -53,12 +55,16 @@ export class Competition extends AggregateRoot {
     return this._name;
   }
 
+  set name(name: CompetitionName) {
+    this._name = name;
+  }
+
   get type(): CompetitionType {
     return this._type;
   }
 
-  get sportId(): SportId {
-    return this._sportId;
+  get sportName(): SportName {
+    return this._sportName;
   }
 
   get moderatorIds(): UserId[] {
@@ -100,11 +106,30 @@ export class Competition extends AggregateRoot {
     this.apply(new CompetitionWasDeleted(this._id.value));
   }
 
+  update(command: UpdateCompetitionCommand): void {
+    this.name = CompetitionName.fromString(command.name);
+    this.updateModerators(command.moderatorIds);
+    const event = new CompetitionWasUpdated(
+      this._id.value,
+      this._name.value,
+      this._moderatorIds.map((id) => id.value)
+    );
+    this.apply(event);
+  }
+
+  private updateModerators(newModeratorIds: string[]) {
+    const rawModeratorIds = this.moderatorIds.map((id) => id.value);
+    for (const id of newModeratorIds) {
+      if (!rawModeratorIds.includes(id))
+        this.addModerator(UserId.fromString(id));
+    }
+  }
+
   private onCompetitionWasCreated(event: CompetitionWasCreated) {
     this._id = CompetitionId.fromString(event.id);
     this._name = CompetitionName.fromString(event.name);
     this._type = CompetitionType.fromString(event.type);
-    this._sportId = SportId.fromString(event.sportId);
+    this._sportName = SportName.fromString(event.sportName);
     this._moderatorIds = [UserId.fromString(event.moderatorId)];
   }
 }

@@ -7,13 +7,13 @@ import {
   TableHead,
   TableRow,
 } from '@material-ui/core';
+import { CompetitionDTO } from '@opentour/contracts';
 import React from 'react';
 
-import { Competition } from '../shared/Competition';
 import { CompetitionRow } from './competitionRow/competitionRow';
 
 export type Props = {
-  competitions: Competition[];
+  competitions: CompetitionDTO[];
 };
 
 export const CompetitionsList: React.FunctionComponent<Props> = (props) => {
@@ -27,15 +27,16 @@ export const CompetitionsList: React.FunctionComponent<Props> = (props) => {
               Sport
             </TableCell>
             <TableCell width="20%" align="center">
-              Number of Teams
+              Type
             </TableCell>
             <TableCell width="20%"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.competitions.map((competition, index) => (
-            <CompetitionRow key={index} competition={competition} />
-          ))}
+          {props.competitions &&
+            props.competitions.map((competition, index) => (
+              <CompetitionRow key={index} competition={competition} />
+            ))}
         </TableBody>
       </Table>
     </TableContainer>

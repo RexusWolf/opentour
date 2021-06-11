@@ -3,15 +3,15 @@
     "target": "http://localhost:3333",
     "secure": false
   },
-  "/api/competitions/(create|update|findAll|find|delete)": {
+  "/api/competitions/(create|update|getCompetitions|getCompetition|delete)": {
     "target": "http://localhost:3333",
     "secure": false
   },
-  "/api/teams/(create|update|findAll|find|delete)": {
+  "/api/teams/(create|update|getTeams|getTeam|delete)": {
     "target": "http://localhost:3333",
     "secure": false
   },
-  "/api/matches/(create|update|findAll|find|delete)": {
+  "/api/matches/(create|update|getMatches|getMatch|delete)": {
     "target": "http://localhost:3333",
     "secure": false
   }

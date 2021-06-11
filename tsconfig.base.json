@@ -18,7 +18,8 @@
     "paths": {
       "@opentour/domain": ["libs/domain/src/index.ts"],
       "@opentour/ui": ["libs/ui/src/index.ts"],
-      "@opentour/contracts": ["libs/contracts/src/index.ts"]
+      "@opentour/contracts": ["libs/contracts/src/index.ts"],
+      "@opentour/hooks": ["libs/hooks/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

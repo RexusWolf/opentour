@@ -3,10 +3,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import { CompetitionId } from '../../../competition/domain/model';
 import { UserId } from '../../../user/domain';
-import {
-  TeamIdAlreadyTakenError,
-  TeamNameAlreadyTakenError,
-} from '../../domain/exception/';
+import { TeamIdAlreadyTakenError } from '../../domain/exception/';
 import { Team, TeamId, TeamName } from '../../domain/model';
 import { TEAMS, Teams } from '../../domain/repository';
 import { CreateTeamCommand } from './create-team.command';

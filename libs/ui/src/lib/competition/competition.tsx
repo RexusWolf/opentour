@@ -1,4 +1,5 @@
 import { Box, Button, Grid, Tab, Tabs } from '@material-ui/core';
+import { useCompetition } from '@opentour/hooks';
 import React from 'react';
 
 import { useStyles } from '../theme';

@@ -1,10 +1,11 @@
 import { Inject } from '@nestjs/common';
-import { IViewUpdater } from 'event-sourcing-nestjs';
+import { IViewUpdater, ViewUpdaterHandler } from 'event-sourcing-nestjs';
 import { Model } from 'mongoose';
 
 import { TeamWasDeleted } from '../../../domain/event';
 import { TeamView } from '../schema/team.schema';
 
+@ViewUpdaterHandler(TeamWasDeleted)
 export class TeamWasDeletedProjection implements IViewUpdater<TeamWasDeleted> {
   constructor(
     @Inject('TEAM_MODEL')
@@ -12,10 +13,8 @@ export class TeamWasDeletedProjection implements IViewUpdater<TeamWasDeleted> {
   ) {}
 
   async handle(event: TeamWasDeleted) {
-    const teamView = new this.teamModel({
-      _id: event.id,
-    });
-
-    await teamView.save();
+    await this.teamModel
+      .updateOne({ _id: event.id }, { $set: { deleted: new Date() } })
+      .exec();
   }
 }

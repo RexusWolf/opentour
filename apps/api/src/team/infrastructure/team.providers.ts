@@ -7,7 +7,7 @@ import { TeamEventStore } from './eventstore/team.event-store';
 import { TeamMapper } from './eventstore/team.mapper';
 import { TEAM_MODEL, TeamSchema } from './read-model/schema/team.schema';
 
-export const teamProviders: Provider[] = [
+export const TeamProviders: Provider[] = [
   {
     provide: TEAM_MODEL,
     useFactory: (connection: Connection) =>

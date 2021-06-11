@@ -39,7 +39,7 @@ describe('Create competition handler', () => {
         name: competition.name.value,
         moderatorId: competition.moderatorIds[0].value,
         type: competition.type.value,
-        sportId: competition.sportId.value,
+        sportName: competition.sportName.value,
       })
     );
 
@@ -55,7 +55,7 @@ describe('Create competition handler', () => {
           name: competition.name.value,
           moderatorId: competition.moderatorIds[0].value,
           type: competition.type.value,
-          sportId: competition.sportId.value,
+          sportName: competition.sportName.value,
         })
       )
     ).rejects.toThrow();

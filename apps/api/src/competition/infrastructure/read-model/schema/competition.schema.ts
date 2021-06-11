@@ -4,7 +4,7 @@ export const CompetitionSchema = new Schema({
   _id: String,
   name: String,
   type: String,
-  sportId: String,
+  sportName: String,
   moderatorIds: [String],
 });
 
@@ -12,7 +12,7 @@ export interface CompetitionView extends Document {
   readonly _id: string;
   readonly name: string;
   readonly type: string;
-  readonly sportId: string;
+  readonly sportName: string;
   readonly moderatorIds: string[];
 }
 

@@ -1,10 +1,11 @@
 import { Inject } from '@nestjs/common';
-import { IViewUpdater } from 'event-sourcing-nestjs';
+import { IViewUpdater, ViewUpdaterHandler } from 'event-sourcing-nestjs';
 import { Model } from 'mongoose';
 
 import { CompetitionWasUpdated } from '../../../domain/event/competition-was-updated.event';
 import { CompetitionView } from '../schema/competition.schema';
 
+@ViewUpdaterHandler(CompetitionWasUpdated)
 export class CompetitionWasUpdatedProjection
   implements IViewUpdater<CompetitionWasUpdated> {
   constructor(
@@ -13,12 +14,12 @@ export class CompetitionWasUpdatedProjection
   ) {}
 
   async handle(event: CompetitionWasUpdated) {
-    const competitionView = new this.competitionModel({
-      _id: event.id,
-      name: event.name,
-      moderatorIds: event.moderatorIds,
-    });
-
-    await competitionView.save();
+    console.log('UPDATING VIEW');
+    await this.competitionModel
+      .updateOne(
+        { _id: event.id },
+        { $set: { name: event.name, moderatorIds: event.moderatorIds } }
+      )
+      .exec();
   }
 }

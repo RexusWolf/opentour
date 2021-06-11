@@ -1,19 +1,19 @@
-import { CreateCompetitionCommand } from '../../../src/competition/application';
 import {
   Competition,
   CompetitionId,
   CompetitionName,
   CompetitionType,
 } from '../../../src/competition/domain/model';
-import { SportId } from '../../../src/sport/domain/model';
+import { SportName } from '../../../src/sport/domain/model';
 import { UserId } from '../../../src/user/domain';
+import { CompetitionTypeBuilder } from './CompetitionTypeBuilder';
 import faker = require('faker');
 
 export class CompetitionBuilder {
   private id: CompetitionId;
   private name: CompetitionName;
   private type: CompetitionType;
-  private sportId: SportId;
+  private sportName: SportName;
   private moderatorIds: UserId[];
   private hasStarted: boolean;
   private deleted?: Date;
@@ -21,8 +21,8 @@ export class CompetitionBuilder {
   constructor() {
     this.id = CompetitionId.fromString(faker.datatype.uuid());
     this.name = CompetitionName.fromString(faker.random.word());
-    this.type = CompetitionType.fromString(faker.random.word());
-    this.sportId = SportId.fromString(faker.datatype.uuid());
+    this.type = CompetitionTypeBuilder.random();
+    this.sportName = SportName.fromString(faker.datatype.uuid());
     this.moderatorIds = [UserId.fromString(faker.datatype.uuid())];
   }
 
@@ -31,22 +31,12 @@ export class CompetitionBuilder {
     return this;
   }
 
-  static fromCommand(command: CreateCompetitionCommand) {
-    return Competition.create({
-      id: CompetitionId.fromString(command.id),
-      name: CompetitionName.fromString(command.name),
-      type: CompetitionType.fromString(command.type),
-      sportId: SportId.fromString(command.sportId),
-      moderatorId: UserId.fromString(command.moderatorId),
-    });
-  }
-
   build(): Competition {
     return Competition.create({
       id: this.id,
       name: this.name,
       type: this.type,
-      sportId: this.sportId,
+      sportName: this.sportName,
       moderatorId: this.moderatorIds[0],
     });
   }

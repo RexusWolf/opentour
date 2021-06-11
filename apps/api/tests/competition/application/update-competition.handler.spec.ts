@@ -43,6 +43,7 @@ describe('Update competition handler', () => {
       })
     );
 
+    expect(competitions.save).toHaveBeenCalledWith(competition);
     expect(competitions.save).toHaveBeenCalledTimes(1);
   });
   it('should not update the competition if it is not found', async () => {

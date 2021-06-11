@@ -13,9 +13,10 @@ import {
 } from '../application';
 import { GetTeamsByCompetitionIdHandler } from '../application/query/get-teams-by-competition-id.handler';
 import { TeamController } from './controller/team.controller';
-import { TeamEventStore } from './eventstore/team.event-store';
+import { TeamWasCreatedProjection } from './read-model/projection/team-was-created.projection';
+import { TeamWasDeletedProjection } from './read-model/projection/team-was-deleted.projection';
 import { TeamService } from './service/team.service';
-import { teamProviders } from './team.providers';
+import { TeamProviders } from './team.providers';
 
 const CommandHandlers = [
   CreateTeamHandler,
@@ -29,15 +30,17 @@ const QueryHandlers = [
   GetTeamsHandler,
 ];
 
+const ProjectionHandlers = [TeamWasCreatedProjection, TeamWasDeletedProjection];
+
 @Module({
   controllers: [TeamController],
   imports: [DatabaseModule, CqrsModule, EventSourcingModule.forFeature()],
   providers: [
-    ...teamProviders,
+    ...ProjectionHandlers,
+    ...TeamProviders,
     ...CommandHandlers,
     ...QueryHandlers,
     TeamService,
-    TeamEventStore,
   ],
 })
 export class TeamModule {}

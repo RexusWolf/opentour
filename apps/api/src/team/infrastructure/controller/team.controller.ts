@@ -33,9 +33,9 @@ import { TeamService } from '../service/team.service';
 export class TeamController {
   constructor(private readonly teamService: TeamService) {}
 
+  @Post()
   @ApiOperation({ summary: 'Create team' })
   @ApiResponse({ status: 204, description: 'Create team' })
-  @Post('')
   async create(@Body() createTeamDto: CreateTeamDTO): Promise<TeamDTO> {
     try {
       return await this.teamService.createTeam({
@@ -62,7 +62,7 @@ export class TeamController {
   @Get()
   @ApiOperation({ summary: 'Get teams' })
   @ApiResponse({ status: 200, description: 'Returns all teams' })
-  async findAll(@Res({ passthrough: true }) res: Response) {
+  async getTeams(@Res({ passthrough: true }) res: Response) {
     try {
       const teams = await this.teamService.getTeams();
       res.setHeader('X-Total-Count', teams.length);
@@ -79,7 +79,7 @@ export class TeamController {
   @Get(':id')
   @ApiResponse({ status: 200, description: 'Team found' })
   @ApiResponse({ status: 404, description: 'Not found' })
-  async findOne(@Query('id') id: string): Promise<TeamDTO | null> {
+  async getTeam(@Query('id') id: string): Promise<TeamDTO> {
     try {
       return await this.teamService.getTeam(id);
     } catch (error) {

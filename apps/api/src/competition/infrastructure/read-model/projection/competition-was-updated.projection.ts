@@ -14,7 +14,6 @@ export class CompetitionWasUpdatedProjection
   ) {}
 
   async handle(event: CompetitionWasUpdated) {
-    console.log('UPDATING VIEW');
     await this.competitionModel
       .updateOne(
         { _id: event.id },

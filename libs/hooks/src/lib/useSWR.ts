@@ -1,5 +1,5 @@
 import useSWR from 'swr';
-import { CompetitionDTO } from '@opentour/contracts';
+import { CompetitionDTO, MatchDTO, TeamDTO } from '@opentour/contracts';
 
 export function useCompetition(id: string): CompetitionDTO {
   const { data, error } = useSWR(['/api/competitions/{id}?id=' + id], fetchUrl);
@@ -9,6 +9,30 @@ export function useCompetition(id: string): CompetitionDTO {
 
 export function useCompetitions(): CompetitionDTO[] {
   const { data, error } = useSWR(['/api/competitions'], fetchUrl);
+
+  return data;
+}
+
+export function useTeams(): TeamDTO[] {
+  const { data, error } = useSWR(['/api/teams'], fetchUrl);
+
+  return data;
+}
+
+export function useMatchesByCompetitionId(competitionId: string): MatchDTO[] {
+  const { data, error } = useSWR(
+    [`/api/matches/{competitionId}/matches?competitionId=${competitionId}`],
+    fetchUrl
+  );
+
+  return data;
+}
+
+export function useTeamsByCompetitionId(competitionId: string): TeamDTO[] {
+  const { data, error } = useSWR(
+    [`/api/teams/{competitionId}/teams?competitionId=${competitionId}`],
+    fetchUrl
+  );
 
   return data;
 }

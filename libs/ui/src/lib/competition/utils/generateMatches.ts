@@ -1,19 +1,31 @@
-import { Match } from '../shared/Match';
-import { Team } from '../shared/Team';
+import { TeamDTO } from '@opentour/contracts';
+import { v4 as uuid } from 'uuid';
 
-export function generateMatches(teams: Team[]): Match[] {
-  const matches: Match[] = [];
-  teams.map((localTeam) => {
-    const restOfTeams = teams.filter((value, index) => value !== localTeam);
-    restOfTeams.map((visitorTeam) =>
-      matches.push({
-        localTeam,
-        visitorTeam,
-        isScheduled: localTeam.id > visitorTeam.id,
-        date: new Date(),
-        result: { localTeam: 0, visitorTeam: 0 },
+import { doRequest } from '../../utils/doRequest';
+
+export async function generateMatches(
+  teams: TeamDTO[],
+  competitionId: string
+): Promise<void> {
+  const requests = teams.map((localTeam) => {
+    const restOfTeams = teams.filter(
+      (value, index) => value.id !== localTeam.id
+    );
+    return restOfTeams.map((visitorTeam) =>
+      doRequest({
+        method: 'POST',
+        url: '/matches',
+        data: {
+          id: uuid(),
+          competitionId: competitionId,
+          localTeamId: localTeam.id,
+          visitorTeamId: visitorTeam.id,
+          index: 0,
+          journey: 'Cuartos',
+        },
       })
     );
   });
-  return matches;
+
+  Promise.all(requests);
 }

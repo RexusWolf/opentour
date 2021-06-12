@@ -24,7 +24,7 @@ export class Match extends AggregateRoot {
   private _visitorTeamId?: TeamId;
   private _date?: Date;
   private _result?: MatchResult;
-  private _deleted?: Date;
+  private _deleted: Date | null;
 
   private constructor() {
     super();
@@ -33,20 +33,31 @@ export class Match extends AggregateRoot {
   public static create(params: {
     id: MatchId;
     competitionId: CompetitionId;
+    localTeamId: TeamId;
+    visitorTeamId: TeamId;
     index: MatchIndex;
     journey: MatchJourney;
   }): Match {
-    const { id, competitionId, index, journey } = params;
+    const {
+      id,
+      competitionId,
+      index,
+      journey,
+      localTeamId,
+      visitorTeamId,
+    } = params;
 
     const match = new Match();
 
     match.apply(
-      new MatchWasCreated(
-        id.value,
-        competitionId.value,
-        index.value,
-        journey.value
-      )
+      new MatchWasCreated({
+        id: id.value,
+        competitionId: competitionId.value,
+        localTeamId: localTeamId.value,
+        visitorTeamId: visitorTeamId.value,
+        index: index.value,
+        journey: journey.value,
+      })
     );
 
     return match;

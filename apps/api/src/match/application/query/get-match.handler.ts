@@ -13,6 +13,6 @@ export class GetMatchHandler implements IQueryHandler<GetMatchQuery> {
   constructor(@Inject(MATCH_MODEL) private matchModel: Model<MatchView>) {}
 
   async execute(query: GetMatchQuery): Promise<MatchView | null> {
-    return await this.matchModel.findOne({ id: query.id }).exec();
+    return await this.matchModel.findById(query.id).exec();
   }
 }

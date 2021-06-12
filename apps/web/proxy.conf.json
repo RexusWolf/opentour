@@ -7,11 +7,11 @@
     "target": "http://localhost:3333",
     "secure": false
   },
-  "/api/teams/(create|update|getTeams|getTeam|delete)": {
+  "/api/teams/(create|update|getTeams|getTeam|delete|getTeamsByCompetitionId)": {
     "target": "http://localhost:3333",
     "secure": false
   },
-  "/api/matches/(create|update|getMatches|getMatch|delete)": {
+  "/api/matches/(create|update|getMatches|getMatch|delete|getMatchesByCompetitionId)": {
     "target": "http://localhost:3333",
     "secure": false
   }

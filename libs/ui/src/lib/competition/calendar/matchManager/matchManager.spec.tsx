@@ -7,7 +7,7 @@ describe('MatchManager', () => {
   const defaultProps = {
     date: new Date(),
     isScheduled: false,
-    result: { localTeam: 0, visitorTeam: 0 },
+    result: { localTeamScore: 0, visitorTeamScore: 0 },
     onClose: jest.fn(),
     handleLocalTeamScore: jest.fn(),
     handleVisitorTeamScore: jest.fn(),

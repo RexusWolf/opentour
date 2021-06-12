@@ -4,12 +4,27 @@ export class MatchWasCreated extends StorableEvent {
   eventAggregate = 'match';
   eventVersion = 1;
 
-  constructor(
-    public readonly id: string,
-    public readonly competitionId: string,
-    public readonly index: number,
-    public readonly journey: string
-  ) {
+  readonly id: string;
+  readonly competitionId: string;
+  readonly index: number;
+  readonly journey: string;
+  readonly localTeamId: string;
+  readonly visitorTeamId: string;
+
+  constructor(params: {
+    id: string;
+    competitionId: string;
+    index: number;
+    journey: string;
+    localTeamId: string;
+    visitorTeamId: string;
+  }) {
     super();
+    this.id = params.id;
+    this.competitionId = params.competitionId;
+    this.index = params.index;
+    this.journey = params.journey;
+    this.localTeamId = params.localTeamId;
+    this.visitorTeamId = params.visitorTeamId;
   }
 }

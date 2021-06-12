@@ -19,6 +19,14 @@ export class MatchWasCreatedProjection
       competitionId: event.competitionId,
       index: event.index,
       journey: event.journey,
+      localTeamId: event.localTeamId,
+      visitorTeamId: event.visitorTeamId,
+      date: null,
+      result: {
+        localTeamScore: 0,
+        visitorTeamScore: 0,
+      },
+      deleted: null,
     });
 
     await matchView.save();

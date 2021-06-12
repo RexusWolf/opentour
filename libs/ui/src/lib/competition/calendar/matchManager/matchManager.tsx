@@ -6,8 +6,8 @@ import { DateAndTimePicker } from '../dateAndTimePicker/dateAndTimePicker';
 
 export type Props = {
   isScheduled: boolean;
-  date: Date;
-  result: { localTeam: number; visitorTeam: number };
+  date: Date | null;
+  result: { localTeamScore: number; visitorTeamScore: number };
   onClose: () => void;
   handleLocalTeamScore: (value: string) => void;
   handleVisitorTeamScore: (value: string) => void;
@@ -67,7 +67,7 @@ export const MatchManager: React.FunctionComponent<Props> = (props) => {
           disabled={!isScheduled}
           label="Local Team Score"
           id="standard-size-small"
-          defaultValue={result.localTeam}
+          defaultValue={result.localTeamScore}
           onChange={(event) => handleLocalTeamScore(event.target.value)}
           size="small"
         />
@@ -84,7 +84,7 @@ export const MatchManager: React.FunctionComponent<Props> = (props) => {
           disabled={!isScheduled}
           label="Visitor Team Score"
           id="standard-size-small"
-          defaultValue={result.visitorTeam}
+          defaultValue={result.visitorTeamScore}
           onChange={(event) => handleVisitorTeamScore(event.target.value)}
           size="small"
         />

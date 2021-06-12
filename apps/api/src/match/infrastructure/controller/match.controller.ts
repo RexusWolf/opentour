@@ -15,12 +15,7 @@ import {
   Res,
   UseInterceptors,
 } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateMatchDTO, EditMatchDTO, MatchDTO } from '@opentour/contracts';
 import { Response } from 'express';
 
@@ -28,7 +23,6 @@ import { MatchIdAlreadyTakenError } from '../../domain/exception';
 import { MatchIdNotFoundError } from '../../domain/exception/match-id-not-found.error';
 import { MatchService } from '../service/match.service';
 
-@ApiBearerAuth()
 @ApiTags('matches')
 @Controller('matches')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -42,6 +36,8 @@ export class MatchController {
       return await this.matchService.createMatch({
         id: createMatchDTO.id,
         competitionId: createMatchDTO.competitionId,
+        localTeamId: createMatchDTO.localTeamId,
+        visitorTeamId: createMatchDTO.visitorTeamId,
         index: createMatchDTO.index,
         journey: createMatchDTO.journey,
       });
@@ -85,6 +81,31 @@ export class MatchController {
       if (e instanceof MatchIdNotFoundError) {
         throw new NotFoundException('Match not found');
       } else if (e instanceof Error) {
+        throw new BadRequestException(e.message);
+      } else {
+        throw new BadRequestException('Server error');
+      }
+    }
+  }
+
+  @Get(':competitionId/matches')
+  @ApiOperation({ summary: 'Get matches of competition' })
+  @ApiResponse({ status: 200, description: 'Matches found' })
+  @ApiResponse({ status: 404, description: 'Not found' })
+  async getMatchesByCompetitionId(
+    @Res({ passthrough: true }) res: Response,
+    @Query('competitionId') competitionId: string
+  ): Promise<MatchDTO[] | null> {
+    try {
+      const matches = await this.matchService.getMatchesByCompetitionId(
+        competitionId
+      );
+
+      res.setHeader('X-Total-Count', matches.length);
+
+      return matches;
+    } catch (e) {
+      if (e instanceof Error) {
         throw new BadRequestException(e.message);
       } else {
         throw new BadRequestException('Server error');

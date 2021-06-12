@@ -12,7 +12,7 @@ export const MatchSchema = new Schema({
     localTeamScore: Number,
     visitorTeamScore: Number,
   },
-  deleted: Date,
+  deleted: Date || null,
 });
 
 export interface MatchView extends Document {
@@ -22,12 +22,12 @@ export interface MatchView extends Document {
   readonly journey: string;
   readonly localTeamId: string;
   readonly visitorTeamId: string;
-  readonly date: Date;
+  readonly date: Date | null;
   result: {
     readonly localTeamScore: number;
     readonly visitorTeamScore: number;
   };
-  readonly deleted: Date;
+  readonly deleted?: Date;
 }
 
 export const MATCH_MODEL = 'MATCH_MODEL';

@@ -1,12 +1,12 @@
 import { Box, Button, Grid, Tab, Tabs } from '@material-ui/core';
 import { CompetitionDTO } from '@opentour/contracts';
+import { useMatchesByCompetitionId , useTeamsByCompetitionId } from '@opentour/hooks';
 import React from 'react';
 
 import { useStyles } from '../theme';
 import { Calendar } from './calendar/calendar';
 import { Ranking } from './ranking/ranking';
 import { ranking } from './shared/ranking';
-import { teams } from './shared/teams';
 import { TeamList } from './teamsList/teamsList';
 import { TeamWizard } from './teamWizard/teamWizard';
 import { generateMatches } from './utils/generateMatches';
@@ -41,6 +41,7 @@ export const Competition: React.FunctionComponent<Props> = ({
   competition,
 }) => {
   const classes = useStyles();
+  const teams = useTeamsByCompetitionId(competition.id);
 
   const { name, type } = competition;
   const [open, setOpen] = React.useState(false);
@@ -54,7 +55,7 @@ export const Competition: React.FunctionComponent<Props> = ({
   };
 
   const [tabIndex, setTabIndex] = React.useState(0);
-  const matches = generateMatches(teams);
+  const matches = useMatchesByCompetitionId(competition.id);
   const handleChange = (
     event: React.ChangeEvent<unknown>,
     newTabIndex: number
@@ -96,11 +97,17 @@ export const Competition: React.FunctionComponent<Props> = ({
         >
           Create team for competition
         </Button>
-        <TeamWizard open={open} onClose={handleClose} />
+        <TeamWizard
+          competitionId={competition.id}
+          open={open}
+          onClose={handleClose}
+        />
         <Button
           className={classes.containerItem}
           color="primary"
           variant="contained"
+          disabled={matches !== null}
+          onClick={async () => await generateMatches(teams, competition.id)}
         >
           Start competition
         </Button>

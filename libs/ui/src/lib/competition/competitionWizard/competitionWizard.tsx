@@ -1,11 +1,11 @@
 import { Button, Dialog, Grid, TextField, Typography } from '@material-ui/core';
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
 import { CreateCompetitionDTO } from '@opentour/contracts';
-import axios from 'axios';
 import React from 'react';
 import { v4 as uuid } from 'uuid';
 
 import { useStyles } from '../../theme';
+import { doRequest } from '../../utils/doRequest';
 
 export type Props = {
   open: boolean;
@@ -13,14 +13,7 @@ export type Props = {
 };
 
 export async function createCompetition(competition: CreateCompetitionDTO) {
-  return await axios({
-    method: 'POST',
-    url: 'http://localhost:3333/api/competitions',
-    headers: {
-      'content-type': 'application/json',
-    },
-    data: competition,
-  });
+  doRequest({ method: 'POST', url: '/competitions', data: competition });
 }
 
 export const CompetitionWizard: React.FunctionComponent<Props> = (props) => {

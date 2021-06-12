@@ -15,8 +15,8 @@ export class MatchBuilder {
   private competitionId: CompetitionId;
   private index: MatchIndex;
   private journey: MatchJourney;
-  private localTeamId?: TeamId;
-  private visitorTeamId?: TeamId;
+  private localTeamId: TeamId;
+  private visitorTeamId: TeamId;
   private date?: Date;
   private result?: MatchResult;
   private deleted?: Date;
@@ -41,6 +41,8 @@ export class MatchBuilder {
     return Match.create({
       id: this.id,
       competitionId: this.competitionId,
+      localTeamId: this.localTeamId,
+      visitorTeamId: this.visitorTeamId,
       index: this.index,
       journey: this.journey,
     });

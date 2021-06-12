@@ -2,6 +2,7 @@ import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import { CompetitionId } from '../../../competition/domain/model';
+import { TeamId } from '../../../team/domain/model';
 import { MatchIdAlreadyTakenError } from '../../domain/exception/match-id-already-taken.error';
 import { Match, MatchId, MatchIndex, MatchJourney } from '../../domain/model';
 import { MATCHES, Matches } from '../../domain/repository';
@@ -14,6 +15,8 @@ export class CreateMatchHandler implements ICommandHandler<CreateMatchCommand> {
   async execute(command: CreateMatchCommand) {
     const id = MatchId.fromString(command.id);
     const competitionId = CompetitionId.fromString(command.competitionId);
+    const localTeamId = TeamId.fromString(command.localTeamId);
+    const visitorTeamId = TeamId.fromString(command.visitorTeamId);
     const index = MatchIndex.fromNumber(command.index);
     const journey = MatchJourney.fromString(command.journey);
 
@@ -21,7 +24,14 @@ export class CreateMatchHandler implements ICommandHandler<CreateMatchCommand> {
       throw MatchIdAlreadyTakenError.with(id);
     }
 
-    const match = Match.create({ id, competitionId, index, journey });
+    const match = Match.create({
+      id,
+      competitionId,
+      localTeamId,
+      visitorTeamId,
+      index,
+      journey,
+    });
 
     this.matches.save(match);
   }

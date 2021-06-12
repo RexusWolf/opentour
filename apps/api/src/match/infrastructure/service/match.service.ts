@@ -12,6 +12,7 @@ import {
 } from '../../application';
 import { MatchResult } from '../../domain';
 import { MatchMapper } from '../eventstore/match.mapper';
+import { MatchView } from '../read-model/schema/match.schema';
 
 @Injectable()
 export class MatchService {
@@ -24,12 +25,28 @@ export class MatchService {
   async createMatch(params: {
     id: string;
     competitionId: string;
+    localTeamId: string;
+    visitorTeamId: string;
     index: number;
     journey: string;
   }) {
-    const { id, competitionId, index, journey } = params;
+    const {
+      id,
+      competitionId,
+      localTeamId,
+      visitorTeamId,
+      index,
+      journey,
+    } = params;
     return this.commandBus.execute(
-      new CreateMatchCommand({ id, competitionId, index, journey })
+      new CreateMatchCommand({
+        id,
+        competitionId,
+        localTeamId,
+        visitorTeamId,
+        index,
+        journey,
+      })
     );
   }
 
@@ -60,7 +77,9 @@ export class MatchService {
   }
 
   async getMatch(id: string): Promise<MatchDTO | null> {
-    const match = await this.queryBus.execute(new GetMatchQuery(id));
+    const match = await this.queryBus.execute<GetMatchQuery, MatchView>(
+      new GetMatchQuery(id)
+    );
     return this.matchMapper.viewToDto(match);
   }
 
@@ -69,12 +88,11 @@ export class MatchService {
     return matches.map(this.matchMapper.viewToDto);
   }
 
-  async getMatchByCompetitionId(
-    competitionId: string
-  ): Promise<MatchDTO | null> {
-    const match = await this.queryBus.execute(
-      new GetMatchesByCompetitionIdQuery(competitionId)
-    );
-    return this.matchMapper.viewToDto(match);
+  async getMatchesByCompetitionId(competitionId: string): Promise<MatchDTO[]> {
+    const matches = await this.queryBus.execute<
+      GetMatchesByCompetitionIdQuery,
+      MatchView[]
+    >(new GetMatchesByCompetitionIdQuery(competitionId));
+    return matches.map(this.matchMapper.viewToDto);
   }
 }

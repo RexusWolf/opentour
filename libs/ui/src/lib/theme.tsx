@@ -94,7 +94,7 @@ export const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
   },
   containerItem: {
-    padding: '4px',
+    margin: '4px',
   },
   calendarMatch: {
     padding: '4px',

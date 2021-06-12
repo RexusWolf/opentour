@@ -1,7 +1,6 @@
 import { render } from '@testing-library/react';
 import React from 'react';
 
-import { competitions } from '../../shared/competitions';
 import { CompetitionRow } from './competitionRow';
 
 const defaultCompetition = {

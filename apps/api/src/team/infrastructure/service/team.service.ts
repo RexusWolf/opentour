@@ -5,10 +5,10 @@ import { TeamDTO } from '@opentour/contracts';
 import {
   CreateTeamCommand,
   DeleteTeamCommand,
-  GetTeamByNameQuery,
   GetTeamQuery,
   GetTeamsQuery,
 } from '../../application';
+import { GetTeamsByCompetitionIdQuery } from '../../application/query/get-teams-by-competition-id.query';
 import { TeamMapper } from '../eventstore/team.mapper';
 import { TeamView } from '../read-model/schema/team.schema';
 
@@ -50,10 +50,11 @@ export class TeamService {
     return teams.map(this.teamMapper.viewToDto);
   }
 
-  async getTeamByName(name: string): Promise<TeamDTO> {
-    const team = await this.queryBus.execute<GetTeamByNameQuery, TeamView>(
-      new GetTeamByNameQuery(name)
-    );
-    return this.teamMapper.viewToDto(team);
+  async getTeamsByCompetitionId(competitionId: string): Promise<TeamDTO[]> {
+    const teams = await this.queryBus.execute<
+      GetTeamsByCompetitionIdQuery,
+      TeamView[]
+    >(new GetTeamsByCompetitionIdQuery(competitionId));
+    return teams.map(this.teamMapper.viewToDto);
   }
 }

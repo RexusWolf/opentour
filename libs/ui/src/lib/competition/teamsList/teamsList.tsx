@@ -1,34 +1,46 @@
 import { Button, Divider, Grid } from '@material-ui/core';
 import React from 'react';
 
+import { TeamDTO } from '@opentour/contracts';
 import { useStyles } from '../../theme';
-import { Team } from '../shared/Team';
 import { TeamSlot } from '../shared/teamSlot/teamSlot';
 
 export type Props = {
-  teams: Team[];
+  teams: TeamDTO[];
 };
 
-export const TeamList: React.FunctionComponent<Props> = (props) => {
+export const TeamList: React.FunctionComponent<Props> = ({ teams }) => {
   const classes = useStyles();
+
+  const teamsInList = teams || [];
+  const defaultLogo =
+    'https://1.bp.blogspot.com/-aipUpK9KzXI/X4eoge09D9I/AAAAAAABg4c/lvcbdc8I148_NRF4gzuKlR4Wf4KbKGj6gCLcBGAsYHQ/s128/Cordoba%2BCF128x.png';
 
   return (
     <>
-      {props.teams.map((team) => (
-        <div key={team.name}>
-          {team !== props.teams[0] && <Divider light />}
-          <Grid container alignItems="center" className={classes.containerItem}>
-            <Grid item xs={11}>
-              <TeamSlot name={team.name} logo={team.logo} />
+      {teamsInList.length ? (
+        teamsInList.map((team) => (
+          <div key={team.name}>
+            {team !== teamsInList[0] && <Divider light />}
+            <Grid
+              container
+              alignItems="center"
+              className={classes.containerItem}
+            >
+              <Grid item xs={11}>
+                <TeamSlot name={team.name} logo={defaultLogo} />
+              </Grid>
+              <Grid container item justify="center" xs={1}>
+                <Button variant="contained" className={classes.errorButton}>
+                  Remove
+                </Button>
+              </Grid>
             </Grid>
-            <Grid container item justify="center" xs={1}>
-              <Button variant="contained" className={classes.errorButton}>
-                Remove
-              </Button>
-            </Grid>
-          </Grid>
-        </div>
-      ))}
+          </div>
+        ))
+      ) : (
+        <h2>No teams in the competition</h2>
+      )}
     </>
   );
 };

@@ -5,6 +5,6 @@ export class MatchDTO {
   journey: string;
   localTeamId: string;
   visitorTeamId: string;
-  date: Date;
+  date: Date | null;
   result: { localTeamScore: number; visitorTeamScore: number };
 }

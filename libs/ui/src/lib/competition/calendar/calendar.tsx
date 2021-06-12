@@ -1,26 +1,22 @@
 import { Grid } from '@material-ui/core';
+import { MatchDTO } from '@opentour/contracts';
 import React from 'react';
 
-import { Match } from '../shared/Match';
 import { CalendarMatch } from './calendarMatch/calendarMatch';
 
 type Props = {
-  matches: Match[];
+  matches: MatchDTO[];
 };
 
-export const Calendar: React.FunctionComponent<Props> = (props) => {
+export const Calendar: React.FunctionComponent<Props> = ({ matches }) => {
+  const matchesInList = matches || [];
+
   return (
     <Grid container>
-      {props.matches.map((match, index) => (
-        <CalendarMatch
-          key={index}
-          isScheduled={match.isScheduled}
-          localTeam={match.localTeam}
-          visitorTeam={match.visitorTeam}
-          date={match.date}
-          result={match.result}
-        />
-      ))}
+      {matches &&
+        matches.map((match, index) => (
+          <CalendarMatch key={index} match={match} />
+        ))}
     </Grid>
   );
 };

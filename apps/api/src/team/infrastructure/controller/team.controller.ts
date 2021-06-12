@@ -93,6 +93,31 @@ export class TeamController {
     }
   }
 
+  @Get(':competitionId/teams')
+  @ApiOperation({ summary: 'Get teams by its competition ID' })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns all teams of a competition',
+  })
+  async getTeamsByCompetitionId(
+    @Res({ passthrough: true }) res: Response,
+    @Query('competitionId') competitionId: string
+  ) {
+    try {
+      const teams = await this.teamService.getTeamsByCompetitionId(
+        competitionId
+      );
+      res.setHeader('X-Total-Count', teams.length);
+      return teams;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new BadRequestException(error.message);
+      } else {
+        throw new BadRequestException('Server error');
+      }
+    }
+  }
+
   @ApiOperation({ summary: 'Delete team' })
   @ApiResponse({ status: 200, description: 'Delete team' })
   @ApiResponse({ status: 404, description: 'Not found' })

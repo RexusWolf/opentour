@@ -19,7 +19,8 @@ export class CompetitionWasCreatedProjection
       name: event.name,
       type: event.type,
       sportName: event.sportName,
-      moderatorId: event.moderatorId,
+      moderatorIds: [event.moderatorId],
+      hasStarted: false,
     });
 
     await competitionView.save();

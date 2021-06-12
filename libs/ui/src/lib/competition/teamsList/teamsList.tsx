@@ -1,7 +1,7 @@
 import { Button, Divider, Grid } from '@material-ui/core';
+import { TeamDTO } from '@opentour/contracts';
 import React from 'react';
 
-import { TeamDTO } from '@opentour/contracts';
 import { useStyles } from '../../theme';
 import { TeamSlot } from '../shared/teamSlot/teamSlot';
 

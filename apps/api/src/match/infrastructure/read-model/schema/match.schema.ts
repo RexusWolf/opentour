@@ -5,29 +5,31 @@ export const MatchSchema = new Schema({
   competitionId: String,
   index: Number,
   journey: String,
-  localTeamId: String,
-  visitorTeamId: String,
-  date: Date,
-  result: {
-    localTeamScore: Number,
-    visitorTeamScore: Number,
+  localTeam: {
+    name: String,
+    score: Number,
   },
-  deleted: Date || null,
+  visitorTeam: {
+    name: String,
+    score: Number,
+  },
+  date: Date,
 });
 
 export interface MatchView extends Document {
   readonly _id: string;
-  readonly competitionId: string;
+  competitionId: string;
   readonly index: number;
   readonly journey: string;
-  readonly localTeamId: string;
-  readonly visitorTeamId: string;
-  readonly date: Date | null;
-  result: {
-    readonly localTeamScore: number;
-    readonly visitorTeamScore: number;
+  readonly localTeam: {
+    readonly name: string;
+    readonly score: number;
   };
-  readonly deleted?: Date;
+  readonly visitorTeam: {
+    readonly name: string;
+    readonly score: number;
+  };
+  readonly date: Date;
 }
 
 export const MATCH_MODEL = 'MATCH_MODEL';

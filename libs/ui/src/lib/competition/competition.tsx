@@ -1,9 +1,13 @@
 import { Box, Button, Grid, Tab, Tabs } from '@material-ui/core';
 import { CompetitionDTO } from '@opentour/contracts';
-import { useMatchesByCompetitionId , useTeamsByCompetitionId } from '@opentour/hooks';
+import {
+  useMatchesByCompetitionId,
+  useTeamsByCompetitionId,
+} from '@opentour/hooks';
 import React from 'react';
 
 import { useStyles } from '../theme';
+import { doRequest } from '../utils/doRequest';
 import { Calendar } from './calendar/calendar';
 import { Ranking } from './ranking/ranking';
 import { ranking } from './shared/ranking';
@@ -42,6 +46,7 @@ export const Competition: React.FunctionComponent<Props> = ({
 }) => {
   const classes = useStyles();
   const teams = useTeamsByCompetitionId(competition.id);
+  const matches = useMatchesByCompetitionId(competition.id);
 
   const { name, type } = competition;
   const [open, setOpen] = React.useState(false);
@@ -54,13 +59,32 @@ export const Competition: React.FunctionComponent<Props> = ({
     setOpen(false);
   };
 
+  const hasMinimumTeams = () => {
+    if (teams) {
+      if (teams.length > 1) return true;
+    }
+    return false;
+  };
+
+  const startCompetition = async (competitionId: string) => {
+    await doRequest({
+      method: 'PUT',
+      url: `/competitions/${competitionId}/start`,
+    });
+  };
+
   const [tabIndex, setTabIndex] = React.useState(0);
-  const matches = useMatchesByCompetitionId(competition.id);
   const handleChange = (
     event: React.ChangeEvent<unknown>,
     newTabIndex: number
   ) => {
     setTabIndex(newTabIndex);
+  };
+
+  const handleStartCompetition = async () => {
+    await generateMatches(teams, competition.id);
+    await startCompetition(competition.id);
+    location.reload();
   };
 
   return (
@@ -106,8 +130,8 @@ export const Competition: React.FunctionComponent<Props> = ({
           className={classes.containerItem}
           color="primary"
           variant="contained"
-          disabled={matches !== null}
-          onClick={async () => await generateMatches(teams, competition.id)}
+          disabled={competition.hasStarted || !hasMinimumTeams()}
+          onClick={handleStartCompetition}
         >
           Start competition
         </Button>

@@ -45,6 +45,7 @@ export const CompetitionWizard: React.FunctionComponent<Props> = (props) => {
   };
   const handleCreateCompetition = async () => {
     await createCompetition(competitionValues);
+    location.reload();
     onClose();
   };
 

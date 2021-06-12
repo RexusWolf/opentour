@@ -16,13 +16,12 @@ export class GetMatchesByCompetitionIdHandler
   async execute(
     query: GetMatchesByCompetitionIdQuery
   ): Promise<MatchView[] | null> {
-    console.log(query.competitionId);
     const matches = await this.matchModel
       .find({
         $and: [{ competitionId: query.competitionId }],
       })
+      .sort({ index: 1 })
       .exec();
-    console.log(matches);
     return matches;
   }
 }

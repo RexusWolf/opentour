@@ -9,6 +9,7 @@ import {
   GetCompetitionByNameHandler,
   GetCompetitionHandler,
   GetCompetitionsHandler,
+  StartCompetitionHandler,
   UpdateCompetitionHandler,
 } from '../application';
 import { competitionProviders } from './competition.providers';
@@ -21,6 +22,7 @@ const CommandHandlers = [
   CreateCompetitionHandler,
   DeleteCompetitionHandler,
   UpdateCompetitionHandler,
+  StartCompetitionHandler,
 ];
 const QueryHandlers = [
   GetCompetitionByNameHandler,

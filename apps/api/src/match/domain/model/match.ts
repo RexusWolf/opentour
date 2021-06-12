@@ -20,8 +20,8 @@ export class Match extends AggregateRoot {
   private _competitionId: CompetitionId;
   private _index: MatchIndex;
   private _journey: MatchJourney;
-  private _localTeamId?: TeamId;
-  private _visitorTeamId?: TeamId;
+  private _localTeamId: TeamId;
+  private _visitorTeamId: TeamId;
   private _date?: Date;
   private _result?: MatchResult;
   private _deleted: Date | null;
@@ -75,15 +75,15 @@ export class Match extends AggregateRoot {
     return this._index;
   }
 
-  get journey(): MatchJourney {
+  get journey(): MatchJourney | undefined {
     return this._journey;
   }
 
-  get localTeamId(): TeamId | undefined {
+  get localTeamId(): TeamId {
     return this._localTeamId;
   }
 
-  get visitorTeamId(): TeamId | undefined {
+  get visitorTeamId(): TeamId {
     return this._visitorTeamId;
   }
 

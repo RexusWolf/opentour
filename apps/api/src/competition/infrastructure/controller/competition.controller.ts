@@ -130,6 +130,24 @@ export class CompetitionController {
     }
   }
 
+  @Put(':id/start')
+  @ApiOperation({ summary: 'Start competition' })
+  @ApiResponse({ status: 204, description: 'Competition started' })
+  @ApiResponse({ status: 404, description: 'Not found' })
+  async start(@Param('id') id: string) {
+    try {
+      return await this.competitionService.startCompetition(id);
+    } catch (error) {
+      if (error instanceof CompetitionIdNotFoundError) {
+        throw new NotFoundException('Competition not found');
+      } else if (error instanceof Error) {
+        throw new BadRequestException(error.message);
+      } else {
+        throw new BadRequestException('Server error');
+      }
+    }
+  }
+
   @ApiOperation({ summary: 'Delete competition' })
   @ApiResponse({ status: 200, description: 'Delete competition' })
   @ApiResponse({ status: 404, description: 'Not found' })

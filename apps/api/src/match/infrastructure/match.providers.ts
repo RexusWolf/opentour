@@ -2,6 +2,10 @@ import { Provider } from '@nestjs/common';
 import { Connection } from 'mongoose';
 
 import { DATABASE_CONNECTION } from '../../common/database/database.provider';
+import {
+  TEAM_MODEL,
+  TeamSchema,
+} from '../../team/infrastructure/read-model/schema/team.schema';
 import { MATCHES } from '../domain';
 import { MatchMapper } from './eventstore/match.mapper';
 import { MatchEventStore } from './eventstore/matches.event-store';
@@ -12,6 +16,12 @@ export const MatchProviders: Provider[] = [
     provide: MATCH_MODEL,
     useFactory: (connection: Connection) =>
       connection.model('Match', MatchSchema),
+    inject: [DATABASE_CONNECTION],
+  },
+  {
+    provide: TEAM_MODEL,
+    useFactory: (connection: Connection) =>
+      connection.model('Team', TeamSchema),
     inject: [DATABASE_CONNECTION],
   },
   {

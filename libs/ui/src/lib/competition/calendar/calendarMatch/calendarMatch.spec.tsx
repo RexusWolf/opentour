@@ -1,35 +1,35 @@
+import { MatchDTO } from '@opentour/contracts';
 import { render } from '@testing-library/react';
-import faker from 'faker';
 import React from 'react';
 
 import { CalendarMatch } from './calendarMatch';
 
 describe('CalendarMatch', () => {
-  const defaultProps = {
-    localTeam: aTeam(),
-    visitorTeam: aTeam(),
+  const match: MatchDTO = {
+    id: 'testId',
+    index: 0,
+    journey: 'Cuartos',
+    competitionId: 'testId',
+    localTeam: {
+      name: 'testTeam',
+      score: 0,
+    },
+    visitorTeam: {
+      name: 'testTeam',
+      score: 0,
+    },
     date: new Date(),
-    isScheduled: false,
-    result: { localTeam: 0, visitorTeam: 0 },
   };
 
   it('should render successfully', () => {
-    const { baseElement } = render(<CalendarMatch {...defaultProps} />);
+    const { baseElement } = render(<CalendarMatch match={match} />);
     expect(baseElement).toBeTruthy();
   });
 
   it('should render a match with a schedule buttons and two teams', () => {
-    const { getByText } = render(<CalendarMatch {...defaultProps} />);
-    getByText(defaultProps.localTeam.name);
-    getByText(defaultProps.visitorTeam.name);
+    const { getByText } = render(<CalendarMatch match={match} />);
+    getByText(match.localTeam.name);
+    getByText(match.visitorTeam.name);
     getByText('Schedule');
   });
 });
-
-function aTeam() {
-  return {
-    id: faker.datatype.uuid(),
-    name: faker.name.title(),
-    logo: faker.internet.url(),
-  };
-}

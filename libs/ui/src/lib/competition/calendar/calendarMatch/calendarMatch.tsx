@@ -2,20 +2,28 @@ import { Button, Dialog, Grid, Typography } from '@material-ui/core';
 import { format } from 'date-fns';
 import React from 'react';
 
-import { MatchDTO } from '../../../../../../contracts/src';
+import { MatchDTO } from '@opentour/contracts';
 import { useStyles } from '../../../theme';
 import { TeamSlot } from '../../shared/teamSlot/teamSlot';
 import { MatchManager } from '../matchManager/matchManager';
 
-type Props = {
+type CalendarMatchProps = {
   match: MatchDTO;
 };
-export const CalendarMatch: React.FunctionComponent<Props> = ({ match }) => {
+export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
+  match,
+}) => {
   const classes = useStyles();
 
-  const { localTeamId, visitorTeamId } = match;
-  const [result, setResult] = React.useState(match.result);
-  const [date, setDate] = React.useState(match.date);
+  const { localTeam, visitorTeam, date: matchDate, index } = match;
+
+  const matchResult = {
+    localTeamScore: localTeam.score,
+    visitorTeamScore: visitorTeam.score,
+  };
+
+  const [result, setResult] = React.useState(matchResult);
+  const [date, setDate] = React.useState(matchDate);
   const [isScheduled, setIsScheduled] = React.useState(
     match.date !== undefined
   );
@@ -23,16 +31,6 @@ export const CalendarMatch: React.FunctionComponent<Props> = ({ match }) => {
 
   const defaultLogo =
     'https://1.bp.blogspot.com/-aipUpK9KzXI/X4eoge09D9I/AAAAAAABg4c/lvcbdc8I148_NRF4gzuKlR4Wf4KbKGj6gCLcBGAsYHQ/s128/Cordoba%2BCF128x.png';
-
-  const localTeam = {
-    id: localTeamId,
-    name: localTeamId,
-  };
-
-  const visitorTeam = {
-    id: visitorTeamId,
-    name: visitorTeamId,
-  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -71,7 +69,7 @@ export const CalendarMatch: React.FunctionComponent<Props> = ({ match }) => {
       <Grid container item direction="column" xs={8}>
         {isScheduled && (
           <Typography color="textSecondary" className={classes.containerItem}>
-            Match result: {result.localTeamScore} - {result.visitorTeamScore}
+            {index} Partido: {result.localTeamScore} - {result.visitorTeamScore}
           </Typography>
         )}
         <TeamSlot name={localTeam.name} logo={defaultLogo} />

@@ -8,6 +8,7 @@ import {
   GetCompetitionByNameQuery,
   GetCompetitionQuery,
   GetCompetitionsQuery,
+  StartCompetitionCommand,
   UpdateCompetitionCommand,
 } from '../../application';
 import { CompetitionMapper } from '../eventstore/competition.mapper';
@@ -47,6 +48,10 @@ export class CompetitionService {
     return this.commandBus.execute(
       new UpdateCompetitionCommand({ id, name, moderatorIds })
     );
+  }
+
+  async startCompetition(id: string): Promise<void> {
+    return await this.commandBus.execute(new StartCompetitionCommand(id));
   }
 
   async getCompetition(id: string): Promise<CompetitionDTO | null> {

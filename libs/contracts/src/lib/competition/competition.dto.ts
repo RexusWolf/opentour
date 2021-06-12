@@ -4,4 +4,5 @@ export class CompetitionDTO {
   type: string;
   sportName: string;
   moderatorIds: string[];
+  hasStarted: boolean;
 }

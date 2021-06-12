@@ -3,8 +3,13 @@ export class MatchDTO {
   competitionId: string;
   index: number;
   journey: string;
-  localTeamId: string;
-  visitorTeamId: string;
-  date: Date | null;
-  result: { localTeamScore: number; visitorTeamScore: number };
+  localTeam: {
+    name: string;
+    score: number;
+  };
+  visitorTeam: {
+    name: string;
+    score: number;
+  };
+  date: Date;
 }

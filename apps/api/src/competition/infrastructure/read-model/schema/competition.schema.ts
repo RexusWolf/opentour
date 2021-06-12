@@ -6,6 +6,7 @@ export const CompetitionSchema = new Schema({
   type: String,
   sportName: String,
   moderatorIds: [String],
+  hasStarted: Boolean,
 });
 
 export interface CompetitionView extends Document {
@@ -14,6 +15,7 @@ export interface CompetitionView extends Document {
   readonly type: string;
   readonly sportName: string;
   readonly moderatorIds: string[];
+  readonly hasStarted: boolean;
 }
 
 export const COMPETITION_MODEL = 'COMPETITION_MODEL';

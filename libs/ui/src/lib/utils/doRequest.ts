@@ -3,7 +3,7 @@ import axios from 'axios';
 export async function doRequest(params: {
   method: 'POST' | 'PUT';
   url: string;
-  data: any;
+  data?: any;
 }) {
   return await axios({
     method: params.method,

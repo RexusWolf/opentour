@@ -34,8 +34,10 @@ describe('Create match handler', () => {
       new CreateMatchCommand({
         id: match.id.value,
         competitionId: match.competitionId.value,
+        visitorTeamId: match.visitorTeamId.value,
+        localTeamId: match.localTeamId.value,
         index: match.index.value,
-        journey: match.journey.value,
+        journey: match.journey!.value,
       })
     );
 
@@ -49,8 +51,10 @@ describe('Create match handler', () => {
         new CreateMatchCommand({
           id: match.id.value,
           competitionId: match.competitionId.value,
+          visitorTeamId: match.visitorTeamId.value,
+          localTeamId: match.localTeamId.value,
           index: match.index.value,
-          journey: match.journey.value,
+          journey: match.journey!.value,
         })
       )
     ).rejects.toThrow();

@@ -19,18 +19,9 @@ export class UpdateMatchHandler implements ICommandHandler<UpdateMatchCommand> {
       throw MatchIdNotFoundError.with(id);
     }
 
-    match.isFinished()
-      ? match.modifyResult(command.result)
-      : match.registerResult(command.result);
+    match.schedule(command.date);
 
-    match.hasLocalTeam() &&
-      match.addLocalTeam(TeamId.fromString(command.localTeamId));
-    match.hasVisitorTeam() &&
-      match.addVisitorTeam(TeamId.fromString(command.visitorTeamId));
-
-    match.isScheduled()
-      ? match.modifySchedule(command.date)
-      : match.schedule(command.date);
+    match.modifyResult(command.result);
 
     this.matches.save(match);
   }

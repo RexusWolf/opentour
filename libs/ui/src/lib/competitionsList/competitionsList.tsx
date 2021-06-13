@@ -12,7 +12,7 @@ import React from 'react';
 
 import { CompetitionRow } from './competitionRow/competitionRow';
 
-export type Props = {
+type Props = {
   competitions: CompetitionDTO[];
 };
 

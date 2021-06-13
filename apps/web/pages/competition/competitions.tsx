@@ -1,7 +1,6 @@
 import { Button, Grid, Typography } from '@material-ui/core';
 import { useCompetitions } from '@opentour/hooks';
-import { CompetitionsList, Layout, useStyles } from '@opentour/ui';
-import { CompetitionWizard } from 'libs/ui/src/lib/competition/competitionWizard/competitionWizard';
+import { CompetitionsList, CompetitionWizard,Layout, useStyles  } from '@opentour/ui';
 import { useSession } from 'next-auth/client';
 import React from 'react';
 

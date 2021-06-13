@@ -121,8 +121,6 @@ export class MatchController {
     try {
       return await this.matchService.updateMatch({
         id,
-        localTeamId: editMatchDTO.localTeamId,
-        visitorTeamId: editMatchDTO.visitorTeamId,
         date: editMatchDTO.date,
         result: editMatchDTO.result,
       });

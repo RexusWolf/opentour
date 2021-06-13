@@ -5,7 +5,6 @@ import { TeamId } from '../../../team/domain/model';
 import { LocalTeamWasAddedToMatch } from '../event/local-team-was-added-to-match';
 import { MatchResultWasModified } from '../event/match-result-was-modified';
 import { MatchResultWasRegistered } from '../event/match-result-was-registered';
-import { MatchScheduleWasModified } from '../event/match-schedule-was-modified';
 import { MatchWasCreated } from '../event/match-was-created';
 import { MatchWasDeleted } from '../event/match-was-deleted';
 import { MatchWasScheduled } from '../event/match-was-scheduled';
@@ -91,8 +90,16 @@ export class Match extends AggregateRoot {
     return this._date;
   }
 
+  set date(date: Date | undefined) {
+    this._date = date;
+  }
+
   get result(): MatchResult | undefined {
     return this._result;
+  }
+
+  set result(result: MatchResult | undefined) {
+    this._result = result;
   }
 
   isScheduled(): boolean {
@@ -133,24 +140,24 @@ export class Match extends AggregateRoot {
   }
 
   modifyResult(result: MatchResult): void {
-    if (!this.isFinished() || this._result === result) {
+    if (this.isFinished() || this._result === result) {
       return;
     }
-    this.apply(new MatchResultWasModified(this.id.value, result));
+    this.result = result;
+    this.apply(
+      new MatchResultWasModified(this.id.value, {
+        localTeamScore: result.localTeamScore.value,
+        visitorTeamScore: result.visitorTeamScore.value,
+      })
+    );
   }
 
   schedule(date: Date): void {
-    if (this.isScheduled()) {
+    if (this._date === date) {
       return;
     }
+    this.date = date;
     this.apply(new MatchWasScheduled(this.id.value, date));
-  }
-
-  modifySchedule(date: Date): void {
-    if (!this.isScheduled() || this._date === date) {
-      return;
-    }
-    this.apply(new MatchScheduleWasModified(this.id.value, date));
   }
 
   delete(): void {
@@ -164,6 +171,8 @@ export class Match extends AggregateRoot {
   private onMatchWasCreated(event: MatchWasCreated) {
     this._id = MatchId.fromString(event.id);
     this._competitionId = CompetitionId.fromString(event.competitionId);
+    this._localTeamId = TeamId.fromString(event.localTeamId);
+    this._visitorTeamId = TeamId.fromString(event.visitorTeamId);
     this._index = MatchIndex.fromNumber(event.index);
     this._journey = MatchJourney.fromString(event.journey);
   }

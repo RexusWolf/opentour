@@ -15,8 +15,6 @@ describe('Update match handler', () => {
   const matches: Partial<Matches> = {};
 
   const match = new MatchBuilder().build();
-  const localTeamId = TeamId.fromString(faker.datatype.uuid());
-  const visitorTeamId = TeamId.fromString(faker.datatype.uuid());
   const date = faker.datatype.datetime();
   const result: MatchResult = new MatchResult({
     localTeamScore: TeamScore.fromNumber(faker.datatype.number()),
@@ -45,8 +43,6 @@ describe('Update match handler', () => {
     await command$.execute(
       new UpdateMatchCommand({
         id: match.id.value,
-        localTeamId: localTeamId.value,
-        visitorTeamId: visitorTeamId.value,
         date: date,
         result: result,
       })
@@ -59,8 +55,6 @@ describe('Update match handler', () => {
       command$.execute(
         new UpdateMatchCommand({
           id: match.id.value,
-          localTeamId: localTeamId.value,
-          visitorTeamId: visitorTeamId.value,
           date: date,
           result: result,
         })

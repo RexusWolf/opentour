@@ -56,17 +56,13 @@ export class MatchService {
 
   async updateMatch(params: {
     id: string;
-    localTeamId: string;
-    visitorTeamId: string;
     date: Date;
     result: { localTeamScore: number; visitorTeamScore: number };
   }): Promise<void> {
-    const { id, localTeamId, visitorTeamId, date, result } = params;
+    const { id, date, result } = params;
     return this.commandBus.execute(
       new UpdateMatchCommand({
         id,
-        localTeamId,
-        visitorTeamId,
         date,
         result: MatchResult.fromTeamScore(
           result.localTeamScore,

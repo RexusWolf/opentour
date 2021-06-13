@@ -1,5 +1,5 @@
-import useSWR from 'swr';
 import { CompetitionDTO, MatchDTO, TeamDTO } from '@opentour/contracts';
+import useSWR from 'swr';
 
 export function useCompetition(id: string): CompetitionDTO {
   const { data, error } = useSWR(['/api/competitions/{id}?id=' + id], fetchUrl);

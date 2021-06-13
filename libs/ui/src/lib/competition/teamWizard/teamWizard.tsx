@@ -1,8 +1,8 @@
 import { Button, Dialog, Grid, TextField, Typography } from '@material-ui/core';
+import { CreateTeamDTO } from '@opentour/contracts';
 import React from 'react';
 import { v4 as uuid } from 'uuid';
 
-import { CreateTeamDTO } from '@opentour/contracts';
 import { useStyles } from '../../theme';
 import { doRequest } from '../../utils/doRequest';
 
@@ -31,7 +31,7 @@ export const TeamWizard: React.FunctionComponent<Props> = (props) => {
     };
 
     await createTeam(team);
-    location.reload();
+    window.location.reload();
     onClose();
   };
 

@@ -11,11 +11,11 @@ describe('CalendarMatch', () => {
     journey: 'Cuartos',
     competitionId: 'testId',
     localTeam: {
-      name: 'testTeam',
+      name: 'localTeam',
       score: 0,
     },
     visitorTeam: {
-      name: 'testTeam',
+      name: 'visitorTeam',
       score: 0,
     },
     date: new Date(),
@@ -26,10 +26,10 @@ describe('CalendarMatch', () => {
     expect(baseElement).toBeTruthy();
   });
 
-  it('should render a match with a schedule buttons and two teams', () => {
+  it('should render a match with a modify button and two teams', () => {
     const { getByText } = render(<CalendarMatch match={match} />);
     getByText(match.localTeam.name);
     getByText(match.visitorTeam.name);
-    getByText('Schedule');
+    getByText('Modify');
   });
 });

@@ -3,15 +3,15 @@ import { v4 as uuid } from 'uuid';
 
 import { doRequest } from '../../utils/doRequest';
 
-const journeys = [
-  'Sesentaicuatroavos',
-  'Treintaidosavos',
-  'Dieciseisavos',
-  'Octavos',
-  'Cuartos',
-  'Semifinales',
-  'Final',
-];
+// const journeys = [
+//   'Sesentaicuatroavos',
+//   'Treintaidosavos',
+//   'Dieciseisavos',
+//   'Octavos',
+//   'Cuartos',
+//   'Semifinales',
+//   'Final',
+// ];
 
 export async function generateMatches(
   teams: TeamDTO[],

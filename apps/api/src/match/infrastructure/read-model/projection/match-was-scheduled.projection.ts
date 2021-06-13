@@ -14,11 +14,8 @@ export class MatchWasScheduledProjection
   ) {}
 
   async handle(event: MatchWasScheduled) {
-    const matchView = new this.matchModel({
-      _id: event.id,
-      date: event.date,
-    });
-
-    await matchView.save();
+    await this.matchModel
+      .updateOne({ _id: event.id }, { $set: { date: event.date } })
+      .exec();
   }
 }

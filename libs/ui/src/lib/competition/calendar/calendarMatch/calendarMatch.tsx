@@ -1,15 +1,25 @@
 import { Button, Dialog, Grid, Typography } from '@material-ui/core';
+import { EditMatchDTO, MatchDTO } from '@opentour/contracts';
 import { format } from 'date-fns';
 import React from 'react';
 
-import { MatchDTO } from '@opentour/contracts';
 import { useStyles } from '../../../theme';
+import { doRequest } from '../../../utils/doRequest';
 import { TeamSlot } from '../../shared/teamSlot/teamSlot';
 import { MatchManager } from '../matchManager/matchManager';
 
 type CalendarMatchProps = {
   match: MatchDTO;
 };
+
+const modifyMatch = async (matchId: string, editMatchDTO: EditMatchDTO) => {
+  await doRequest({
+    method: 'PUT',
+    url: `/matches/${matchId}`,
+    data: editMatchDTO,
+  });
+};
+
 export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
   match,
 }) => {
@@ -52,7 +62,12 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
     setDate(date);
   };
 
-  const handleWasScheduled = () => {
+  const handleWasModified = async () => {
+    await modifyMatch(match.id, { date, result });
+    window.location.reload();
+  };
+
+  const handleWasScheduled = async () => {
     setIsScheduled(true);
   };
 
@@ -80,8 +95,8 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
           <>
             {date && (
               <>
-                <Typography>{format(date, 'MMM, dd')}</Typography>
-                <Typography>{format(date, 'kk:mm')}</Typography>
+                <Typography>{format(new Date(date), 'MMM, dd')}</Typography>
+                <Typography>{format(new Date(date), 'kk:mm')}</Typography>
               </>
             )}
 
@@ -112,7 +127,10 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
             handleLocalTeamScore={handleLocalTeamScore}
             handleVisitorTeamScore={handleVisitorTeamScore}
             handleDateChange={handleDateChange}
-            handleWasScheduled={handleWasScheduled}
+            handleWasScheduled={async () => {
+              handleWasScheduled();
+              await handleWasModified();
+            }}
             onClose={handleClose}
           />
         </Dialog>

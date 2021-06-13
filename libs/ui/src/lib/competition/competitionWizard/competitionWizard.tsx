@@ -7,7 +7,7 @@ import { v4 as uuid } from 'uuid';
 import { useStyles } from '../../theme';
 import { doRequest } from '../../utils/doRequest';
 
-export type Props = {
+type Props = {
   open: boolean;
   onClose: () => void;
 };
@@ -45,7 +45,7 @@ export const CompetitionWizard: React.FunctionComponent<Props> = (props) => {
   };
   const handleCreateCompetition = async () => {
     await createCompetition(competitionValues);
-    location.reload();
+    window.location.reload();
     onClose();
   };
 

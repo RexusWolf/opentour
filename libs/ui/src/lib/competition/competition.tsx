@@ -84,7 +84,7 @@ export const Competition: React.FunctionComponent<Props> = ({
   const handleStartCompetition = async () => {
     await generateMatches(teams, competition.id);
     await startCompetition(competition.id);
-    location.reload();
+    window.location.reload();
   };
 
   return (

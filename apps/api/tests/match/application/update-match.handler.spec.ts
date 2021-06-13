@@ -4,12 +4,7 @@ import {
   UpdateMatchCommand,
   UpdateMatchHandler,
 } from '../../../src/match/application';
-import {
-  MATCHES,
-  Matches,
-  MatchResult,
-  TeamScore,
-} from '../../../src/match/domain';
+import { MATCHES, Matches } from '../../../src/match/domain';
 import { MatchBuilder } from '../builders/MatchBuilder';
 import faker = require('faker');
 
@@ -19,10 +14,10 @@ describe('Update match handler', () => {
 
   const match = MatchBuilder.random();
   const date = faker.datatype.datetime();
-  const result: MatchResult = new MatchResult({
-    localTeamScore: TeamScore.fromNumber(faker.datatype.number()),
-    visitorTeamScore: TeamScore.fromNumber(faker.datatype.number()),
-  });
+  const result = {
+    localTeamScore: faker.datatype.number(),
+    visitorTeamScore: faker.datatype.number(),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -44,10 +39,9 @@ describe('Update match handler', () => {
     matches.find = jest.fn().mockResolvedValue(match);
 
     await command$.execute(
-      new UpdateMatchCommand({
-        id: match.id.value,
-        date: date,
-        result: result,
+      new UpdateMatchCommand(match.id.value, {
+        date,
+        result,
       })
     );
 
@@ -56,10 +50,9 @@ describe('Update match handler', () => {
   it('should not update the match if it is not found', async () => {
     await expect(() =>
       command$.execute(
-        new UpdateMatchCommand({
-          id: match.id.value,
-          date: date,
-          result: result,
+        new UpdateMatchCommand(match.id.value, {
+          date,
+          result,
         })
       )
     ).rejects.toThrow();

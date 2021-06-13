@@ -33,8 +33,7 @@ describe('Update competition handler', () => {
     competitions.find = jest.fn().mockResolvedValue(competition);
 
     await command$.execute(
-      new UpdateCompetitionCommand({
-        id: competition.id.value,
+      new UpdateCompetitionCommand(competition.id.value, {
         name: competition.name.value,
         moderatorIds: [competition.moderatorIds[0].value],
       })
@@ -46,8 +45,7 @@ describe('Update competition handler', () => {
   it('should not update the competition if it is not found', async () => {
     await expect(() =>
       command$.execute(
-        new UpdateCompetitionCommand({
-          id: competition.id.value,
+        new UpdateCompetitionCommand(competition.id.value, {
           name: competition.name.value,
           moderatorIds: [competition.moderatorIds[0].value],
         })

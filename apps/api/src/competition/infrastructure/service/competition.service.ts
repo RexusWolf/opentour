@@ -46,7 +46,7 @@ export class CompetitionService {
   }): Promise<void> {
     const { id, name, moderatorIds } = params;
     return this.commandBus.execute(
-      new UpdateCompetitionCommand({ id, name, moderatorIds })
+      new UpdateCompetitionCommand(id, { name, moderatorIds })
     );
   }
 

@@ -61,13 +61,9 @@ export class MatchService {
   }): Promise<void> {
     const { id, date, result } = params;
     return this.commandBus.execute(
-      new UpdateMatchCommand({
-        id,
+      new UpdateMatchCommand(id, {
         date,
-        result: MatchResult.fromTeamScore(
-          result.localTeamScore,
-          result.visitorTeamScore
-        ),
+        result,
       })
     );
   }

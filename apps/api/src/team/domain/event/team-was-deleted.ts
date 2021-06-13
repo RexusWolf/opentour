@@ -4,7 +4,7 @@ export class TeamWasDeleted extends StorableEvent {
   eventAggregate = 'team';
   eventVersion = 1;
 
-  constructor(public readonly id: string) {
+  constructor(readonly id: string) {
     super();
   }
 }

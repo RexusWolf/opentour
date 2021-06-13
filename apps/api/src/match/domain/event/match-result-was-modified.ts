@@ -5,8 +5,8 @@ export class MatchResultWasModified extends StorableEvent {
   eventVersion = 1;
 
   constructor(
-    public readonly id: string,
-    public readonly result: { localTeamScore: number; visitorTeamScore: number }
+    readonly id: string,
+    readonly result: { localTeamScore: number; visitorTeamScore: number }
   ) {
     super();
   }

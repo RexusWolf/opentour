@@ -36,13 +36,13 @@ describe('Update team handler', () => {
   it('should update the found team for the given id', async () => {
     teams.find = jest.fn().mockResolvedValue(team);
 
-    await command$.execute(new UpdateTeamCommand({ teamId, name, membersIds }));
+    await command$.execute(new UpdateTeamCommand(teamId, { name, membersIds }));
 
     expect(teams.save).toHaveBeenCalledTimes(1);
   });
   it('should not update the team if it is not found', async () => {
     await expect(() =>
-      command$.execute(new UpdateTeamCommand({ teamId, name, membersIds }))
+      command$.execute(new UpdateTeamCommand(teamId, { name, membersIds }))
     ).rejects.toThrow();
 
     expect(teams.save).not.toHaveBeenCalled();

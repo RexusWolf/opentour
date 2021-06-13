@@ -1,15 +1,14 @@
 import { ICommand } from '@nestjs/cqrs';
-
-import { MatchResult } from '../../domain';
+import { EditMatchDTO } from '@opentour/contracts';
 
 export class UpdateMatchCommand implements ICommand {
   readonly id: string;
   readonly date: Date;
-  readonly result: MatchResult;
+  readonly result: { localTeamScore: number; visitorTeamScore: number };
 
-  constructor(params: { id: string; date: Date; result: MatchResult }) {
-    this.id = params.id;
-    this.date = params.date;
-    this.result = params.result;
+  constructor(id: string, editMatchDTO: EditMatchDTO) {
+    this.id = id;
+    this.date = editMatchDTO.date;
+    this.result = editMatchDTO.result;
   }
 }

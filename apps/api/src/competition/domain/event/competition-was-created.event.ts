@@ -5,11 +5,11 @@ export class CompetitionWasCreated extends StorableEvent {
   eventVersion = 1;
 
   constructor(
-    public readonly id: string,
-    public readonly name: string,
-    public readonly type: string,
-    public readonly sportName: string,
-    public readonly moderatorId: string
+    readonly id: string,
+    readonly name: string,
+    readonly type: string,
+    readonly sportName: string,
+    readonly moderatorId: string
   ) {
     super();
   }

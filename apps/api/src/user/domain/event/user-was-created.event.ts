@@ -5,9 +5,9 @@ export class UserWasCreated extends StorableEvent {
   eventVersion = 1;
 
   constructor(
-    public readonly id: string,
-    public readonly username: string,
-    public readonly password: string
+    readonly id: string,
+    readonly username: string,
+    readonly password: string
   ) {
     super();
   }

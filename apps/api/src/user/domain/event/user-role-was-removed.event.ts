@@ -4,7 +4,7 @@ export class UserRoleWasRemoved extends StorableEvent {
   eventAggregate = 'user';
   eventVersion = 1;
 
-  constructor(public readonly id: string, public readonly role: string) {
+  constructor(readonly id: string, readonly role: string) {
     super();
   }
 }

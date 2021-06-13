@@ -4,7 +4,7 @@ export class MatchWasDeleted extends StorableEvent {
   eventAggregate = 'match';
   eventVersion = 1;
 
-  constructor(public readonly id: string) {
+  constructor(readonly id: string) {
     super();
   }
 }

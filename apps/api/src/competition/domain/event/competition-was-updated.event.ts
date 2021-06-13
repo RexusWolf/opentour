@@ -5,9 +5,9 @@ export class CompetitionWasUpdated extends StorableEvent {
   eventVersion = 1;
 
   constructor(
-    public readonly id: string,
-    public readonly name: string,
-    public readonly moderatorIds: string[]
+    readonly id: string,
+    readonly name: string,
+    readonly moderatorIds: string[]
   ) {
     super();
   }

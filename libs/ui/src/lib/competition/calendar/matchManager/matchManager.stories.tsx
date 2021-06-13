@@ -15,6 +15,6 @@ const Template: Story<Props> = (args) => <MatchManager {...args} />;
 export const Default = Template.bind({});
 Default.args = {
   isScheduled: false,
-  result: { localTeam: 0, visitorTeam: 0 },
+  result: { localTeamScore: 0, visitorTeamScore: 0 },
   date: new Date(),
 };

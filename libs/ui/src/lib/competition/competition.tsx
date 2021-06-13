@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Tab, Tabs } from '@material-ui/core';
+import { Button, Grid, Tab, Tabs } from '@material-ui/core';
 import { CompetitionDTO } from '@opentour/contracts';
 import {
   useMatchesByCompetitionId,
@@ -9,33 +9,12 @@ import React from 'react';
 import { useStyles } from '../theme';
 import { doRequest } from '../utils/doRequest';
 import { Calendar } from './calendar/calendar';
+import { CompetitionTab } from './competitionTab/competitionTab';
 import { Ranking } from './ranking/ranking';
 import { ranking } from './shared/ranking';
 import { TeamList } from './teamsList/teamsList';
 import { TeamWizard } from './teamWizard/teamWizard';
 import { generateMatches } from './utils/generateMatches';
-
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: any;
-  value: any;
-}
-
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`vertical-tabpanel-${index}`}
-      aria-labelledby={`vertical-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box p={2}>{children}</Box>}
-    </div>
-  );
-}
 
 export type Props = {
   competition: CompetitionDTO;
@@ -103,15 +82,15 @@ export const Competition: React.FunctionComponent<Props> = ({
         <Tab label="Calendar" />
         <Tab label="Ranking" />
       </Tabs>
-      <TabPanel value={tabIndex} index={0}>
+      <CompetitionTab value={tabIndex} index={0}>
         <TeamList teams={teams} />
-      </TabPanel>
-      <TabPanel value={tabIndex} index={1}>
+      </CompetitionTab>
+      <CompetitionTab value={tabIndex} index={1}>
         <Calendar matches={matches} />
-      </TabPanel>
-      <TabPanel value={tabIndex} index={2}>
+      </CompetitionTab>
+      <CompetitionTab value={tabIndex} index={2}>
         <Ranking ranking={ranking} />
-      </TabPanel>
+      </CompetitionTab>
       <Grid container justify="flex-end" className={classes.container}>
         <Button
           className={classes.containerItem}

@@ -2,7 +2,12 @@ import { AggregateRoot } from '@nestjs/cqrs';
 
 import { CompetitionId } from '../../../competition/domain';
 import { TeamId } from '../../../team/domain';
-import { MatchResultWasModified , MatchWasCreated , MatchWasDeleted , MatchWasScheduled } from '../event';
+import {
+  MatchResultWasModified,
+  MatchWasCreated,
+  MatchWasDeleted,
+  MatchWasScheduled,
+} from '../event';
 import { MatchId } from './match-id';
 import { MatchIndex } from './match-index';
 import { MatchJourney } from './match-journey';

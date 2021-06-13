@@ -3,7 +3,6 @@ import React from 'react';
 import { withNextRouter } from 'storybook-addon-next-router';
 
 import { Match } from '../../shared/Match';
-import { teams } from '../../shared/teams';
 import { CalendarMatch } from './calendarMatch';
 
 export default {
@@ -12,13 +11,22 @@ export default {
   decorators: [withNextRouter],
 } as Meta;
 
-const Template: Story<Match> = (args) => <CalendarMatch {...args} />;
+const defaultMatch = {
+  id: 'matchId',
+  competitionId: 'competitionId',
+  index: 0,
+  journey: 'Cuartos',
+  localTeam: {
+    name: 'localTeamName',
+    score: 0,
+  },
+  visitorTeam: {
+    name: 'visitorTeamName',
+    score: 0,
+  },
+  date: new Date(),
+};
+
+const Template: Story<Match> = () => <CalendarMatch match={defaultMatch} />;
 
 export const Default = Template.bind({});
-Default.args = {
-  localTeam: teams[0],
-  visitorTeam: teams[1],
-  date: new Date(),
-  isScheduled: false,
-  result: { localTeam: 0, visitorTeam: 0 },
-};

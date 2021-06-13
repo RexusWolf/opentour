@@ -53,7 +53,10 @@ export const MatchManager: React.FunctionComponent<Props> = (props) => {
         justify="center"
         className={classes.containerItem}
       >
-        <DateAndTimePicker initialDate={date} dateChange={dateChange} />
+        <DateAndTimePicker
+          initialDate={date ? date : new Date()}
+          dateChange={dateChange}
+        />
       </Grid>
       <Grid
         container

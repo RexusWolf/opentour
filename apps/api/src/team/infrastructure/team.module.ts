@@ -6,7 +6,6 @@ import { DatabaseModule } from '../../common/database/database.module';
 import {
   CreateTeamHandler,
   DeleteTeamHandler,
-  GetTeamByNameHandler,
   GetTeamHandler,
   GetTeamsHandler,
   UpdateTeamHandler,
@@ -24,7 +23,6 @@ const CommandHandlers = [
   UpdateTeamHandler,
 ];
 const QueryHandlers = [
-  GetTeamByNameHandler,
   GetTeamsByCompetitionIdHandler,
   GetTeamHandler,
   GetTeamsHandler,

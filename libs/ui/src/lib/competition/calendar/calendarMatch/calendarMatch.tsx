@@ -6,6 +6,7 @@ import React from 'react';
 import { useStyles } from '../../../theme';
 import { doRequest } from '../../../utils/doRequest';
 import { TeamSlot } from '../../shared/teamSlot/teamSlot';
+import { getRandomLogo } from '../../utils/getRandomLogo';
 import { MatchManager } from '../matchManager/matchManager';
 
 type CalendarMatchProps = {
@@ -34,13 +35,8 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
 
   const [result, setResult] = React.useState(matchResult);
   const [date, setDate] = React.useState(matchDate);
-  const [isScheduled, setIsScheduled] = React.useState(
-    match.date !== undefined
-  );
+  const [isScheduled, setIsScheduled] = React.useState(match.date !== null);
   const [open, setOpen] = React.useState(false);
-
-  const defaultLogo =
-    'https://1.bp.blogspot.com/-aipUpK9KzXI/X4eoge09D9I/AAAAAAABg4c/lvcbdc8I148_NRF4gzuKlR4Wf4KbKGj6gCLcBGAsYHQ/s128/Cordoba%2BCF128x.png';
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -64,7 +60,6 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
 
   const handleWasModified = async () => {
     await modifyMatch(match.id, { date, result });
-    window.location.reload();
   };
 
   const handleWasScheduled = async () => {
@@ -87,8 +82,8 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
             {index} Partido: {result.localTeamScore} - {result.visitorTeamScore}
           </Typography>
         )}
-        <TeamSlot name={localTeam.name} logo={defaultLogo} />
-        <TeamSlot name={visitorTeam.name} logo={defaultLogo} />
+        <TeamSlot name={localTeam.name} logo={getRandomLogo()} />
+        <TeamSlot name={visitorTeam.name} logo={getRandomLogo()} />
       </Grid>
       <Grid container item direction="column" alignItems="center" xs={4}>
         {isScheduled ? (

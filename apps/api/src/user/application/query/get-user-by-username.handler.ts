@@ -2,8 +2,7 @@ import { Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { UserDTO } from '@opentour/contracts';
 
-import { USERS, Users } from '../../domain';
-import { Username } from '../../domain/username';
+import { Username,USERS, Users  } from '../../domain';
 import { UserMapper } from '../../infrastructure/repository/user.mapper';
 import { GetUserByUsernameQuery } from './get-user-by-username.query';
 

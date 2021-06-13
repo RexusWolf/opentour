@@ -4,6 +4,7 @@ import React from 'react';
 
 import { useStyles } from '../../theme';
 import { TeamSlot } from '../shared/teamSlot/teamSlot';
+import { getRandomLogo } from '../utils/getRandomLogo';
 
 export type Props = {
   teams: TeamDTO[];
@@ -13,8 +14,6 @@ export const TeamList: React.FunctionComponent<Props> = ({ teams }) => {
   const classes = useStyles();
 
   const teamsInList = teams || [];
-  const defaultLogo =
-    'https://1.bp.blogspot.com/-aipUpK9KzXI/X4eoge09D9I/AAAAAAABg4c/lvcbdc8I148_NRF4gzuKlR4Wf4KbKGj6gCLcBGAsYHQ/s128/Cordoba%2BCF128x.png';
 
   return (
     <>
@@ -28,7 +27,7 @@ export const TeamList: React.FunctionComponent<Props> = ({ teams }) => {
               className={classes.containerItem}
             >
               <Grid item xs={11}>
-                <TeamSlot name={team.name} logo={defaultLogo} />
+                <TeamSlot name={team.name} logo={getRandomLogo()} />
               </Grid>
               <Grid container item justify="center" xs={1}>
                 <Button variant="contained" className={classes.errorButton}>

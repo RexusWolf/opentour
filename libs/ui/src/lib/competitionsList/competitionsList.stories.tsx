@@ -1,8 +1,9 @@
+import { CompetitionDTO } from '@opentour/contracts';
 import { Meta, Story } from '@storybook/react';
 import React from 'react';
 import { withNextRouter } from 'storybook-addon-next-router';
 
-import { CompetitionsList, Props } from './competitionsList';
+import { CompetitionsList } from './competitionsList';
 
 export default {
   component: CompetitionsList,
@@ -10,7 +11,9 @@ export default {
   decorators: [withNextRouter],
 } as Meta;
 
-const Template: Story<Props> = (args) => <CompetitionsList {...args} />;
+const Template: Story<{ competitions: CompetitionDTO }> = (args) => (
+  <CompetitionsList competitions={[]} />
+);
 
 export const Default = Template.bind({});
 Default.args = {

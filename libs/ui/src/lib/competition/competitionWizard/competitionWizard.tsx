@@ -16,12 +16,14 @@ export async function createCompetition(competition: CreateCompetitionDTO) {
   doRequest({ method: 'POST', url: '/competitions', data: competition });
 }
 
-export const CompetitionWizard: React.FunctionComponent<Props> = (props) => {
+export const CompetitionWizard: React.FunctionComponent<Props> = ({
+  open,
+  onClose,
+}) => {
   const classes = useStyles();
+  const currentUserId = uuid();
   const [sport, setSport] = React.useState<string>('');
   const [type, setType] = React.useState<string>('');
-
-  const currentUserId = uuid();
 
   const initialValues: CreateCompetitionDTO = {
     id: currentUserId,
@@ -34,8 +36,6 @@ export const CompetitionWizard: React.FunctionComponent<Props> = (props) => {
   const [competitionValues, setCompetitionValues] = React.useState(
     initialValues
   );
-
-  const { open, onClose } = props;
 
   const handleChange = (property, value) => {
     setCompetitionValues({

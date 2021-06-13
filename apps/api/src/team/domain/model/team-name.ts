@@ -10,7 +10,7 @@ export class TeamName extends ValueObject<Props> {
       throw new Error('Team name cannot be empty');
     }
 
-    if (!/^[a-z ,.'-]+$/i.test(name)) {
+    if (!/^(?:[A-Za-z]+)(?:[A-Za-z0-9 _]*)$/i.test(name)) {
       throw new Error('Invalid team name characters');
     }
 

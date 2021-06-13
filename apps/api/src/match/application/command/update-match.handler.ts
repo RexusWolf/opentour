@@ -1,7 +1,6 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import { TeamId } from '../../../team/domain/model';
 import { MatchIdNotFoundError } from '../../domain/exception/match-id-not-found.error';
 import { MatchId } from '../../domain/model';
 import { MATCHES, Matches } from '../../domain/repository';

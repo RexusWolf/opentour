@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { EventStore, StoreEventPublisher } from 'event-sourcing-nestjs';
 
-import { CompetitionId } from '../../../competition/domain/model';
 import { Match, MatchId } from '../../domain/model';
 import { Matches } from '../../domain/repository';
 
@@ -23,14 +22,6 @@ export class MatchEventStore implements Matches {
     match.loadFromHistory(events);
 
     return match;
-  }
-
-  findAllByCompetition(competitionId: CompetitionId): Promise<Match[] | null> {
-    throw new Error('Method not implemented.');
-  }
-
-  findAll(): Promise<Match[]> {
-    throw new Error('Method not implemented.');
   }
 
   save(match: Match): void {

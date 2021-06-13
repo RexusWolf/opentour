@@ -6,7 +6,6 @@ import {
 } from '../../../src/match/application';
 import { MatchResult, TeamScore } from '../../../src/match/domain';
 import { MATCHES, Matches } from '../../../src/match/domain/repository';
-import { TeamId } from '../../../src/team/domain/model';
 import { MatchBuilder } from '../builders/MatchBuilder';
 import faker = require('faker');
 

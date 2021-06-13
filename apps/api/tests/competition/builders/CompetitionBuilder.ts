@@ -20,7 +20,7 @@ export class CompetitionBuilder {
 
   constructor() {
     this.id = CompetitionId.fromString(faker.datatype.uuid());
-    this.name = CompetitionName.fromString(faker.random.word());
+    this.name = CompetitionName.fromString(faker.name.title());
     this.type = CompetitionTypeBuilder.random();
     this.sportName = SportName.fromString(faker.datatype.uuid());
     this.moderatorIds = [UserId.fromString(faker.datatype.uuid())];

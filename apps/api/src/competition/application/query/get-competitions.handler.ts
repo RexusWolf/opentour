@@ -15,6 +15,7 @@ export class GetCompetitionsHandler
     @Inject(COMPETITION_MODEL) private competitionModel: Model<CompetitionView>
   ) {}
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async execute(query: GetCompetitionsQuery): Promise<CompetitionView[]> {
     return await this.competitionModel.find().exec();
   }

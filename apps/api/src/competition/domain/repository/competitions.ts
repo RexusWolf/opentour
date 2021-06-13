@@ -1,9 +1,7 @@
-import { Competition, CompetitionId, CompetitionName } from '../model';
+import { Competition, CompetitionId } from '../model';
 
 export interface Competitions {
   find(competitionId: CompetitionId): Promise<Competition | null>;
-  findAll(): Promise<Competition[]>;
-  findOneByName(name: CompetitionName): Promise<Competition | null>;
   save(competition: Competition): void;
 }
 

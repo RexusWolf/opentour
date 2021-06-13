@@ -14,6 +14,7 @@ export class GetTeamsHandler implements IQueryHandler<GetTeamsQuery> {
     @Inject(TEAM_MODEL) private readonly teamModel: Model<TeamView>
   ) {}
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async execute(query: GetTeamsQuery): Promise<TeamView[]> {
     return await this.teamModel.find().exec();
   }

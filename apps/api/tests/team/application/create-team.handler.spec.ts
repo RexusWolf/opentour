@@ -26,7 +26,6 @@ describe('Create team handler', () => {
 
     command$ = module.get<CreateTeamHandler>(CreateTeamHandler);
     teams.find = jest.fn().mockResolvedValue(null);
-    teams.findOneByName = jest.fn().mockResolvedValue(null);
     teams.save = jest.fn();
   });
 

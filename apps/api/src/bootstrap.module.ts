@@ -6,6 +6,7 @@ import { EventSourcingModule } from 'event-sourcing-nestjs';
 import { RolesGuard } from './auth/security/roles.guard';
 import { DatabaseModule } from './common/database/database.module';
 import { configService } from './config/config.service';
+// eslint-disable @typescript-eslint/no-non-null-assertion
 
 @Module({
   imports: [

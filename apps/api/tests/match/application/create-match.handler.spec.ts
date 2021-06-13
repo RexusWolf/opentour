@@ -7,6 +7,7 @@ import {
 import { MATCHES, Matches } from '../../../src/match/domain/repository';
 import { MatchBuilder } from '../builders/MatchBuilder';
 
+// eslint-disable @typescript-eslint/no-non-null-assertion
 describe('Create match handler', () => {
   let command$: CreateMatchHandler;
   const matches: Partial<Matches> = {};

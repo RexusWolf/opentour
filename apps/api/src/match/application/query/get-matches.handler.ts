@@ -12,6 +12,7 @@ import { GetMatchesQuery } from './get-matches.query';
 export class GetMatchesHandler implements IQueryHandler<GetMatchesQuery> {
   constructor(@Inject(MATCH_MODEL) private matchModel: Model<MatchView>) {}
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async execute(query: GetMatchesQuery): Promise<MatchView[] | null> {
     return await this.matchModel.find().exec();
   }

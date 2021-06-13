@@ -1,4 +1,5 @@
 import { Connection, createConnection } from 'mongoose';
+// eslint-disable @typescript-eslint/no-non-null-assertion
 
 export const DATABASE_CONNECTION = 'DATABASE_CONNECTION';
 

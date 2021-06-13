@@ -8,7 +8,7 @@ import { TEAMS, Teams } from '../../../src/team/domain/repository';
 import { TeamBuilder } from '../builders/TeamBuilder';
 import faker = require('faker');
 
-describe.skip('Update team handler', () => {
+describe('Update team handler', () => {
   let command$: UpdateTeamHandler;
   const teams: Partial<Teams> = {};
 

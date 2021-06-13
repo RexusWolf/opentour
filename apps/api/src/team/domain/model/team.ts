@@ -62,6 +62,10 @@ export class Team extends AggregateRoot {
     return this._membersIds;
   }
 
+  set membersIds(members: UserId[]) {
+    this._membersIds = members;
+  }
+
   isCaptain(userId: UserId): boolean {
     return this._captainId === userId;
   }
@@ -99,5 +103,6 @@ export class Team extends AggregateRoot {
     this._competitionId = CompetitionId.fromString(event.competitionId);
     this._name = TeamName.fromString(event.name);
     this._captainId = UserId.fromString(event.captainId);
+    this.membersIds = [UserId.fromString(event.captainId)];
   }
 }

@@ -10,6 +10,10 @@ export class CompetitionName extends ValueObject<Props> {
       throw new Error('Competition name cannot be empty');
     }
 
+    if (!/^(?:[A-Za-z]+)(?:[A-Za-z0-9 _]*)$/i.test(name)) {
+      throw new Error('Invalid competition name characters');
+    }
+
     return new CompetitionName({ value: name });
   }
 

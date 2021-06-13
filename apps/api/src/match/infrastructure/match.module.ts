@@ -11,6 +11,7 @@ import {
   GetMatchHandler,
   UpdateMatchHandler,
 } from '../application';
+import { RegisterMatchHandler } from '../application/command/register-match.handler';
 import { MatchController } from './controller/match.controller';
 import { MatchEventStore } from './eventstore/matches.event-store';
 import { MatchProviders } from './match.providers';
@@ -21,6 +22,7 @@ const CommandHandlers = [
   CreateMatchHandler,
   DeleteMatchHandler,
   UpdateMatchHandler,
+  RegisterMatchHandler,
 ];
 const QueryHandlers = [
   GetMatchesByCompetitionIdHandler,

@@ -12,4 +12,5 @@ export class MatchDTO {
     score: number;
   };
   date: Date;
+  finished: Date | null;
 }

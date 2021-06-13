@@ -8,6 +8,7 @@ import {
   MatchWasDeleted,
   MatchWasScheduled,
 } from '../event';
+import { MatchWasRegistered } from '../event/match-was-registered';
 import { MatchId } from './match-id';
 import { MatchIndex } from './match-index';
 import { MatchJourney } from './match-journey';
@@ -21,7 +22,8 @@ export class Match extends AggregateRoot {
   private _localTeamId: TeamId;
   private _visitorTeamId: TeamId;
   private _date?: Date;
-  private _result?: MatchResult;
+  private _result: MatchResult;
+  private _finished: Date | null;
   private _deleted: Date | null;
 
   private constructor() {
@@ -93,20 +95,16 @@ export class Match extends AggregateRoot {
     this._date = date;
   }
 
-  get result(): MatchResult | undefined {
+  get result(): MatchResult {
     return this._result;
   }
 
-  set result(result: MatchResult | undefined) {
+  set result(result: MatchResult) {
     this._result = result;
   }
 
   isScheduled(): boolean {
     return this._date ? true : false;
-  }
-
-  isFinished(): boolean {
-    return this._result ? true : false;
   }
 
   hasLocalTeam(): boolean {
@@ -117,15 +115,15 @@ export class Match extends AggregateRoot {
     return this._visitorTeamId ? true : false;
   }
 
-  modifyResult(result: MatchResult): void {
-    if (this.isFinished() || this._result === result) {
+  modifyResult(newResult: MatchResult): void {
+    if (this.result === newResult) {
       return;
     }
-    this.result = result;
+
     this.apply(
       new MatchResultWasModified(this.id.value, {
-        localTeamScore: result.localTeamScore.value,
-        visitorTeamScore: result.visitorTeamScore.value,
+        localTeamScore: newResult.localTeamScore.value,
+        visitorTeamScore: newResult.visitorTeamScore.value,
       })
     );
   }
@@ -136,6 +134,23 @@ export class Match extends AggregateRoot {
     }
     this.date = date;
     this.apply(new MatchWasScheduled(this.id.value, date));
+  }
+
+  register(): void {
+    this.apply(
+      new MatchWasRegistered(
+        this.id.value,
+        this.competitionId.value,
+        {
+          id: this.localTeamId.value,
+          score: this.result.localTeamScore.value,
+        },
+        {
+          id: this.visitorTeamId.value,
+          score: this.result.visitorTeamScore.value,
+        }
+      )
+    );
   }
 
   delete(): void {
@@ -153,5 +168,17 @@ export class Match extends AggregateRoot {
     this._visitorTeamId = TeamId.fromString(event.visitorTeamId);
     this._index = MatchIndex.fromNumber(event.index);
     this._journey = MatchJourney.fromString(event.journey);
+    this._result = MatchResult.fromTeamScore(0, 0);
+  }
+
+  private onMatchResultWasModified(event: MatchResultWasModified) {
+    this._result = MatchResult.fromTeamScore(
+      event.result.localTeamScore,
+      event.result.visitorTeamScore
+    );
+  }
+
+  private onMatchWasRegistered(event: MatchWasRegistered) {
+    this._finished = new Date();
   }
 }

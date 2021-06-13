@@ -3,23 +3,14 @@ import { Document, Schema } from 'mongoose';
 export const RankingSchema = new Schema({
   _id: String,
   competitionId: String,
-  teams: [
-    {
-      name: String,
-      matchPlayeds: Number,
-      victories: Number,
-      ties: Number,
-      defeats: Number,
-      points: Number,
-      lastFive: [String],
-    },
-  ],
+  teams: Array,
 });
 
 export interface RankingView extends Document {
   readonly _id: string;
   readonly competitionId: string;
   readonly teams: {
+    readonly id: string;
     readonly name: string;
     readonly matchPlayeds: number;
     readonly victories: number;

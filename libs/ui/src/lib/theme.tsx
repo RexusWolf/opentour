@@ -104,6 +104,10 @@ export const useStyles = makeStyles((theme) => ({
     backgroundColor: '#FF1744',
     color: 'white',
   },
+  tertiaryButton: {
+    backgroundColor: '#EF6C00',
+    color: 'white',
+  },
 }));
 
 let muiTheme = createMuiTheme({

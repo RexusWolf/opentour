@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { EditMatchDTO, MatchDTO } from '@opentour/contracts';
+import { EditMatchDTO, MatchDTO, RegisterMatchDTO } from '@opentour/contracts';
 
 import {
   CreateMatchCommand,
@@ -10,6 +10,7 @@ import {
   GetMatchQuery,
   UpdateMatchCommand,
 } from '../../application';
+import { RegisterMatchCommand } from '../../application/command/register-match.command';
 import { MatchMapper } from '../eventstore/match.mapper';
 import { MatchView } from '../read-model/schema/match.schema';
 
@@ -50,7 +51,7 @@ export class MatchService {
   }
 
   async deleteMatch(id: string) {
-    return this.commandBus.execute(new DeleteMatchCommand(id));
+    return await this.commandBus.execute(new DeleteMatchCommand(id));
   }
 
   async updateMatch(id: string, editMatchDTO: EditMatchDTO): Promise<void> {
@@ -61,6 +62,10 @@ export class MatchService {
         result,
       })
     );
+  }
+
+  async registerMatch(id: string): Promise<void> {
+    return await this.commandBus.execute(new RegisterMatchCommand(id));
   }
 
   async getMatch(id: string): Promise<MatchDTO | null> {

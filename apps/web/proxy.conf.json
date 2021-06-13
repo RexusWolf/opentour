@@ -11,7 +11,7 @@
     "target": "http://localhost:3333",
     "secure": false
   },
-  "/api/matches/(create|update|getMatches|getMatch|delete|getMatchesByCompetitionId)": {
+  "/api/matches/(create|update|getMatches|getMatch|delete|getMatchesByCompetitionId|registerMatch)": {
     "target": "http://localhost:3333",
     "secure": false
   }

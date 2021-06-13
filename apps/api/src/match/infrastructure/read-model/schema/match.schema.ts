@@ -14,6 +14,7 @@ export const MatchSchema = new Schema({
     score: Number,
   },
   date: Date,
+  finished: Date || null,
 });
 
 export interface MatchView extends Document {
@@ -30,6 +31,7 @@ export interface MatchView extends Document {
     readonly score: number;
   };
   readonly date: Date;
+  readonly finished: Date | null;
 }
 
 export const MATCH_MODEL = 'MATCH_MODEL';

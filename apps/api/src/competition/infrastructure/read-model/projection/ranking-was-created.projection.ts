@@ -35,6 +35,7 @@ export class RankingWasCreatedProjection
 
   private getRankingForTeam(team: TeamView) {
     return {
+      id: team.id,
       name: team.name,
       matchPlayeds: 0,
       victories: 0,

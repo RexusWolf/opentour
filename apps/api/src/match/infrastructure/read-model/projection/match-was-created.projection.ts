@@ -31,6 +31,7 @@ export class MatchWasCreatedProjection
       localTeam: { id: event.localTeamId, name: localTeam?.name, score: 0 },
       visitorTeam: { id: event.localTeamId, name: visitorTeam?.name, score: 0 },
       date: null,
+      finished: null,
     });
 
     await matchView.save();

@@ -12,17 +12,9 @@ export default function Competition() {
   const competition = useCompetition(id as string);
   const [session, loading] = useSession();
 
-  const defaultComp = {
-    id: '',
-    name: '',
-    type: '',
-    sportName: '',
-    moderatorIds: [''],
-  };
-
   return (
     <Layout session={session!}>
-      <CompetitionComponent competition={competition || defaultComp} />
+      <>{competition && <CompetitionComponent competition={competition} />}</>
     </Layout>
   );
 }

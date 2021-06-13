@@ -7,35 +7,36 @@ import RemoveCircle from '@material-ui/icons/RemoveCircle';
 import React from 'react';
 
 import { TeamSlot } from '../../shared/teamSlot/teamSlot';
-import { TeamStatistics } from '../../shared/TeamStatistics';
+import { getRandomLogo } from '../../utils/getRandomLogo';
+import { RankingTeam } from '../ranking';
 
 export type Props = {
-  team: TeamStatistics;
+  team: RankingTeam;
 };
 
-export const TeamRankingRow: React.FunctionComponent<Props> = (props) => {
+export const TeamRankingRow: React.FunctionComponent<Props> = ({ team }) => {
   return (
-    <TableRow key={props.team.name}>
+    <TableRow key={team.name}>
       <TableCell component="th" scope="row">
-        <TeamSlot name={props.team.name} logo={props.team.logo} />
+        <TeamSlot name={team.name} logo={getRandomLogo()} />
       </TableCell>
       <TableCell width="5%" align="right">
-        {props.team.pj}
+        {team.matchPlayeds}
       </TableCell>
       <TableCell width="5%" align="right">
-        {props.team.v}
+        {team.victories}
       </TableCell>
       <TableCell width="5%" align="right">
-        {props.team.e}
+        {team.ties}
       </TableCell>
       <TableCell width="5%" align="right">
-        {props.team.d}
+        {team.defeats}
       </TableCell>
       <TableCell width="5%" align="right">
-        {props.team.pts}
+        {team.points}
       </TableCell>
       <TableCell width="10%" align="right">
-        {props.team.lastFive.map((matchResult, index) => {
+        {team.lastFive.map((matchResult, index) => {
           return matchResult === 'victory' ? (
             <Icon key={index} color="secondary">
               <CheckCircle />

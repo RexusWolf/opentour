@@ -1,13 +1,13 @@
+import { RankingDTO } from '@opentour/contracts';
 import { render } from '@testing-library/react';
 import faker from 'faker';
 import React from 'react';
 
-import { TeamStatistics } from '../shared/TeamStatistics';
 import { Ranking } from './ranking';
 
 describe('Ranking', () => {
   const defaultProps = {
-    ranking: [aTeamStatistics()],
+    ranking: aRanking(),
   };
 
   it('should render successfully', () => {
@@ -24,20 +24,24 @@ describe('Ranking', () => {
     getByText('D');
     getByText('Pts');
     getByText('Últimos 5');
-    getByText(defaultProps.ranking[0].name);
+    getByText(defaultProps.ranking.teams[0].name);
   });
 });
 
-function aTeamStatistics(): TeamStatistics {
+function aRanking(): RankingDTO {
   return {
     id: faker.datatype.uuid(),
-    name: faker.name.title(),
-    logo: faker.image.imageUrl(),
-    pj: faker.datatype.number(),
-    v: faker.datatype.number(),
-    e: faker.datatype.number(),
-    d: faker.datatype.number(),
-    pts: faker.datatype.number(),
-    lastFive: ['victory', 'tie', 'tie', 'defeat', 'tie'],
+    competitionId: faker.datatype.uuid(),
+    teams: [
+      {
+        name: faker.name.title(),
+        matchPlayeds: faker.datatype.number(),
+        victories: faker.datatype.number(),
+        ties: faker.datatype.number(),
+        defeats: faker.datatype.number(),
+        points: faker.datatype.number(),
+        lastFive: ['victory', 'tie', 'tie', 'defeat', 'tie'],
+      },
+    ],
   };
 }

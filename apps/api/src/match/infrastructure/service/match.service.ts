@@ -10,7 +10,6 @@ import {
   GetMatchQuery,
   UpdateMatchCommand,
 } from '../../application';
-import { MatchResult } from '../../domain';
 import { MatchMapper } from '../eventstore/match.mapper';
 import { MatchView } from '../read-model/schema/match.schema';
 

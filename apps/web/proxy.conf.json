@@ -3,7 +3,7 @@
     "target": "http://localhost:3333",
     "secure": false
   },
-  "/api/competitions/(create|update|getCompetitions|getCompetition|delete)": {
+  "/api/competitions/(create|update|getCompetitions|getCompetition|delete|getCompetitionRanking)": {
     "target": "http://localhost:3333",
     "secure": false
   },

@@ -3,12 +3,12 @@ import { render } from '@testing-library/react';
 import faker from 'faker';
 import React from 'react';
 
-import { TeamStatistics } from '../../shared/TeamStatistics';
+import { RankingTeam } from '../ranking';
 import { TeamRankingRow } from './teamRankingRow';
 
 describe('TeamRankingRow', () => {
   const defaultProps = {
-    team: aTeamStatistics(),
+    team: aTeam(),
   };
 
   it('should render successfully', () => {
@@ -31,24 +31,22 @@ describe('TeamRankingRow', () => {
       </Table>
     );
     getByText(defaultProps.team.name);
-    getByText(defaultProps.team.pj);
-    getByText(defaultProps.team.v);
-    getByText(defaultProps.team.e);
-    getByText(defaultProps.team.d);
-    getByText(defaultProps.team.pts);
+    getByText(defaultProps.team.matchPlayeds);
+    getByText(defaultProps.team.victories);
+    getByText(defaultProps.team.ties);
+    getByText(defaultProps.team.defeats);
+    getByText(defaultProps.team.points);
   });
 });
 
-function aTeamStatistics(): TeamStatistics {
+function aTeam(): RankingTeam {
   return {
-    id: faker.datatype.uuid(),
     name: faker.name.title(),
-    logo: faker.image.imageUrl(),
-    pj: faker.datatype.number(),
-    v: faker.datatype.number(),
-    e: faker.datatype.number(),
-    d: faker.datatype.number(),
-    pts: faker.datatype.number(),
+    matchPlayeds: faker.datatype.number(),
+    victories: faker.datatype.number(),
+    ties: faker.datatype.number(),
+    defeats: faker.datatype.number(),
+    points: faker.datatype.number(),
     lastFive: ['victory', 'tie', 'tie', 'defeat', 'tie'],
   };
 }

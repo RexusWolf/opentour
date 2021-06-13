@@ -12,6 +12,7 @@ import {
   StartCompetitionHandler,
   UpdateCompetitionHandler,
 } from '../application';
+import { GetCompetitionRankingHandler } from '../application/query/get-competition-ranking.handler';
 import { competitionProviders } from './competition.providers';
 import { CompetitionController } from './controller/competition.controller';
 import { CompetitionEventStore } from './eventstore/competitions.event-store';
@@ -26,6 +27,7 @@ const CommandHandlers = [
 ];
 const QueryHandlers = [
   GetCompetitionByNameHandler,
+  GetCompetitionRankingHandler,
   GetCompetitionHandler,
   GetCompetitionsHandler,
 ];

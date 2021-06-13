@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CompetitionDTO, EditCompetitionDTO } from '@opentour/contracts';
+import {
+  CompetitionDTO,
+  EditCompetitionDTO,
+  RankingDTO,
+} from '@opentour/contracts';
 
 import {
   CreateCompetitionCommand,
@@ -11,15 +15,19 @@ import {
   StartCompetitionCommand,
   UpdateCompetitionCommand,
 } from '../../application';
+import { GetCompetitionRankingQuery } from '../../application/query/get-competition-ranking.query';
 import { CompetitionMapper } from '../eventstore/competition.mapper';
+import { RankingMapper } from '../eventstore/ranking.mapper';
 import { CompetitionView } from '../read-model/schema/competition.schema';
+import { RankingView } from '../read-model/schema/ranking.schema';
 
 @Injectable()
 export class CompetitionService {
   constructor(
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
-    private competitionMapper: CompetitionMapper
+    private competitionMapper: CompetitionMapper,
+    private rankingMapper: RankingMapper
   ) {}
 
   async createCompetition(params: {
@@ -75,5 +83,13 @@ export class CompetitionService {
       CompetitionView
     >(new GetCompetitionByNameQuery(name));
     return this.competitionMapper.viewToDto(competition);
+  }
+
+  async getCompetitionRanking(id: string): Promise<RankingDTO | null> {
+    const ranking = await this.queryBus.execute<
+      GetCompetitionRankingQuery,
+      RankingView
+    >(new GetCompetitionRankingQuery(id));
+    return this.rankingMapper.viewToDto(ranking);
   }
 }

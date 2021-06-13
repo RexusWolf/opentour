@@ -2,6 +2,7 @@ import { Button, Grid, Tab, Tabs } from '@material-ui/core';
 import { CompetitionDTO } from '@opentour/contracts';
 import {
   useMatchesByCompetitionId,
+  useRankingByCompetitionId,
   useTeamsByCompetitionId,
 } from '@opentour/hooks';
 import React from 'react';
@@ -11,7 +12,6 @@ import { doRequest } from '../utils/doRequest';
 import { Calendar } from './calendar/calendar';
 import { CompetitionTab } from './competitionTab/competitionTab';
 import { Ranking } from './ranking/ranking';
-import { ranking } from './shared/ranking';
 import { TeamList } from './teamsList/teamsList';
 import { TeamWizard } from './teamWizard/teamWizard';
 import { generateMatches } from './utils/generateMatches';
@@ -26,7 +26,7 @@ export const Competition: React.FunctionComponent<Props> = ({
   const classes = useStyles();
   const teams = useTeamsByCompetitionId(competition.id);
   const matches = useMatchesByCompetitionId(competition.id);
-
+  const ranking = useRankingByCompetitionId(competition.id);
   const { name, type } = competition;
   const [open, setOpen] = React.useState(false);
 

@@ -5,20 +5,32 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import { RankingDTO } from '@opentour/contracts';
 import React from 'react';
 
-import { TeamStatistics } from '../shared/TeamStatistics';
 import { TeamRankingRow } from './teamRankingRow/teamRankingRow';
 
-function getSortedRanking(ranking: TeamStatistics[]): TeamStatistics[] {
-  return ranking.sort((a, b) => (a.pts < b.pts ? 1 : b.pts < a.pts ? -1 : 0));
+function getSortedRanking(rankingTeams: RankingTeam[]): RankingTeam[] {
+  return rankingTeams.sort((a, b) =>
+    a.points < b.points ? 1 : b.points < a.points ? -1 : 0
+  );
 }
 
 export type Props = {
-  ranking: TeamStatistics[];
+  ranking: RankingDTO;
 };
 
-export const Ranking: React.FunctionComponent<Props> = (props) => {
+export type RankingTeam = {
+  name: string;
+  matchPlayeds: number;
+  victories: number;
+  ties: number;
+  defeats: number;
+  points: number;
+  lastFive: string[];
+};
+
+export const Ranking: React.FunctionComponent<Props> = ({ ranking }) => {
   const statistics = ['PJ', 'V', 'E', 'D', 'Pts', 'Últimos 5'];
   return (
     <TableContainer component={Paper}>
@@ -34,9 +46,10 @@ export const Ranking: React.FunctionComponent<Props> = (props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {getSortedRanking(props.ranking).map((team) => (
-            <TeamRankingRow key={team.id} team={team} />
-          ))}
+          {ranking &&
+            getSortedRanking(ranking.teams).map((team) => (
+              <TeamRankingRow key={team.name} team={team} />
+            ))}
         </TableBody>
       </Table>
     </TableContainer>

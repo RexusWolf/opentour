@@ -23,6 +23,7 @@ import {
   CompetitionDTO,
   CreateCompetitionDTO,
   EditCompetitionDTO,
+  RankingDTO,
 } from '@opentour/contracts';
 import { Response } from 'express';
 
@@ -158,6 +159,26 @@ export class CompetitionController {
     } catch (error) {
       if (error instanceof CompetitionIdNotFoundError) {
         throw new NotFoundException('Competition not found');
+      } else if (error instanceof Error) {
+        throw new BadRequestException(error.message);
+      } else {
+        throw new BadRequestException('Server error');
+      }
+    }
+  }
+
+  @Get(':competitionId/ranking')
+  @ApiOperation({ summary: 'Get competition ranking by ID' })
+  @ApiResponse({ status: 200, description: 'Competition ranking found' })
+  @ApiResponse({ status: 404, description: 'Not found' })
+  async getCompetitionRanking(
+    @Query('competitionId') competitionId: string
+  ): Promise<RankingDTO | null> {
+    try {
+      return await this.competitionService.getCompetitionRanking(competitionId);
+    } catch (error) {
+      if (error instanceof CompetitionIdNotFoundError) {
+        throw new NotFoundException('Competition with provided id not found');
       } else if (error instanceof Error) {
         throw new BadRequestException(error.message);
       } else {

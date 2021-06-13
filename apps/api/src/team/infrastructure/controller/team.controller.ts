@@ -24,7 +24,7 @@ import {
   TeamIdAlreadyTakenError,
   TeamIdNotFoundError,
   TeamNameAlreadyTakenError,
-} from '../../domain/exception';
+} from '../../domain';
 import { TeamService } from '../service/team.service';
 
 @ApiBearerAuth()

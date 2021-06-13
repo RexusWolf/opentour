@@ -1,11 +1,15 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import { CompetitionId } from '../../../competition/domain/model';
-import { TeamId } from '../../../team/domain/model';
-import { MatchIdAlreadyTakenError } from '../../domain/exception/match-id-already-taken.error';
-import { Match, MatchId, MatchIndex, MatchJourney } from '../../domain/model';
-import { MATCHES, Matches } from '../../domain/repository';
+import { CompetitionId } from '../../../competition/domain';
+import { TeamId } from '../../../team/domain';
+import {
+  Match,
+  MATCHES,
+  Matches,
+  MatchId,
+ MatchIdAlreadyTakenError,  MatchIndex,
+  MatchJourney } from '../../domain';
 import { CreateMatchCommand } from './create-match.command';
 
 @CommandHandler(CreateMatchCommand)

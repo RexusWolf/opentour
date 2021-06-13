@@ -1,6 +1,4 @@
-import { User } from '../model/user';
-import { UserId } from '../model/user-id';
-import { Username } from '../model/username';
+import { User, UserId, Username } from '../model';
 
 export interface Users {
   find(userId: UserId): Promise<User | null>;

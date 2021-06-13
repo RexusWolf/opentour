@@ -1,9 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import { CompetitionIdNotFoundError } from '../../domain/exception';
-import { CompetitionId } from '../../domain/model';
-import { COMPETITIONS, Competitions } from '../../domain/repository';
+import { CompetitionId, CompetitionIdNotFoundError,COMPETITIONS, Competitions  } from '../../domain';
 import { DeleteCompetitionCommand } from './delete-competition.command';
 
 @CommandHandler(DeleteCompetitionCommand)

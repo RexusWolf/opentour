@@ -4,8 +4,12 @@ import {
   UpdateMatchCommand,
   UpdateMatchHandler,
 } from '../../../src/match/application';
-import { MatchResult, TeamScore } from '../../../src/match/domain';
-import { MATCHES, Matches } from '../../../src/match/domain/repository';
+import {
+  MATCHES,
+  Matches,
+  MatchResult,
+  TeamScore,
+} from '../../../src/match/domain';
 import { MatchBuilder } from '../builders/MatchBuilder';
 import faker = require('faker');
 
@@ -13,7 +17,7 @@ describe('Update match handler', () => {
   let command$: UpdateMatchHandler;
   const matches: Partial<Matches> = {};
 
-  const match = new MatchBuilder().build();
+  const match = MatchBuilder.random();
   const date = faker.datatype.datetime();
   const result: MatchResult = new MatchResult({
     localTeamScore: TeamScore.fromNumber(faker.datatype.number()),

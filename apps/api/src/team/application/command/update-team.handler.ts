@@ -2,9 +2,7 @@ import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import { UserId } from '../../../user/domain';
-import { TeamIdNotFoundError } from '../../domain/exception';
-import { Team, TeamId } from '../../domain/model';
-import { TEAMS, Teams } from '../../domain/repository';
+import { Team, TeamId, TeamIdNotFoundError,TEAMS, Teams  } from '../../domain';
 import { UpdateTeamCommand } from './update-team.command';
 
 @CommandHandler(UpdateTeamCommand)

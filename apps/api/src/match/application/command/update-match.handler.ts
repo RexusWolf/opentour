@@ -1,9 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import { MatchIdNotFoundError } from '../../domain/exception/match-id-not-found.error';
-import { MatchId } from '../../domain/model';
-import { MATCHES, Matches } from '../../domain/repository';
+import { MATCHES, Matches, MatchId , MatchIdNotFoundError } from '../../domain';
 import { UpdateMatchCommand } from './update-match.command';
 
 @CommandHandler(UpdateMatchCommand)

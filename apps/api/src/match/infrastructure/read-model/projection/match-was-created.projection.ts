@@ -3,7 +3,7 @@ import { IViewUpdater, ViewUpdaterHandler } from 'event-sourcing-nestjs';
 import { Model } from 'mongoose';
 
 import { TeamView } from '../../../../team/infrastructure/read-model/schema/team.schema';
-import { MatchWasCreated } from '../../../domain/event';
+import { MatchWasCreated } from '../../../domain';
 import { MatchView } from '../schema/match.schema';
 
 @ViewUpdaterHandler(MatchWasCreated)

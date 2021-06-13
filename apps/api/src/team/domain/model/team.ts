@@ -1,11 +1,13 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 
-import { CompetitionId } from '../../../competition/domain/model';
+import { CompetitionId } from '../../../competition/domain';
 import { UserId } from '../../../user/domain';
-import { MemberWasAddedToTeam } from '../event/member-was-added-to-team';
-import { MemberWasRemovedFromTeam } from '../event/member-was-removed-from-team';
-import { TeamWasCreated } from '../event/team-was-created';
-import { TeamWasDeleted } from '../event/team-was-deleted';
+import {
+  MemberWasAddedToTeam,
+  MemberWasRemovedFromTeam,
+  TeamWasCreated,
+  TeamWasDeleted,
+} from '../event';
 import { TeamId } from './team-id';
 import { TeamName } from './team-name';
 

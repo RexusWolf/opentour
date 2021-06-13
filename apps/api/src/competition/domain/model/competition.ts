@@ -1,14 +1,16 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 
-import { SportName } from '../../../sport/domain/model/sport-name';
+import { SportName } from '../../../sport/domain';
 import { UserId } from '../../../user/domain';
 import { UpdateCompetitionCommand } from '../../application';
-import { CompetitionWasStarted } from '../event';
-import { CompetitionModeratorWasRemoved } from '../event/competition-moderator-was-removed.event';
-import { CompetitionWasCreated } from '../event/competition-was-created.event';
-import { CompetitionWasDeleted } from '../event/competition-was-deleted.event';
-import { CompetitionWasUpdated } from '../event/competition-was-updated.event';
-import { ModeratorWasAddedToCompetition } from '../event/moderator-was-added-to-competition.event';
+import {
+  CompetitionModeratorWasRemoved,
+  CompetitionWasCreated,
+  CompetitionWasDeleted,
+  CompetitionWasStarted,
+  CompetitionWasUpdated,
+  ModeratorWasAddedToCompetition,
+} from '../event';
 import { CompetitionId } from './competition-id';
 import { CompetitionName } from './competition-name';
 import { CompetitionType } from './competition-type';

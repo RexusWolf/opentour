@@ -1,14 +1,8 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 
-import { CompetitionId } from '../../../competition/domain/model';
-import { TeamId } from '../../../team/domain/model';
-import { LocalTeamWasAddedToMatch } from '../event/local-team-was-added-to-match';
-import { MatchResultWasModified } from '../event/match-result-was-modified';
-import { MatchResultWasRegistered } from '../event/match-result-was-registered';
-import { MatchWasCreated } from '../event/match-was-created';
-import { MatchWasDeleted } from '../event/match-was-deleted';
-import { MatchWasScheduled } from '../event/match-was-scheduled';
-import { VisitorTeamWasAddedToMatch } from '../event/visitor-team-was-added-to-match';
+import { CompetitionId } from '../../../competition/domain';
+import { TeamId } from '../../../team/domain';
+import { MatchResultWasModified , MatchWasCreated , MatchWasDeleted , MatchWasScheduled } from '../event';
 import { MatchId } from './match-id';
 import { MatchIndex } from './match-index';
 import { MatchJourney } from './match-journey';
@@ -116,27 +110,6 @@ export class Match extends AggregateRoot {
 
   hasVisitorTeam(): boolean {
     return this._visitorTeamId ? true : false;
-  }
-
-  addLocalTeam(teamId: TeamId): void {
-    if (this.hasLocalTeam()) {
-      return;
-    }
-    this.apply(new LocalTeamWasAddedToMatch(this.id.value, teamId.value));
-  }
-
-  addVisitorTeam(teamId: TeamId): void {
-    if (this.hasVisitorTeam()) {
-      return;
-    }
-    this.apply(new VisitorTeamWasAddedToMatch(this.id.value, teamId.value));
-  }
-
-  registerResult(result: MatchResult): void {
-    if (this.isFinished()) {
-      return;
-    }
-    this.apply(new MatchResultWasRegistered(this.id.value, result));
   }
 
   modifyResult(result: MatchResult): void {

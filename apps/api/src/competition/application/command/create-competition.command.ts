@@ -1,4 +1,5 @@
 import { ICommand } from '@nestjs/cqrs';
+import { CreateCompetitionDTO } from '@opentour/contracts';
 
 export class CreateCompetitionCommand implements ICommand {
   readonly id: string;
@@ -7,17 +8,11 @@ export class CreateCompetitionCommand implements ICommand {
   readonly sportName: string;
   readonly moderatorId: string;
 
-  constructor(params: {
-    id: string;
-    name: string;
-    type: string;
-    sportName: string;
-    moderatorId: string;
-  }) {
-    this.id = params.id;
-    this.name = params.name;
-    this.type = params.type;
-    this.sportName = params.sportName;
-    this.moderatorId = params.moderatorId;
+  constructor(competition: CreateCompetitionDTO) {
+    this.id = competition.id;
+    this.name = competition.name;
+    this.type = competition.type;
+    this.sportName = competition.sportName;
+    this.moderatorId = competition.moderatorId;
   }
 }

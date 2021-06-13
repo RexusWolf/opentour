@@ -2,7 +2,7 @@ import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { UserWasDeleted } from '../../domain/event/user-was-deleted.event';
+import { UserWasDeleted } from '../../domain';
 import { UserEntity } from '../entity/user.entity';
 
 @EventsHandler(UserWasDeleted)

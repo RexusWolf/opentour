@@ -4,7 +4,7 @@ import {
   UpdateTeamCommand,
   UpdateTeamHandler,
 } from '../../../src/team/application';
-import { TEAMS, Teams } from '../../../src/team/domain/repository';
+import { TEAMS, Teams } from '../../../src/team/domain';
 import { TeamBuilder } from '../builders/TeamBuilder';
 import faker = require('faker');
 
@@ -12,7 +12,7 @@ describe('Update team handler', () => {
   let command$: UpdateTeamHandler;
   const teams: Partial<Teams> = {};
 
-  const team = new TeamBuilder().build();
+  const team = TeamBuilder.random();
 
   const teamId = faker.datatype.uuid();
   const name = faker.name.title();

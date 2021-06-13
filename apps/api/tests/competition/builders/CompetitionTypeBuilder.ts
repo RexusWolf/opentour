@@ -1,7 +1,7 @@
 import {
   COMPETITION_TYPES,
   CompetitionType,
-} from '../../../src/competition/domain/model';
+} from '../../../src/competition/domain';
 import faker = require('faker');
 
 const competitionTypes = Object.keys(COMPETITION_TYPES);

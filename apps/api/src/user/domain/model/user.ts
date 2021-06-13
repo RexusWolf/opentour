@@ -5,8 +5,8 @@ import {
   UserRoleWasAdded,
   UserRoleWasRemoved,
   UserWasCreated,
+  UserWasDeleted,
 } from '../event';
-import { UserWasDeleted } from '../event/user-was-deleted.event';
 import { Password } from './password';
 import { Role } from './role';
 import { UserId } from './user-id';

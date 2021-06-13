@@ -4,17 +4,14 @@ import {
   CreateCompetitionCommand,
   CreateCompetitionHandler,
 } from '../../../src/competition/application';
-import {
-  COMPETITIONS,
-  Competitions,
-} from '../../../src/competition/domain/repository';
+import { COMPETITIONS, Competitions } from '../../../src/competition/domain';
 import { CompetitionBuilder } from '../builders/CompetitionBuilder';
 
 describe('Create competition handler', () => {
   let command$: CreateCompetitionHandler;
   const competitions: Partial<Competitions> = {};
 
-  const competition = new CompetitionBuilder().build();
+  const competition = CompetitionBuilder.random();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -37,9 +34,9 @@ describe('Create competition handler', () => {
       new CreateCompetitionCommand({
         id: competition.id.value,
         name: competition.name.value,
-        moderatorId: competition.moderatorIds[0].value,
         type: competition.type.value,
         sportName: competition.sportName.value,
+        moderatorId: competition.moderatorIds[0].value,
       })
     );
 
@@ -53,9 +50,9 @@ describe('Create competition handler', () => {
         new CreateCompetitionCommand({
           id: competition.id.value,
           name: competition.name.value,
-          moderatorId: competition.moderatorIds[0].value,
           type: competition.type.value,
           sportName: competition.sportName.value,
+          moderatorId: competition.moderatorIds[0].value,
         })
       )
     ).rejects.toThrow();

@@ -19,8 +19,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateMatchDTO, EditMatchDTO, MatchDTO } from '@opentour/contracts';
 import { Response } from 'express';
 
-import { MatchIdAlreadyTakenError } from '../../domain/exception';
-import { MatchIdNotFoundError } from '../../domain/exception/match-id-not-found.error';
+import { MatchIdAlreadyTakenError , MatchIdNotFoundError } from '../../domain';
 import { MatchService } from '../service/match.service';
 
 @ApiTags('matches')

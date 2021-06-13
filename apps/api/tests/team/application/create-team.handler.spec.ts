@@ -4,14 +4,14 @@ import {
   CreateTeamCommand,
   CreateTeamHandler,
 } from '../../../src/team/application';
-import { TEAMS, Teams } from '../../../src/team/domain/repository';
+import { TEAMS, Teams } from '../../../src/team/domain';
 import { TeamBuilder } from '../builders/TeamBuilder';
 
 describe('Create team handler', () => {
   let command$: CreateTeamHandler;
   const teams: Partial<Teams> = {};
 
-  const team = new TeamBuilder().build();
+  const team = TeamBuilder.random();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

@@ -6,14 +6,12 @@ import {
   Role,
   User,
   UserId,
+  UserIdAlreadyTakenError,
   Username,
+  UsernameAlreadyTakenError,
   USERS,
   Users,
 } from '../../domain';
-import {
-  UserIdAlreadyTakenError,
-  UsernameAlreadyTakenError,
-} from '../../domain/exception/';
 import { UserMapper } from '../../infrastructure/repository/user.mapper';
 import { CreateUserCommand } from './create-user.command';
 

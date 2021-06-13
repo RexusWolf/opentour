@@ -4,7 +4,7 @@ import {
   CreateMatchCommand,
   CreateMatchHandler,
 } from '../../../src/match/application';
-import { MATCHES, Matches } from '../../../src/match/domain/repository';
+import { MATCHES, Matches } from '../../../src/match/domain';
 import { MatchBuilder } from '../builders/MatchBuilder';
 
 // eslint-disable @typescript-eslint/no-non-null-assertion
@@ -12,7 +12,7 @@ describe('Create match handler', () => {
   let command$: CreateMatchHandler;
   const matches: Partial<Matches> = {};
 
-  const match = new MatchBuilder().build();
+  const match = MatchBuilder.random();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

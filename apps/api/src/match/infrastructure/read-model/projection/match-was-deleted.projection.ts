@@ -2,7 +2,7 @@ import { Inject } from '@nestjs/common';
 import { IViewUpdater, ViewUpdaterHandler } from 'event-sourcing-nestjs';
 import { Model } from 'mongoose';
 
-import { MatchWasDeleted } from '../../../domain/event';
+import { MatchWasDeleted } from '../../../domain';
 import { MatchView } from '../schema/match.schema';
 
 @ViewUpdaterHandler(MatchWasDeleted)

@@ -1,11 +1,9 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import { CompetitionId } from '../../../competition/domain/model';
+import { CompetitionId } from '../../../competition/domain';
 import { UserId } from '../../../user/domain';
-import { TeamIdAlreadyTakenError } from '../../domain/exception/';
-import { Team, TeamId, TeamName } from '../../domain/model';
-import { TEAMS, Teams } from '../../domain/repository';
+import { Team, TeamId, TeamIdAlreadyTakenError,TeamName, TEAMS, Teams  } from '../../domain';
 import { CreateTeamCommand } from './create-team.command';
 
 @CommandHandler(CreateTeamCommand)

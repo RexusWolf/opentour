@@ -1,9 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import { TeamIdNotFoundError } from '../../domain/exception';
-import { TeamId } from '../../domain/model';
-import { TEAMS, Teams } from '../../domain/repository';
+import { TeamId, TeamIdNotFoundError,TEAMS, Teams  } from '../../domain';
 import { DeleteTeamCommand } from './delete-team.command';
 
 @CommandHandler(DeleteTeamCommand)

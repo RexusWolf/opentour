@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { EventStore, StoreEventPublisher } from 'event-sourcing-nestjs';
 
-import { Competition, CompetitionId } from '../../domain/model';
-import { Competitions } from '../../domain/repository';
+import { Competition, CompetitionId , Competitions } from '../../domain';
+
 
 @Injectable()
 export class CompetitionEventStore implements Competitions {

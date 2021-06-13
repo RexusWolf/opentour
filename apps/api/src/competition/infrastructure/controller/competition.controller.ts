@@ -30,7 +30,7 @@ import {
   CompetitionIdAlreadyTakenError,
   CompetitionIdNotFoundError,
   CompetitionNameAlreadyTakenError,
-} from '../../domain/exception';
+} from '../../domain';
 import { CompetitionService } from '../service/competition.service';
 
 @ApiBearerAuth()

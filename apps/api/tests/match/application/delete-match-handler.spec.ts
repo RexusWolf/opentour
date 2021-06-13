@@ -4,8 +4,7 @@ import {
   DeleteMatchCommand,
   DeleteMatchHandler,
 } from '../../../src/match/application';
-import { MatchId } from '../../../src/match/domain/model';
-import { MATCHES, Matches } from '../../../src/match/domain/repository';
+import { MATCHES, Matches, MatchId } from '../../../src/match/domain';
 import { MatchBuilder } from '../builders/MatchBuilder';
 import faker = require('faker');
 
@@ -13,7 +12,7 @@ describe('Delete match handler', () => {
   let command$: DeleteMatchHandler;
   const matches: Partial<Matches> = {};
   const matchId = MatchId.fromString(faker.datatype.uuid());
-  const match = new MatchBuilder().build();
+  const match = MatchBuilder.random();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

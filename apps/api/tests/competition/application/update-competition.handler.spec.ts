@@ -4,17 +4,14 @@ import {
   UpdateCompetitionCommand,
   UpdateCompetitionHandler,
 } from '../../../src/competition/application';
-import {
-  COMPETITIONS,
-  Competitions,
-} from '../../../src/competition/domain/repository';
+import { COMPETITIONS, Competitions } from '../../../src/competition/domain';
 import { CompetitionBuilder } from '../builders/CompetitionBuilder';
 
 describe('Update competition handler', () => {
   let command$: UpdateCompetitionHandler;
   const competitions: Partial<Competitions> = {};
 
-  const competition = new CompetitionBuilder().build();
+  const competition = CompetitionBuilder.random();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

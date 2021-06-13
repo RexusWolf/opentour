@@ -1,6 +1,6 @@
 import { ValueObject } from '@opentour/domain';
 
-import { InvalidCompetitionTypeError } from '../exception/invalid-competition-type-error';
+import { InvalidCompetitionTypeError } from '../exception';
 
 interface Props {
   value: string;

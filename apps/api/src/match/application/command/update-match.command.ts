@@ -1,6 +1,6 @@
 import { ICommand } from '@nestjs/cqrs';
 
-import { MatchResult } from '../../domain/model';
+import { MatchResult } from '../../domain';
 
 export class UpdateMatchCommand implements ICommand {
   readonly id: string;

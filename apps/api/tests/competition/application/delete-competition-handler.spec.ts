@@ -4,16 +4,13 @@ import {
   DeleteCompetitionCommand,
   DeleteCompetitionHandler,
 } from '../../../src/competition/application';
-import {
-  COMPETITIONS,
-  Competitions,
-} from '../../../src/competition/domain/repository';
+import { COMPETITIONS, Competitions } from '../../../src/competition/domain';
 import { CompetitionBuilder } from '../builders/CompetitionBuilder';
 
 describe('Delete competition handler', () => {
   let command$: DeleteCompetitionHandler;
   const competitions: Partial<Competitions> = {};
-  const competition = new CompetitionBuilder().build();
+  const competition = CompetitionBuilder.random();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { EventStore, StoreEventPublisher } from 'event-sourcing-nestjs';
 
-import { Match, MatchId } from '../../domain/model';
-import { Matches } from '../../domain/repository';
+import { Match, Matches,MatchId  } from '../../domain';
+
 
 @Injectable()
 export class MatchEventStore implements Matches {

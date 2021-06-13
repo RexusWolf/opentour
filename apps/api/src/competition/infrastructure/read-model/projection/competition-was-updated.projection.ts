@@ -2,7 +2,7 @@ import { Inject } from '@nestjs/common';
 import { IViewUpdater, ViewUpdaterHandler } from 'event-sourcing-nestjs';
 import { Model } from 'mongoose';
 
-import { CompetitionWasUpdated } from '../../../domain/event/competition-was-updated.event';
+import { CompetitionWasUpdated } from '../../../domain';
 import { CompetitionView } from '../schema/competition.schema';
 
 @ViewUpdaterHandler(CompetitionWasUpdated)

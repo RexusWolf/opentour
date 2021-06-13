@@ -2,7 +2,7 @@ import { Provider } from '@nestjs/common';
 import { Connection } from 'mongoose';
 
 import { DATABASE_CONNECTION } from '../../common/database/database.provider';
-import { COMPETITIONS } from '../domain/repository';
+import { COMPETITIONS } from '../domain';
 import { CompetitionMapper } from './eventstore/competition.mapper';
 import { CompetitionEventStore } from './eventstore/competitions.event-store';
 import {

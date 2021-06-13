@@ -1,16 +1,15 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import { SportName } from '../../../sport/domain/model/sport-name';
+import { SportName } from '../../../sport/domain/model';
 import { UserId } from '../../../user/domain';
-import { CompetitionIdAlreadyTakenError } from '../../domain/exception/';
+import { CompetitionIdAlreadyTakenError,COMPETITIONS, Competitions  } from '../../domain';
 import {
   Competition,
   CompetitionId,
   CompetitionName,
   CompetitionType,
 } from '../../domain/model';
-import { COMPETITIONS, Competitions } from '../../domain/repository';
 import { CreateCompetitionCommand } from './create-competition.command';
 
 @CommandHandler(CreateCompetitionCommand)

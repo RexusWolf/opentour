@@ -4,8 +4,7 @@ import {
   DeleteTeamCommand,
   DeleteTeamHandler,
 } from '../../../src/team/application';
-import { TeamId } from '../../../src/team/domain/model';
-import { TEAMS, Teams } from '../../../src/team/domain/repository';
+import { TeamId , TEAMS, Teams } from '../../../src/team/domain';
 import { TeamBuilder } from '../builders/TeamBuilder';
 import faker = require('faker');
 
@@ -13,7 +12,7 @@ describe('Delete team handler', () => {
   let command$: DeleteTeamHandler;
   const teams: Partial<Teams> = {};
   const teamId = TeamId.fromString(faker.datatype.uuid());
-  const team = new TeamBuilder().build();
+  const team = TeamBuilder.random();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

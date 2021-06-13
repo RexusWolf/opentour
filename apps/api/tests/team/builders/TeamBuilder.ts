@@ -1,31 +1,15 @@
-import { CompetitionId } from '../../../src/competition/domain/model';
-import { Team, TeamId, TeamName } from '../../../src/team/domain/model';
+import { CompetitionId } from '../../../src/competition/domain';
+import { Team, TeamId, TeamName } from '../../../src/team/domain';
 import { UserId } from '../../../src/user/domain';
 import faker = require('faker');
 
 export class TeamBuilder {
-  private id: TeamId;
-  private competitionId: CompetitionId;
-  private name: TeamName;
-  private captainId: UserId;
-  private membersIds: UserId[];
-  private deleted: Date;
-
-  constructor() {
-    this.id = TeamId.fromString(faker.datatype.uuid());
-    this.competitionId = CompetitionId.fromString(faker.datatype.uuid());
-    this.name = TeamName.fromString(faker.name.title());
-    this.captainId = UserId.fromString(faker.datatype.uuid());
-    this.membersIds = [UserId.fromString(faker.datatype.uuid())];
-    this.deleted = faker.datatype.datetime();
-  }
-
-  build(): Team {
+  static random(): Team {
     return Team.create({
-      id: this.id,
-      name: this.name,
-      captainId: this.captainId,
-      competitionId: this.competitionId,
+      id: TeamId.fromString(faker.datatype.uuid()),
+      competitionId: CompetitionId.fromString(faker.datatype.uuid()),
+      name: TeamName.fromString(faker.name.title()),
+      captainId: UserId.fromString(faker.datatype.uuid()),
     });
   }
 }

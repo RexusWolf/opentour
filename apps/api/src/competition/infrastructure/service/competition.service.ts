@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CompetitionDTO } from '@opentour/contracts';
+import { CompetitionDTO, EditCompetitionDTO } from '@opentour/contracts';
 
 import {
   CreateCompetitionCommand,
@@ -39,12 +39,11 @@ export class CompetitionService {
     return this.commandBus.execute(new DeleteCompetitionCommand(id));
   }
 
-  async updateCompetition(params: {
-    id: string;
-    name: string;
-    moderatorIds: string[];
-  }): Promise<void> {
-    const { id, name, moderatorIds } = params;
+  async updateCompetition(
+    id: string,
+    editCompetitionDTO: EditCompetitionDTO
+  ): Promise<void> {
+    const { name, moderatorIds } = editCompetitionDTO;
     return this.commandBus.execute(
       new UpdateCompetitionCommand(id, { name, moderatorIds })
     );

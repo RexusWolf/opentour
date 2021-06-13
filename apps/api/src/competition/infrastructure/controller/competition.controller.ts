@@ -114,8 +114,7 @@ export class CompetitionController {
     @Body() editCompetitionDTO: EditCompetitionDTO
   ) {
     try {
-      return await this.competitionService.updateCompetition({
-        id,
+      return await this.competitionService.updateCompetition(id, {
         name: editCompetitionDTO.name,
         moderatorIds: editCompetitionDTO.moderatorIds,
       });

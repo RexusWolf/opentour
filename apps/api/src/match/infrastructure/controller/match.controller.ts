@@ -19,7 +19,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateMatchDTO, EditMatchDTO, MatchDTO } from '@opentour/contracts';
 import { Response } from 'express';
 
-import { MatchIdAlreadyTakenError , MatchIdNotFoundError } from '../../domain';
+import { MatchIdAlreadyTakenError, MatchIdNotFoundError } from '../../domain';
 import { MatchService } from '../service/match.service';
 
 @ApiTags('matches')
@@ -118,8 +118,7 @@ export class MatchController {
   @ApiResponse({ status: 404, description: 'Not found' })
   async update(@Param('id') id: string, @Body() editMatchDTO: EditMatchDTO) {
     try {
-      return await this.matchService.updateMatch({
-        id,
+      return await this.matchService.updateMatch(id, {
         date: editMatchDTO.date,
         result: editMatchDTO.result,
       });

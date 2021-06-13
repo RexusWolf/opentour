@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { MatchDTO } from '@opentour/contracts';
+import { EditMatchDTO, MatchDTO } from '@opentour/contracts';
 
 import {
   CreateMatchCommand,
@@ -54,12 +54,8 @@ export class MatchService {
     return this.commandBus.execute(new DeleteMatchCommand(id));
   }
 
-  async updateMatch(params: {
-    id: string;
-    date: Date;
-    result: { localTeamScore: number; visitorTeamScore: number };
-  }): Promise<void> {
-    const { id, date, result } = params;
+  async updateMatch(id: string, editMatchDTO: EditMatchDTO): Promise<void> {
+    const { date, result } = editMatchDTO;
     return this.commandBus.execute(
       new UpdateMatchCommand(id, {
         date,

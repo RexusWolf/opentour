@@ -95,8 +95,8 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
       <Grid container item direction="column" xs={8}>
         {isScheduled && (
           <Typography color="textSecondary" className={classes.containerItem}>
-            {finished && 'REGISTRADO - '} Resultado: {result.localTeamScore} -{' '}
-            {result.visitorTeamScore}{' '}
+            Resultado {finished ? 'final' : 'provisional'}:{' '}
+            {result.localTeamScore} - {result.visitorTeamScore}{' '}
           </Typography>
         )}
         <TeamSlot name={localTeam.name} logo={getRandomLogo()} />

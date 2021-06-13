@@ -1,8 +1,8 @@
 import { Inject } from '@nestjs/common';
 import { IViewUpdater, ViewUpdaterHandler } from 'event-sourcing-nestjs';
 import { Model } from 'mongoose';
-
 import { MatchWasRegistered } from '../../../../match/domain';
+
 import { RankingView } from '../schema/ranking.schema';
 
 type Team = {

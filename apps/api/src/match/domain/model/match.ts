@@ -8,6 +8,7 @@ import {
   MatchWasDeleted,
   MatchWasScheduled,
 } from '../event';
+import { MatchWasFinished } from '../event/match-was-finished';
 import { MatchWasRegistered } from '../event/match-was-registered';
 import { MatchId } from './match-id';
 import { MatchIndex } from './match-index';
@@ -137,6 +138,7 @@ export class Match extends AggregateRoot {
   }
 
   register(): void {
+    console.log('REGISTERING');
     this.apply(
       new MatchWasRegistered(
         this.id.value,
@@ -180,5 +182,6 @@ export class Match extends AggregateRoot {
 
   private onMatchWasRegistered(event: MatchWasRegistered) {
     this._finished = new Date();
+    this.apply(new MatchWasFinished(this.id.value));
   }
 }

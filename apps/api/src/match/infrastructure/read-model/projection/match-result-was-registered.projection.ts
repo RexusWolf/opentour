@@ -1,19 +1,19 @@
 import { Inject } from '@nestjs/common';
 import { IViewUpdater, ViewUpdaterHandler } from 'event-sourcing-nestjs';
 import { Model } from 'mongoose';
+import { MatchWasFinished } from '../../../domain/event/match-was-finished';
 
-import { MatchWasRegistered } from '../../../domain';
 import { MatchView } from '../schema/match.schema';
 
-@ViewUpdaterHandler(MatchWasRegistered)
+@ViewUpdaterHandler(MatchWasFinished)
 export class MatchResultWasRegisteredProjection
-  implements IViewUpdater<MatchWasRegistered> {
+  implements IViewUpdater<MatchWasFinished> {
   constructor(
     @Inject('MATCH_MODEL')
     private readonly matchModel: Model<MatchView>
   ) {}
 
-  async handle(event: MatchWasRegistered) {
+  async handle(event: MatchWasFinished) {
     await this.matchModel
       .updateOne(
         { _id: event.id },

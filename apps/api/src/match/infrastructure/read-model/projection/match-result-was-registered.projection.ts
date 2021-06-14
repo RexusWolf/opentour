@@ -1,8 +1,8 @@
 import { Inject } from '@nestjs/common';
 import { IViewUpdater, ViewUpdaterHandler } from 'event-sourcing-nestjs';
 import { Model } from 'mongoose';
-import { MatchWasFinished } from '../../../domain/event/match-was-finished';
 
+import { MatchWasFinished } from '../../../domain/event/match-was-finished';
 import { MatchView } from '../schema/match.schema';
 
 @ViewUpdaterHandler(MatchWasFinished)

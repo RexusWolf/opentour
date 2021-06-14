@@ -1,8 +1,8 @@
 import { Inject } from '@nestjs/common';
 import { IViewUpdater, ViewUpdaterHandler } from 'event-sourcing-nestjs';
 import { Model } from 'mongoose';
-import { MatchWasRegistered } from '../../../../match/domain';
 
+import { MatchWasRegistered } from '../../../../match/domain';
 import { RankingView } from '../schema/ranking.schema';
 
 type Team = {
@@ -74,76 +74,61 @@ export class RankingWasUpdatedProjection
 
     localTeam.lastFive.shift();
     visitorTeam.lastFive.shift();
+
     if (localTeamResult === visitorTeamResult) {
-      console.log('Hey');
       return {
-        local: {
-          id: localTeam.id,
-          name: localTeam.name,
-          matchPlayeds: localTeam.matchPlayeds,
-          victories: localTeam.victories + 1,
-          ties: localTeam.ties,
-          defeats: localTeam.defeats,
-          points: localTeam.points + 1,
-          lastFive: [...localTeam.lastFive, 'tie'],
-        },
-        visitor: {
-          id: visitorTeam.id,
-          name: visitorTeam.name,
-          matchPlayeds: visitorTeam.matchPlayeds,
-          victories: visitorTeam.victories + 1,
-          ties: visitorTeam.ties,
-          defeats: visitorTeam.defeats,
-          points: visitorTeam.points + 1,
-          lastFive: [...visitorTeam.lastFive, 'tie'],
-        },
+        local: this.getTiedTeam(localTeam),
+        visitor: this.getTiedTeam(visitorTeam),
       };
     }
 
     return localTeamResult > visitorTeamResult
       ? {
-          local: {
-            id: localTeam.id,
-            name: localTeam.name,
-            matchPlayeds: localTeam.matchPlayeds,
-            victories: localTeam.victories + 1,
-            ties: localTeam.ties,
-            defeats: localTeam.defeats,
-            points: localTeam.points + 3,
-            lastFive: [...localTeam.lastFive, 'victory'],
-          },
-          visitor: {
-            id: visitorTeam.id,
-            name: visitorTeam.name,
-            matchPlayeds: visitorTeam.matchPlayeds,
-            victories: visitorTeam.victories,
-            ties: visitorTeam.ties,
-            defeats: visitorTeam.defeats + 1,
-            points: visitorTeam.points,
-            lastFive: [...visitorTeam.lastFive, 'defeat'],
-          },
+          local: this.getWinnerTeam(localTeam),
+          visitor: this.getLoserTeam(visitorTeam),
         }
       : {
-          local: {
-            id: localTeam.id,
-            name: localTeam.name,
-            matchPlayeds: localTeam.matchPlayeds,
-            victories: localTeam.victories,
-            ties: localTeam.ties,
-            defeats: localTeam.defeats + 1,
-            points: localTeam.points,
-            lastFive: [...localTeam.lastFive, 'defeat'],
-          },
-          visitor: {
-            id: visitorTeam.id,
-            name: visitorTeam.name,
-            matchPlayeds: visitorTeam.matchPlayeds,
-            victories: visitorTeam.victories + 1,
-            ties: visitorTeam.ties,
-            defeats: visitorTeam.defeats,
-            points: visitorTeam.points + 3,
-            lastFive: [...visitorTeam.lastFive, 'victory'],
-          },
+          local: this.getLoserTeam(localTeam),
+          visitor: this.getWinnerTeam(visitorTeam),
         };
+  }
+
+  private getWinnerTeam(team: Team): Team {
+    return {
+      id: team.id,
+      name: team.name,
+      matchPlayeds: team.matchPlayeds,
+      victories: team.victories + 1,
+      ties: team.ties,
+      defeats: team.defeats,
+      points: team.points + 3,
+      lastFive: [...team.lastFive, 'victory'],
+    };
+  }
+
+  private getLoserTeam(team: Team): Team {
+    return {
+      id: team.id,
+      name: team.name,
+      matchPlayeds: team.matchPlayeds,
+      victories: team.victories,
+      ties: team.ties,
+      defeats: team.defeats + 1,
+      points: team.points,
+      lastFive: [...team.lastFive, 'defeat'],
+    };
+  }
+
+  private getTiedTeam(team: Team): Team {
+    return {
+      id: team.id,
+      name: team.name,
+      matchPlayeds: team.matchPlayeds,
+      victories: team.victories + 1,
+      ties: team.ties,
+      defeats: team.defeats,
+      points: team.points + 1,
+      lastFive: [...team.lastFive, 'tie'],
+    };
   }
 }

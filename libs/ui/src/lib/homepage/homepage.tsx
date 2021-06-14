@@ -18,48 +18,47 @@ export const Homepage: React.FunctionComponent = () => {
   };
 
   return (
-    <Grid container>
+    <Grid
+      container
+      style={{
+        minHeight: '100vh',
+        backgroundImage: `url(https://wallpapercave.com/wp/wp2903944.png)`,
+        objectFit: 'cover',
+      }}
+    >
       <Grid
-        item
         container
-        md={6}
+        item
+        sm={6}
         xs={12}
-        direction="column"
-        alignItems="center"
+        style={{
+          padding: 60,
+          backgroundColor: '#000000CC',
+        }}
         justify="center"
+        alignItems="center"
+        direction="column"
       >
         <Button
+          variant="text"
           className={classes.homeButton}
-          variant="contained"
-          color="primary"
           href="/competition/competitions"
         >
           <Typography variant="h4">Competitions list</Typography>
         </Button>
-        <Button
-          className={classes.homeButton}
-          variant="contained"
-          color="primary"
-        >
+        <Button className={classes.homeButton} variant="text">
           <Typography variant="h4">My competitions</Typography>
         </Button>
         <Button
           className={classes.homeButton}
-          variant="contained"
-          color="primary"
+          variant="text"
           onClick={handleClickOpen}
         >
           <Typography variant="h4">Create competition</Typography>
         </Button>
         <CompetitionWizard open={open} onClose={handleClose} />
       </Grid>
-      <Grid item container justify="center" md={6} xs={12}>
-        <img
-          width="100%"
-          alt="opentour-homepage-logo"
-          src="https://www.graphicsprings.com/filestorage/stencils/713d3d68575cf7a54570c5ba2efec1e9.png?width=1200&height=1200"
-        />
-      </Grid>
+      <Grid item sm={6}></Grid>
     </Grid>
   );
 };

@@ -13,6 +13,5 @@ describe('Homepage', () => {
     getByText('Competitions list');
     getByText('My competitions');
     getByText('Create competition');
-    getByAltText('opentour-homepage-logo');
   });
 });

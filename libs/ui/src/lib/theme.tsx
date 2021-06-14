@@ -17,6 +17,9 @@ export const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     overflow: 'auto',
   },
+  mainContainer: {
+    padding: 0,
+  },
   container: {
     padding: theme.spacing(2),
   },
@@ -80,9 +83,19 @@ export const useStyles = makeStyles((theme) => ({
   },
   appBarSpacer: theme.mixins.toolbar,
   homeButton: {
-    width: '60%',
-    aspectRatio: '3/1',
-    margin: '10px',
+    margin: '20px',
+    textTransform: 'none',
+    color: theme.palette.primary.dark,
+    borderBottom: '2px solid #614201',
+    borderRadius: '0',
+    transition: theme.transitions.create(['border-color', 'color'], {
+      duration: 400,
+    }),
+    '&:hover': {
+      color: theme.palette.primary.main,
+      backgroundColor: 'transparent',
+      borderColor: theme.palette.primary.main,
+    },
   },
   competitionContainer: {
     backgroundColor: theme.palette.background.paper,
@@ -101,11 +114,11 @@ export const useStyles = makeStyles((theme) => ({
     border: 'solid 1px whitesmoke',
   },
   errorButton: {
-    backgroundColor: '#FF1744',
+    backgroundColor: '#D00000',
     color: 'white',
   },
   tertiaryButton: {
-    backgroundColor: '#EF6C00',
+    backgroundColor: '#003249',
     color: 'white',
   },
 }));
@@ -113,13 +126,14 @@ export const useStyles = makeStyles((theme) => ({
 let muiTheme = createMuiTheme({
   palette: {
     primary: {
-      main: '#414BB2',
+      main: '#FFb627',
+      dark: '#946400',
     },
     secondary: {
-      main: '#32936F',
+      main: '#3F88C5',
     },
     error: {
-      main: red.A400,
+      main: '#D00000',
     },
     background: {
       default: 'whitesmoke',

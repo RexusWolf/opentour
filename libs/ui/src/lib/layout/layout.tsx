@@ -26,7 +26,7 @@ export const Layout: React.FunctionComponent<LayoutProps> = ({
       />
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Container className={classes.container} maxWidth={false}>
+        <Container className={classes.mainContainer} maxWidth={false}>
           {children}
         </Container>
       </main>

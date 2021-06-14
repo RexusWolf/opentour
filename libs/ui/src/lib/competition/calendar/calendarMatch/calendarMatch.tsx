@@ -26,6 +26,7 @@ const registerMatch = async (matchId: string) => {
     method: 'PUT',
     url: `/matches/${matchId}/register`,
   });
+  window.location.reload();
 };
 
 export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({

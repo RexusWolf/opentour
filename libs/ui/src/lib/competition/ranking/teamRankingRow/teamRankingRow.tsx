@@ -5,6 +5,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import RemoveCircle from '@material-ui/icons/RemoveCircle';
 import React from 'react';
+import { useStyles } from '../../../theme';
 
 import { TeamSlot } from '../../shared/teamSlot/teamSlot';
 import { getRandomLogo } from '../../utils/getRandomLogo';
@@ -15,6 +16,7 @@ export type Props = {
 };
 
 export const TeamRankingRow: React.FunctionComponent<Props> = ({ team }) => {
+  const classes = useStyles();
   return (
     <TableRow key={team.name}>
       <TableCell component="th" scope="row">
@@ -38,7 +40,7 @@ export const TeamRankingRow: React.FunctionComponent<Props> = ({ team }) => {
       <TableCell width="10%" align="right">
         {team.lastFive.map((matchResult, index) => {
           return matchResult === 'victory' ? (
-            <Icon key={index} color="secondary">
+            <Icon key={index} className={classes.greenColor}>
               <CheckCircle />
             </Icon>
           ) : matchResult === 'defeat' ? (

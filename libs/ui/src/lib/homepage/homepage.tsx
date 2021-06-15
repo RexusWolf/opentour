@@ -29,7 +29,7 @@ export const Homepage: React.FunctionComponent = () => {
       <Grid
         container
         item
-        sm={6}
+        lg={4}
         xs={12}
         style={{
           padding: 60,
@@ -58,7 +58,6 @@ export const Homepage: React.FunctionComponent = () => {
         </Button>
         <CompetitionWizard open={open} onClose={handleClose} />
       </Grid>
-      <Grid item sm={6}></Grid>
     </Grid>
   );
 };

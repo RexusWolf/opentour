@@ -1,6 +1,11 @@
 import { Button, Grid, Typography } from '@material-ui/core';
 import { useCompetitions } from '@opentour/hooks';
-import { CompetitionsList, CompetitionWizard,Layout, useStyles  } from '@opentour/ui';
+import {
+  CompetitionsList,
+  CompetitionWizard,
+  Layout,
+  useStyles,
+} from '@opentour/ui';
 import { useSession } from 'next-auth/client';
 import React from 'react';
 
@@ -21,7 +26,7 @@ export default function Competitions() {
 
   return (
     <Layout session={session!}>
-      <Grid container>
+      <Grid container className={classes.marginContainer}>
         <Grid container alignItems="center" className={classes.container}>
           <Grid item xs={10}>
             <Typography variant="h2">Competitions list</Typography>

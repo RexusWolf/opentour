@@ -70,7 +70,7 @@ export const Competition: React.FunctionComponent<Props> = ({
     <Grid
       container
       direction="column"
-      className={[classes.competitionContainer, classes.container].join(' ')}
+      className={[classes.marginContainer, classes.paper].join(' ')}
     >
       <Grid item container justify="center">
         <h1>

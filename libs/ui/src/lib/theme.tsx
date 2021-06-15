@@ -20,6 +20,9 @@ export const useStyles = makeStyles((theme) => ({
   mainContainer: {
     padding: 0,
   },
+  marginContainer: {
+    padding: 40,
+  },
   container: {
     padding: theme.spacing(2),
   },
@@ -97,17 +100,20 @@ export const useStyles = makeStyles((theme) => ({
       borderColor: theme.palette.primary.main,
     },
   },
-  competitionContainer: {
-    backgroundColor: theme.palette.background.paper,
-  },
   tabsContainer: {
     backgroundColor: theme.palette.background.paper,
   },
   tabs: {
     backgroundColor: theme.palette.background.paper,
   },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+  },
   containerItem: {
     margin: '4px',
+  },
+  greenColor: {
+    color: 'green',
   },
   calendarMatch: {
     padding: '4px',

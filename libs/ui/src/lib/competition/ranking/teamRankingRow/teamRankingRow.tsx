@@ -5,8 +5,8 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import RemoveCircle from '@material-ui/icons/RemoveCircle';
 import React from 'react';
-import { useStyles } from '../../../theme';
 
+import { useStyles } from '../../../theme';
 import { TeamSlot } from '../../shared/teamSlot/teamSlot';
 import { RankingTeam } from '../ranking';
 

@@ -9,8 +9,8 @@ import {
 } from '@material-ui/core';
 import { CompetitionDTO } from '@opentour/contracts';
 import React from 'react';
-import { useStyles } from '../theme';
 
+import { useStyles } from '../theme';
 import { CompetitionRow } from './competitionRow/competitionRow';
 
 type Props = {

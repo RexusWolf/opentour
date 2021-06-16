@@ -1,8 +1,8 @@
 import { CompetitionId } from '../../../src/competition/domain';
 import { Team, TeamId, TeamName } from '../../../src/team/domain';
+import { TeamLogo } from '../../../src/team/domain/model/team-logo';
 import { UserId } from '../../../src/user/domain';
 import faker = require('faker');
-import { TeamLogo } from '../../../src/team/domain/model/team-logo';
 
 export class TeamBuilder {
   static random(): Team {

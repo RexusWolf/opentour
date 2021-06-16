@@ -2,6 +2,7 @@ import { CompetitionId } from '../../../src/competition/domain';
 import { Team, TeamId, TeamName } from '../../../src/team/domain';
 import { UserId } from '../../../src/user/domain';
 import faker = require('faker');
+import { TeamLogo } from '../../../src/team/domain/model/team-logo';
 
 export class TeamBuilder {
   static random(): Team {
@@ -10,6 +11,7 @@ export class TeamBuilder {
       competitionId: CompetitionId.fromString(faker.datatype.uuid()),
       name: TeamName.fromString(faker.name.title()),
       captainId: UserId.fromString(faker.datatype.uuid()),
+      logo: TeamLogo.fromString(faker.image.imageUrl()),
     });
   }
 }

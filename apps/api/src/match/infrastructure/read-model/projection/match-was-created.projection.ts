@@ -28,8 +28,18 @@ export class MatchWasCreatedProjection
       competitionId: event.competitionId,
       index: event.index,
       journey: event.journey,
-      localTeam: { id: event.localTeamId, name: localTeam?.name, score: 0 },
-      visitorTeam: { id: event.localTeamId, name: visitorTeam?.name, score: 0 },
+      localTeam: {
+        id: event.localTeamId,
+        name: localTeam?.name,
+        logo: localTeam?.logo,
+        score: 0,
+      },
+      visitorTeam: {
+        id: event.localTeamId,
+        name: visitorTeam?.name,
+        logo: visitorTeam?.logo,
+        score: 0,
+      },
       date: null,
       finished: null,
     });

@@ -5,6 +5,7 @@ import { v4 as uuid } from 'uuid';
 
 import { useStyles } from '../../theme';
 import { doRequest } from '../../utils/doRequest';
+import { getRandomLogo } from '../utils/getRandomLogo';
 
 export type Props = {
   open: boolean;
@@ -28,6 +29,7 @@ export const TeamWizard: React.FunctionComponent<Props> = (props) => {
       name,
       competitionId: props.competitionId,
       captainId: uuid(),
+      logo: getRandomLogo(),
     };
 
     await createTeam(team);

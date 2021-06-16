@@ -37,6 +37,7 @@ export class RankingWasCreatedProjection
     return {
       id: team.id,
       name: team.name,
+      logo: team.logo,
       matchPlayeds: 0,
       victories: 0,
       ties: 0,

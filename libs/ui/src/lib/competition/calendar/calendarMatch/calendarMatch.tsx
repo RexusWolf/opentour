@@ -6,7 +6,6 @@ import React from 'react';
 import { useStyles } from '../../../theme';
 import { doRequest } from '../../../utils/doRequest';
 import { TeamSlot } from '../../shared/teamSlot/teamSlot';
-import { getRandomLogo } from '../../utils/getRandomLogo';
 import { MatchManager } from '../matchManager/matchManager';
 
 type CalendarMatchProps = {
@@ -100,8 +99,8 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
             {result.localTeamScore} - {result.visitorTeamScore}{' '}
           </Typography>
         )}
-        <TeamSlot name={localTeam.name} logo={getRandomLogo()} />
-        <TeamSlot name={visitorTeam.name} logo={getRandomLogo()} />
+        <TeamSlot name={localTeam.name} logo={localTeam.logo} />
+        <TeamSlot name={visitorTeam.name} logo={visitorTeam.logo} />
       </Grid>
       <Grid container item direction="column" alignItems="center" xs={4}>
         {isScheduled ? (

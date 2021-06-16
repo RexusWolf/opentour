@@ -7,10 +7,12 @@ export const MatchSchema = new Schema({
   journey: String,
   localTeam: {
     name: String,
+    logo: String,
     score: Number,
   },
   visitorTeam: {
     name: String,
+    logo: String,
     score: Number,
   },
   date: Date,
@@ -24,10 +26,12 @@ export interface MatchView extends Document {
   readonly journey: string;
   readonly localTeam: {
     readonly name: string;
+    readonly logo: string;
     readonly score: number;
   };
   readonly visitorTeam: {
     readonly name: string;
+    readonly logo: string;
     readonly score: number;
   };
   readonly date: Date;

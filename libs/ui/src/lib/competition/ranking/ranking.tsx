@@ -22,6 +22,7 @@ export type Props = {
 
 export type RankingTeam = {
   name: string;
+  logo: string;
   matchPlayeds: number;
   victories: number;
   ties: number;

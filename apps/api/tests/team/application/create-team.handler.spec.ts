@@ -35,6 +35,7 @@ describe('Create team handler', () => {
         id: team.id.value,
         competitionId: team.competitionId.value,
         captainId: team.captainId.value,
+        logo: team.logo.value,
         name: team.name.value,
       })
     );
@@ -50,6 +51,7 @@ describe('Create team handler', () => {
           id: team.id.value,
           competitionId: team.competitionId.value,
           captainId: team.captainId.value,
+          logo: team.logo.value,
           name: team.name.value,
         })
       )

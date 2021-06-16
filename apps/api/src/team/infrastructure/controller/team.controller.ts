@@ -38,12 +38,7 @@ export class TeamController {
   @ApiResponse({ status: 204, description: 'Create team' })
   async create(@Body() createTeamDto: CreateTeamDTO): Promise<TeamDTO> {
     try {
-      return await this.teamService.createTeam({
-        id: createTeamDto.id,
-        name: createTeamDto.name,
-        competitionId: createTeamDto.competitionId,
-        captainId: createTeamDto.captainId,
-      });
+      return await this.teamService.createTeam(createTeamDto);
     } catch (error) {
       if (error instanceof TeamIdAlreadyTakenError) {
         throw new ConflictException(error.message);

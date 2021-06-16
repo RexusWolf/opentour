@@ -4,4 +4,5 @@ export class TeamDTO {
   name: string;
   captainId: string;
   membersIds: string[];
+  logo: string;
 }

@@ -12,6 +12,7 @@ export interface RankingView extends Document {
   readonly teams: {
     readonly id: string;
     readonly name: string;
+    readonly logo: string;
     readonly matchPlayeds: number;
     readonly victories: number;
     readonly ties: number;

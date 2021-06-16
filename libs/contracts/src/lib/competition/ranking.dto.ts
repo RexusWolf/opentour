@@ -3,6 +3,7 @@ export class RankingDTO {
   competitionId: string;
   teams: {
     name: string;
+    logo: string;
     matchPlayeds: number;
     victories: number;
     ties: number;

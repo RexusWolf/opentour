@@ -4,7 +4,6 @@ import React from 'react';
 
 import { useStyles } from '../../theme';
 import { TeamSlot } from '../shared/teamSlot/teamSlot';
-import { getRandomLogo } from '../utils/getRandomLogo';
 
 export type Props = {
   teams: TeamDTO[];
@@ -27,7 +26,7 @@ export const TeamList: React.FunctionComponent<Props> = ({ teams }) => {
               className={classes.containerItem}
             >
               <Grid item xs={11}>
-                <TeamSlot name={team.name} logo={getRandomLogo()} />
+                <TeamSlot name={team.name} logo={team.logo} />
               </Grid>
               <Grid container item justify="center" xs={1}>
                 <Button variant="contained" className={classes.errorButton}>

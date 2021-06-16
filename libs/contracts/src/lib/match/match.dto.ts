@@ -5,10 +5,12 @@ export class MatchDTO {
   journey: string;
   localTeam: {
     name: string;
+    logo: string;
     score: number;
   };
   visitorTeam: {
     name: string;
+    logo: string;
     score: number;
   };
   date: Date;

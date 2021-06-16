@@ -8,6 +8,7 @@ import { RankingView } from '../schema/ranking.schema';
 type Team = {
   readonly id: string;
   readonly name: string;
+  readonly logo: string;
   readonly matchPlayeds: number;
   readonly victories: number;
   readonly ties: number;
@@ -97,6 +98,7 @@ export class RankingWasUpdatedProjection
     return {
       id: team.id,
       name: team.name,
+      logo: team.logo,
       matchPlayeds: team.matchPlayeds,
       victories: team.victories + 1,
       ties: team.ties,
@@ -110,6 +112,7 @@ export class RankingWasUpdatedProjection
     return {
       id: team.id,
       name: team.name,
+      logo: team.logo,
       matchPlayeds: team.matchPlayeds,
       victories: team.victories,
       ties: team.ties,
@@ -123,6 +126,7 @@ export class RankingWasUpdatedProjection
     return {
       id: team.id,
       name: team.name,
+      logo: team.logo,
       matchPlayeds: team.matchPlayeds,
       victories: team.victories + 1,
       ties: team.ties,

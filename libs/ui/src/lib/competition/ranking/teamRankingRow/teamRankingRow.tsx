@@ -8,7 +8,6 @@ import React from 'react';
 import { useStyles } from '../../../theme';
 
 import { TeamSlot } from '../../shared/teamSlot/teamSlot';
-import { getRandomLogo } from '../../utils/getRandomLogo';
 import { RankingTeam } from '../ranking';
 
 export type Props = {
@@ -20,7 +19,7 @@ export const TeamRankingRow: React.FunctionComponent<Props> = ({ team }) => {
   return (
     <TableRow key={team.name}>
       <TableCell component="th" scope="row">
-        <TeamSlot name={team.name} logo={getRandomLogo()} />
+        <TeamSlot name={team.name} logo={team.logo} />
       </TableCell>
       <TableCell width="5%" align="right">
         {team.matchPlayeds}

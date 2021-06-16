@@ -9,12 +9,14 @@ import {
   TeamWasDeleted,
 } from '../event';
 import { TeamId } from './team-id';
+import { TeamLogo } from './team-logo';
 import { TeamName } from './team-name';
 
 export class Team extends AggregateRoot {
   private _id: TeamId;
   private _competitionId: CompetitionId;
   private _name: TeamName;
+  private _logo: TeamLogo;
   private _captainId: UserId;
   private _membersIds: UserId[];
   private _deleted: Date;
@@ -27,18 +29,20 @@ export class Team extends AggregateRoot {
     id: TeamId;
     competitionId: CompetitionId;
     name: TeamName;
+    logo: TeamLogo;
     captainId: UserId;
   }): Team {
-    const { id, competitionId, name, captainId } = params;
+    const { id, competitionId, name, captainId, logo } = params;
     const team = new Team();
 
     team.apply(
-      new TeamWasCreated(
-        id.value,
-        competitionId.value,
-        name.value,
-        captainId.value
-      )
+      new TeamWasCreated({
+        id: id.value,
+        competitionId: competitionId.value,
+        name: name.value,
+        captainId: captainId.value,
+        logo: logo.value,
+      })
     );
 
     return team;
@@ -54,6 +58,10 @@ export class Team extends AggregateRoot {
 
   get name(): TeamName {
     return this._name;
+  }
+
+  get logo(): TeamLogo {
+    return this._logo;
   }
 
   get captainId(): UserId {
@@ -105,6 +113,7 @@ export class Team extends AggregateRoot {
     this._competitionId = CompetitionId.fromString(event.competitionId);
     this._name = TeamName.fromString(event.name);
     this._captainId = UserId.fromString(event.captainId);
-    this.membersIds = [UserId.fromString(event.captainId)];
+    this._membersIds = [UserId.fromString(event.captainId)];
+    this._logo = TeamLogo.fromString(event.logo);
   }
 }

@@ -1,9 +1,9 @@
 import { Id } from '@opentour/domain';
-import * as uuid from 'uuid';
+import { v4 as uuid } from 'uuid';
 
 export class UserId extends Id {
   static generate(): UserId {
-    return new UserId(uuid.v4());
+    return new UserId(uuid());
   }
 
   public static fromString(id: string): UserId {

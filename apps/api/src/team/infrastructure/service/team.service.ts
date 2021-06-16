@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { TeamDTO } from '@opentour/contracts';
+import { CreateTeamDTO, TeamDTO } from '@opentour/contracts';
 
 import {
   CreateTeamCommand,
@@ -20,15 +20,10 @@ export class TeamService {
     private readonly teamMapper: TeamMapper
   ) {}
 
-  async createTeam(params: {
-    id: string;
-    competitionId: string;
-    name: string;
-    captainId: string;
-  }) {
-    const { id, competitionId, name, captainId } = params;
+  async createTeam(createTeamDTO: CreateTeamDTO) {
+    const { id, competitionId, name, captainId, logo } = createTeamDTO;
     return this.commandBus.execute(
-      new CreateTeamCommand({ id, competitionId, name, captainId })
+      new CreateTeamCommand({ id, competitionId, name, captainId, logo })
     );
   }
 

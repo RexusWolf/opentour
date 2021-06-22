@@ -37,12 +37,12 @@ export function Navbar({
         </Typography>
         {session && (
           <Link href="/api/auth/signout">
-            <Button color="inherit">Logout</Button>
+            <Button color="inherit">Cerrar sesión</Button>
           </Link>
         )}
         {!session && (
           <Link href="/api/auth/signin">
-            <Button color="inherit">Login</Button>
+            <Button color="inherit">Iniciar sesión</Button>
           </Link>
         )}
       </Toolbar>

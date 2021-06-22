@@ -83,7 +83,6 @@ export class Competition extends AggregateRoot {
   }
 
   start() {
-    this.hasStarted = true;
     this.apply(new CompetitionWasStarted(this.id.value));
   }
 
@@ -143,5 +142,10 @@ export class Competition extends AggregateRoot {
     this._type = CompetitionType.fromString(event.type);
     this._sportName = SportName.fromString(event.sportName);
     this._moderatorIds = [UserId.fromString(event.moderatorId)];
+    this._hasStarted = false;
+  }
+
+  private onCompetitionWasStarted(event: CompetitionWasStarted){
+    this._hasStarted = true;
   }
 }

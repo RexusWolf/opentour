@@ -23,10 +23,10 @@ describe('Competition', () => {
     const { getByText } = render(
       <Competition competition={defaultCompetition} />
     );
-    getByText('Teams');
-    getByText('Calendar');
+    getByText('Equipos');
+    getByText('Calendario');
     getByText('Ranking');
-    getByText('Create team for competition');
-    getByText('Start competition');
+    getByText('Añadir equipo');
+    getByText('Comenzar competición');
   });
 });

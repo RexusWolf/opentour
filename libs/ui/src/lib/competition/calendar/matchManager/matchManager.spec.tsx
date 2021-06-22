@@ -22,10 +22,10 @@ describe('MatchManager', () => {
 
   it('should render a match with a date picker, two text fields and two buttons', () => {
     const { getByText } = render(<MatchManager {...defaultProps} />);
-    getByText('Match date');
-    getByText('Local Team Score');
-    getByText('Visitor Team Score');
-    getByText('Cancel');
-    getByText('Schedule match');
+    getByText('Fecha del partido');
+    getByText('Puntuación equipo Local');
+    getByText('Puntuación equipo Visitante');
+    getByText('Cancelar');
+    getByText('Programar partido');
   });
 });

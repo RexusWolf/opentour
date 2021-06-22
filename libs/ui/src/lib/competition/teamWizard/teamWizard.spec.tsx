@@ -17,7 +17,7 @@ describe('TeamWizard', () => {
   it('should render the text field and buttons to create a competition and two buttons', () => {
     const { getByText } = render(<TeamWizard {...defaultProps} />);
     getByText('Team name');
-    getByText('Cancel');
+    getByText('Cancelar');
     getByText('Create team');
   });
 });

@@ -23,12 +23,12 @@ export const CompetitionsList: React.FunctionComponent<Props> = (props) => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell width="40%">Name</TableCell>
+            <TableCell width="40%">Nombre</TableCell>
             <TableCell width="20%" align="center">
-              Sport
+              Deporte
             </TableCell>
             <TableCell width="20%" align="center">
-              Type
+              Tipo
             </TableCell>
             <TableCell width="20%"></TableCell>
           </TableRow>

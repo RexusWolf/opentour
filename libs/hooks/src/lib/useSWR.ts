@@ -30,7 +30,6 @@ export function useMatchesByCompetitionId(competitionId: string): MatchDTO[] {
     fetchUrl
   );
 
-  console.log(data);
   return data;
 }
 

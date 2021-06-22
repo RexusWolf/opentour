@@ -44,17 +44,17 @@ export const Homepage: React.FunctionComponent = () => {
           className={classes.homeButton}
           href="/competition/competitions"
         >
-          <Typography variant="h4">Competitions list</Typography>
+          <Typography variant="h4">Lista de Competiciones</Typography>
         </Button>
         <Button className={classes.homeButton} variant="text">
-          <Typography variant="h4">My competitions</Typography>
+          <Typography variant="h4">Mis competiciones</Typography>
         </Button>
         <Button
           className={classes.homeButton}
           variant="text"
           onClick={handleClickOpen}
         >
-          <Typography variant="h4">Create competition</Typography>
+          <Typography variant="h4">Crear competición</Typography>
         </Button>
         <CompetitionWizard open={open} onClose={handleClose} />
       </Grid>

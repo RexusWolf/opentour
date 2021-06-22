@@ -11,8 +11,8 @@ describe('CompetitionsList', () => {
 
   it('should render a list with the provided competitions', () => {
     const { getByText } = render(<CompetitionsList competitions={[]} />);
-    getByText('Name');
-    getByText('Sport');
-    getByText('Type');
+    getByText('Nombre');
+    getByText('Deporte');
+    getByText('Tipo');
   });
 });

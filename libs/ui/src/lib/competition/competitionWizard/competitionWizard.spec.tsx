@@ -16,10 +16,10 @@ describe('CompetitionWizard', () => {
 
   it('should render the text field and buttons to create a competition and two buttons', () => {
     const { getByText } = render(<CompetitionWizard {...defaultProps} />);
-    getByText('Competition name');
-    getByText('Select type of competition:');
-    getByText('Select sport:');
-    getByText('Cancel');
-    getByText('Create competition');
+    getByText('Nombre de la competición');
+    getByText('Selecciona el tipo de competición:');
+    getByText('Selecciona el deporte:');
+    getByText('Cancelar');
+    getByText('Crear competición');
   });
 });

@@ -18,7 +18,7 @@ describe('TeamList', () => {
   it('should render a list with the teams and a remove button for each team', () => {
     const { getByText } = render(<TeamList {...defaultProps} />);
     getByText(teams[0].name);
-    getByText('Remove');
+    getByText('Eliminar');
   });
 });
 

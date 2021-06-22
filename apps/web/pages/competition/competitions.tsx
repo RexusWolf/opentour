@@ -29,7 +29,7 @@ export default function Competitions() {
       <Grid container className={classes.marginContainer}>
         <Grid container alignItems="center" className={classes.container}>
           <Grid item xs={10}>
-            <Typography variant="h2">Competitions list</Typography>
+            <Typography variant="h2">Lista de Competiciones</Typography>
           </Grid>
           <Grid item xs={2}>
             <Button
@@ -37,7 +37,7 @@ export default function Competitions() {
               variant="contained"
               onClick={handleClickOpen}
             >
-              <Typography variant="button">Create competition</Typography>
+              <Typography variant="button">Crear competición</Typography>
             </Button>
           </Grid>
           <CompetitionWizard open={open} onClose={handleClose} />

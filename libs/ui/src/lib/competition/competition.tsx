@@ -78,8 +78,8 @@ export const Competition: React.FunctionComponent<Props> = ({
         </h1>
       </Grid>
       <Tabs indicatorColor="primary" value={tabIndex} onChange={handleChange}>
-        <Tab label="Teams" />
-        <Tab label="Calendar" />
+        <Tab label="Equipos" />
+        <Tab label="Calendario" />
         <Tab label="Ranking" />
       </Tabs>
       <CompetitionTab value={tabIndex} index={0}>
@@ -98,7 +98,7 @@ export const Competition: React.FunctionComponent<Props> = ({
           variant="contained"
           onClick={handleClickOpen}
         >
-          Create team for competition
+          Añadir equipo
         </Button>
         <TeamWizard
           competitionId={competition.id}
@@ -112,7 +112,7 @@ export const Competition: React.FunctionComponent<Props> = ({
           disabled={competition.hasStarted || !hasMinimumTeams()}
           onClick={handleStartCompetition}
         >
-          Start competition
+          Comenzar competición
         </Button>
       </Grid>
     </Grid>

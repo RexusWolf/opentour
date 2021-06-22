@@ -7,7 +7,7 @@ interface Props {
 export class CompetitionName extends ValueObject<Props> {
   public static fromString(name: string): CompetitionName {
     if (name.length === 0) {
-      throw new Error('Competition name cannot be empty');
+      throw new Error('Nombre de la competición cannot be empty');
     }
 
     if (!/^(?:[A-Za-z]+)(?:[A-Za-z0-9 _]*)$/i.test(name)) {

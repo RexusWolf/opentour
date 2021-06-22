@@ -30,7 +30,7 @@ export const TeamList: React.FunctionComponent<Props> = ({ teams }) => {
               </Grid>
               <Grid container item justify="center" xs={1}>
                 <Button variant="contained" className={classes.errorButton}>
-                  Remove
+                  Eliminar
                 </Button>
               </Grid>
             </Grid>

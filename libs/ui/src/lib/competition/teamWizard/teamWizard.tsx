@@ -67,7 +67,7 @@ export const TeamWizard: React.FunctionComponent<Props> = (props) => {
               variant="contained"
               onClick={handleClose}
             >
-              Cancel
+              Cancelar
             </Button>
             <Button
               className={classes.containerItem}

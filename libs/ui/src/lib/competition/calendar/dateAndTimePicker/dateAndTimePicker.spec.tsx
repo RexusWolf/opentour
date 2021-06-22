@@ -16,6 +16,6 @@ describe('DateAndTimePicker', () => {
 
   it('should render a a date picker', () => {
     const { getByText } = render(<DateAndTimePicker {...defaultProps} />);
-    getByText('Match date');
+    getByText('Fecha del partido');
   });
 });

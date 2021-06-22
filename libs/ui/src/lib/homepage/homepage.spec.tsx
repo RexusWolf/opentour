@@ -10,8 +10,8 @@ describe('Homepage', () => {
   });
   it('should render a layout with three buttons and an image', () => {
     const { getByText, getByAltText } = render(<Homepage />);
-    getByText('Competitions list');
-    getByText('My competitions');
-    getByText('Create competition');
+    getByText('Lista de Competiciones');
+    getByText('Mis competiciones');
+    getByText('Crear competición');
   });
 });

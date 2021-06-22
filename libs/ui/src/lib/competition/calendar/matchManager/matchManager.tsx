@@ -68,7 +68,7 @@ export const MatchManager: React.FunctionComponent<Props> = (props) => {
         <TextField
           fullWidth
           disabled={!isScheduled}
-          label="Local Team Score"
+          label="Puntuación equipo Local"
           id="standard-size-small"
           defaultValue={result.localTeamScore}
           onChange={(event) => handleLocalTeamScore(event.target.value)}
@@ -85,7 +85,7 @@ export const MatchManager: React.FunctionComponent<Props> = (props) => {
         <TextField
           fullWidth
           disabled={!isScheduled}
-          label="Visitor Team Score"
+          label="Puntuación equipo Visitante"
           id="standard-size-small"
           defaultValue={result.visitorTeamScore}
           onChange={(event) => handleVisitorTeamScore(event.target.value)}
@@ -99,7 +99,7 @@ export const MatchManager: React.FunctionComponent<Props> = (props) => {
           variant="contained"
           onClick={handleClose}
         >
-          Cancel
+          Cancelar
         </Button>
         <Button
           className={classes.containerItem}
@@ -107,7 +107,7 @@ export const MatchManager: React.FunctionComponent<Props> = (props) => {
           variant="contained"
           onClick={() => handleModify('')}
         >
-          {!isScheduled ? 'Schedule match' : 'Modify match'}
+          {!isScheduled ? 'Programar partido' : 'Modificar partido'}
         </Button>
       </Grid>
     </Grid>

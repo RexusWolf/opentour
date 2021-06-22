@@ -138,7 +138,6 @@ export class Match extends AggregateRoot {
   }
 
   register(): void {
-    console.log('REGISTERING');
     this.apply(
       new MatchWasRegistered(
         this.id.value,

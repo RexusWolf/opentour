@@ -1,7 +1,7 @@
 import DateFnsUtils from '@date-io/date-fns';
 import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
-import locale from 'date-fns/locale/en-US';
+import locale from 'date-fns/locale/es';
 import React, { useState } from 'react';
 
 export type Props = {
@@ -29,7 +29,7 @@ export const DateAndTimePicker: React.FunctionComponent<Props> = (props) => {
         style={{ flexGrow: 1 }}
         variant="inline"
         ampm={false}
-        label="Match date"
+        label="Fecha del partido"
         value={selectedDate}
         onChange={(date) => onDateChange(date)}
         onError={console.log}

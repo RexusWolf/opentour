@@ -30,6 +30,6 @@ describe('CalendarMatch', () => {
     const { getByText } = render(<CalendarMatch match={match} />);
     getByText(match.localTeam.name);
     getByText(match.visitorTeam.name);
-    getByText('Modify');
+    getByText('Modificar');
   });
 });

@@ -2,6 +2,7 @@ import { Button, Dialog, Grid, TextField, Typography } from '@material-ui/core';
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
 import { CreateCompetitionDTO } from '@opentour/contracts';
 import React from 'react';
+import { mutate } from 'swr';
 import { v4 as uuid } from 'uuid';
 
 import { useStyles } from '../../theme';
@@ -45,7 +46,9 @@ export const CompetitionWizard: React.FunctionComponent<Props> = ({
   };
   const handleCreateCompetition = async () => {
     await createCompetition(competitionValues);
-    window.location.reload();
+
+    mutate('/api/competitions');
+
     onClose();
   };
 
@@ -58,7 +61,7 @@ export const CompetitionWizard: React.FunctionComponent<Props> = ({
       <form>
         <Grid container className={classes.container}>
           <Typography className={classes.containerItem} color="textSecondary">
-            Competition name
+            Nombre de la competición
           </Typography>
           <Grid container item className={classes.containerItem}>
             <TextField
@@ -73,7 +76,7 @@ export const CompetitionWizard: React.FunctionComponent<Props> = ({
             />
           </Grid>
           <Typography className={classes.containerItem} color="textSecondary">
-            Select type of competition:
+            Selecciona el tipo de competición:
           </Typography>
           <Grid
             item
@@ -96,7 +99,7 @@ export const CompetitionWizard: React.FunctionComponent<Props> = ({
             </ToggleButtonGroup>
           </Grid>
           <Typography className={classes.containerItem} color="textSecondary">
-            Select sport:
+            Selecciona el deporte:
           </Typography>
           <Grid
             item
@@ -124,7 +127,7 @@ export const CompetitionWizard: React.FunctionComponent<Props> = ({
               variant="contained"
               onClick={handleClose}
             >
-              Cancel
+              Cancelar
             </Button>
             <Button
               className={classes.containerItem}
@@ -132,7 +135,7 @@ export const CompetitionWizard: React.FunctionComponent<Props> = ({
               variant="contained"
               onClick={async () => await handleCreateCompetition()}
             >
-              Create competition
+              Crear competición
             </Button>
           </Grid>
         </Grid>

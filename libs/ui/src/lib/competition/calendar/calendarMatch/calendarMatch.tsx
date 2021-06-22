@@ -1,5 +1,5 @@
 import { Button, Dialog, Grid, Typography } from '@material-ui/core';
-import { EditMatchDTO, MatchDTO, RegisterMatchDTO } from '@opentour/contracts';
+import { EditMatchDTO, MatchDTO } from '@opentour/contracts';
 import { format } from 'date-fns';
 import React from 'react';
 
@@ -120,7 +120,7 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
               disabled={finished !== null}
               onClick={handleClickOpen}
             >
-              Modify
+              Modificar
             </Button>
             <Button
               size="small"
@@ -131,7 +131,7 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
               variant="contained"
               onClick={() => setOpenFinishDialog(true)}
             >
-              Finish
+              Finalizar
             </Button>
           </>
         ) : (
@@ -141,7 +141,7 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
             variant="contained"
             onClick={handleClickOpen}
           >
-            Schedule
+            Programar
           </Button>
         )}
         <Dialog onClose={handleClose} open={open}>
@@ -163,8 +163,8 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
           <Grid container className={classes.container}>
             <Grid item>
               <Typography>
-                Do you really want to finish the match? The results will be
-                permanently registered
+                ¿Estás seguro de que quieres finalizar el partido? Los
+                resultados serán registrados de forma permanente.
               </Typography>
             </Grid>
             <Grid container item justify="flex-end">
@@ -178,7 +178,7 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
                   closeFinishDialog();
                 }}
               >
-                Finish match
+                Finalizar partido
               </Button>
             </Grid>
           </Grid>

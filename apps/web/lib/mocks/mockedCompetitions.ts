@@ -7,37 +7,37 @@ export type Competition = {
 
 export const competitions = [
   {
-    id: 'Name',
+    id: 'Nombre',
     name: 'Trofeo Rector Baloncesto',
     sport: 'Baloncesto',
     numberOfTeams: 14,
   },
   {
-    id: 'Name',
+    id: 'Nombre',
     name: 'UCO Tournament Voley',
     sport: 'Voleibol',
     numberOfTeams: 12,
   },
   {
-    id: 'Name',
+    id: 'Nombre',
     name: 'UCO Move Basket League',
     sport: 'Baloncesto',
     numberOfTeams: 18,
   },
   {
-    id: 'Name',
+    id: 'Nombre',
     name: 'Liga Universitaria de Futsal UCO',
     sport: 'Fútbol',
     numberOfTeams: 10,
   },
   {
-    id: 'Name',
+    id: 'Nombre',
     name: 'Voleibol Championship',
     sport: 'Voleibol',
     numberOfTeams: 20,
   },
   {
-    id: 'Name',
+    id: 'Nombre',
     name: 'Baloncesto Worlds UCO',
     sport: 'Baloncesto',
     numberOfTeams: 20,

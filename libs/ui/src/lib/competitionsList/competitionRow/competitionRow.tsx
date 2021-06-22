@@ -42,7 +42,7 @@ export const CompetitionRow: React.FunctionComponent<Props> = (props) => {
       </TableCell>
       <TableCell width="20%" align="center">
         <Button variant="contained" color="primary" href={competitionRoute}>
-          View
+          Ver
         </Button>
       </TableCell>
     </TableRow>

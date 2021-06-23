@@ -18,7 +18,6 @@ const modifyMatch = async (matchId: string, editMatchDTO: EditMatchDTO) => {
     url: `/matches/${matchId}`,
     data: editMatchDTO,
   });
-  window.location.reload();
 };
 
 export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({

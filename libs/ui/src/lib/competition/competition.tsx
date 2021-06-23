@@ -89,7 +89,7 @@ export const Competition: React.FunctionComponent<Props> = ({
         <Calendar matches={matches} />
       </CompetitionTab>
       <CompetitionTab value={tabIndex} index={2}>
-        <Ranking ranking={ranking} />
+        <Ranking ranking={ranking} scoreSystem={competition.scoreSystem} />
       </CompetitionTab>
       <Grid container justify="flex-end" className={classes.container}>
         <Button

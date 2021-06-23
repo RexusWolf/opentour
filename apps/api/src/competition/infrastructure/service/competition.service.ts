@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import {
   CompetitionDTO,
+  CreateCompetitionDTO,
   EditCompetitionDTO,
   RankingDTO,
 } from '@opentour/contracts';
@@ -30,16 +31,17 @@ export class CompetitionService {
     private rankingMapper: RankingMapper
   ) {}
 
-  async createCompetition(params: {
-    id: string;
-    name: string;
-    sportName: string;
-    type: string;
-    moderatorId: string;
-  }) {
-    const { id, name, sportName, type, moderatorId } = params;
+  async createCompetition(params: CreateCompetitionDTO) {
+    const { id, name, sportName, type, moderatorId, scoreSystem } = params;
     return this.commandBus.execute(
-      new CreateCompetitionCommand({ id, name, sportName, type, moderatorId })
+      new CreateCompetitionCommand({
+        id,
+        name,
+        sportName,
+        type,
+        moderatorId,
+        scoreSystem,
+      })
     );
   }
 

@@ -21,6 +21,11 @@ export class CompetitionWasCreatedProjection
       sportName: event.sportName,
       moderatorIds: [event.moderatorId],
       hasStarted: false,
+      scoreSystem: {
+        victory: event.scoreSystem.victory,
+        tie: event.scoreSystem.tie,
+        defeat: event.scoreSystem.defeat,
+      },
     });
 
     await competitionView.save();

@@ -3,13 +3,18 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import { SportName } from '../../../sport/domain/model';
 import { UserId } from '../../../user/domain';
-import { CompetitionIdAlreadyTakenError,COMPETITIONS, Competitions  } from '../../domain';
+import {
+  CompetitionIdAlreadyTakenError,
+  COMPETITIONS,
+  Competitions,
+} from '../../domain';
 import {
   Competition,
   CompetitionId,
   CompetitionName,
   CompetitionType,
 } from '../../domain/model';
+import { Score } from '../../domain/model/score';
 import { CreateCompetitionCommand } from './create-competition.command';
 
 @CommandHandler(CreateCompetitionCommand)
@@ -18,11 +23,19 @@ export class CreateCompetitionHandler
   constructor(@Inject(COMPETITIONS) private competitions: Competitions) {}
 
   async execute(command: CreateCompetitionCommand) {
+    console.log('COMMDAWADN', command.scoreSystem);
+
     const competitionId = CompetitionId.fromString(command.id);
     const name = CompetitionName.fromString(command.name);
     const type = CompetitionType.fromString(command.type);
     const sportName = SportName.fromString(command.sportName);
     const moderatorId = UserId.fromString(command.moderatorId);
+    console.log('HEY');
+    const scoreSystem = {
+      victory: Score.fromNumber(command.scoreSystem.victory),
+      tie: Score.fromNumber(command.scoreSystem.tie),
+      defeat: Score.fromNumber(command.scoreSystem.defeat),
+    };
     if (await this.competitions.find(competitionId)) {
       throw CompetitionIdAlreadyTakenError.with(competitionId);
     }
@@ -33,6 +46,7 @@ export class CreateCompetitionHandler
       type,
       sportName,
       moderatorId,
+      scoreSystem,
     });
 
     this.competitions.save(competition);

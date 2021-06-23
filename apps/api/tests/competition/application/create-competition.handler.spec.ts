@@ -37,6 +37,11 @@ describe('Create competition handler', () => {
         type: competition.type.value,
         sportName: competition.sportName.value,
         moderatorId: competition.moderatorIds[0].value,
+        scoreSystem: {
+          victory: competition.scoreSystem.victory.value,
+          tie: competition.scoreSystem.tie.value,
+          defeat: competition.scoreSystem.defeat.value,
+        },
       })
     );
 
@@ -53,6 +58,11 @@ describe('Create competition handler', () => {
           type: competition.type.value,
           sportName: competition.sportName.value,
           moderatorId: competition.moderatorIds[0].value,
+          scoreSystem: {
+            victory: competition.scoreSystem.victory.value,
+            tie: competition.scoreSystem.tie.value,
+            defeat: competition.scoreSystem.defeat.value,
+          },
         })
       )
     ).rejects.toThrow();

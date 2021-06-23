@@ -7,6 +7,11 @@ export const CompetitionSchema = new Schema({
   sportName: String,
   moderatorIds: [String],
   hasStarted: Boolean,
+  scoreSystem: {
+    victory: Number,
+    tie: Number,
+    defeat: Number,
+  },
 });
 
 export interface CompetitionView extends Document {
@@ -16,6 +21,11 @@ export interface CompetitionView extends Document {
   readonly sportName: string;
   readonly moderatorIds: string[];
   readonly hasStarted: boolean;
+  readonly scoreSystem: {
+    victory: number;
+    tie: number;
+    defeat: number;
+  };
 }
 
 export const COMPETITION_MODEL = 'COMPETITION_MODEL';

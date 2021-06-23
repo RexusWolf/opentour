@@ -5,4 +5,9 @@ export class CompetitionDTO {
   sportName: string;
   moderatorIds: string[];
   hasStarted: boolean;
+  scoreSystem: {
+    victory: number;
+    tie: number;
+    defeat: number;
+  };
 }

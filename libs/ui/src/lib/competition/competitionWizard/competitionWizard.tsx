@@ -7,6 +7,7 @@ import { v4 as uuid } from 'uuid';
 
 import { useStyles } from '../../theme';
 import { doRequest } from '../../utils/doRequest';
+import { CounterButton } from './CounterButton';
 
 type Props = {
   open: boolean;
@@ -32,6 +33,11 @@ export const CompetitionWizard: React.FunctionComponent<Props> = ({
     sportName: sport,
     moderatorId: currentUserId,
     type,
+    scoreSystem: {
+      victory: 0,
+      tie: 0,
+      defeat: 0,
+    },
   };
 
   const [competitionValues, setCompetitionValues] = React.useState(
@@ -44,6 +50,7 @@ export const CompetitionWizard: React.FunctionComponent<Props> = ({
       [property]: value,
     });
   };
+
   const handleCreateCompetition = async () => {
     await createCompetition(competitionValues);
 
@@ -53,6 +60,7 @@ export const CompetitionWizard: React.FunctionComponent<Props> = ({
   };
 
   const handleClose = () => {
+    setCompetitionValues(initialValues);
     onClose();
   };
 
@@ -119,6 +127,64 @@ export const CompetitionWizard: React.FunctionComponent<Props> = ({
               <ToggleButton value="Fútbol">Fútbol</ToggleButton>
               <ToggleButton value="Voleibol">Voleibol</ToggleButton>
             </ToggleButtonGroup>
+          </Grid>
+          <Typography className={classes.containerItem} color="textSecondary">
+            Selecciona sistema de puntuación:
+          </Typography>
+          <Grid
+            item
+            container
+            justify="space-around"
+            className={classes.containerItem}
+          >
+            <Grid item>
+              <Typography
+                className={classes.containerItem}
+                color="textSecondary"
+              >
+                Ptos por Victoria:
+              </Typography>
+              <CounterButton
+                handleCounterChange={(counter: number) => {
+                  handleChange('scoreSystem', {
+                    ...competitionValues.scoreSystem,
+                    victory: counter,
+                  });
+                }}
+              />
+            </Grid>
+            <Grid item>
+              <Typography
+                className={classes.containerItem}
+                color="textSecondary"
+              >
+                Ptos por Empate:
+              </Typography>
+              <CounterButton
+                handleCounterChange={(counter: number) => {
+                  handleChange('scoreSystem', {
+                    ...competitionValues.scoreSystem,
+                    tie: counter,
+                  });
+                }}
+              />
+            </Grid>
+            <Grid item>
+              <Typography
+                className={classes.containerItem}
+                color="textSecondary"
+              >
+                Ptos por Derrota:
+              </Typography>
+              <CounterButton
+                handleCounterChange={(counter: number) => {
+                  handleChange('scoreSystem', {
+                    ...competitionValues.scoreSystem,
+                    defeat: counter,
+                  });
+                }}
+              />
+            </Grid>
           </Grid>
           <Grid container justify="flex-end" className={classes.container}>
             <Button

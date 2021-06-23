@@ -47,13 +47,9 @@ export class CompetitionController {
     @Body() createCompetitionDto: CreateCompetitionDTO
   ): Promise<CompetitionDTO> {
     try {
-      return await this.competitionService.createCompetition({
-        id: createCompetitionDto.id,
-        name: createCompetitionDto.name,
-        type: createCompetitionDto.type,
-        sportName: createCompetitionDto.sportName,
-        moderatorId: createCompetitionDto.moderatorId,
-      });
+      return await this.competitionService.createCompetition(
+        createCompetitionDto
+      );
     } catch (error) {
       if (error instanceof CompetitionIdAlreadyTakenError) {
         throw new ConflictException(error.message);

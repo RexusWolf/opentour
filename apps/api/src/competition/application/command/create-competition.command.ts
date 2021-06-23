@@ -7,6 +7,11 @@ export class CreateCompetitionCommand implements ICommand {
   readonly type: string;
   readonly sportName: string;
   readonly moderatorId: string;
+  readonly scoreSystem: {
+    victory: number;
+    tie: number;
+    defeat: number;
+  };
 
   constructor(competition: CreateCompetitionDTO) {
     this.id = competition.id;
@@ -14,5 +19,6 @@ export class CreateCompetitionCommand implements ICommand {
     this.type = competition.type;
     this.sportName = competition.sportName;
     this.moderatorId = competition.moderatorId;
+    this.scoreSystem = competition.scoreSystem;
   }
 }

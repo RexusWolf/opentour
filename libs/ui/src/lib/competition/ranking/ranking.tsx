@@ -19,6 +19,7 @@ function getSortedRanking(rankingTeams: RankingTeam[]): RankingTeam[] {
 
 export type Props = {
   ranking: RankingDTO;
+  scoreSystem: ScoreSystem;
 };
 
 export type RankingTeam = {
@@ -32,7 +33,12 @@ export type RankingTeam = {
   lastFive: string[];
 };
 
-function getRankingTeamsFromRanking(ranking: RankingDTO): RankingTeam[] {
+export type ScoreSystem = { victory: number; tie: number; defeat: number };
+
+function getRankingTeamsFromRanking(
+  ranking: RankingDTO,
+  scoreSystem: ScoreSystem
+): RankingTeam[] {
   const rankingTeams: RankingTeam[] = [];
   for (const team of ranking.teams) {
     const matchPlayeds = team.matchesPlayed.length || 0;
@@ -44,7 +50,10 @@ function getRankingTeamsFromRanking(ranking: RankingDTO): RankingTeam[] {
     const defeats = team.matchesPlayed.filter(
       (match) => match.result === 'defeat'
     ).length;
-    const points = victories * 3 + ties * 1;
+    const points =
+      victories * scoreSystem.victory +
+      ties * scoreSystem.tie +
+      defeats * scoreSystem.defeat;
 
     const sortedMatches = team.matchesPlayed.sort((a, b) =>
       a.index > b.index ? 1 : b.index < a.index ? -1 : 0
@@ -68,8 +77,13 @@ function getRankingTeamsFromRanking(ranking: RankingDTO): RankingTeam[] {
   return rankingTeams;
 }
 
-export const Ranking: React.FunctionComponent<Props> = ({ ranking }) => {
-  const rankingTeams = ranking ? getRankingTeamsFromRanking(ranking) : null;
+export const Ranking: React.FunctionComponent<Props> = ({
+  ranking,
+  scoreSystem,
+}) => {
+  const rankingTeams = ranking
+    ? getRankingTeamsFromRanking(ranking, scoreSystem)
+    : null;
   const statistics = ['PJ', 'V', 'E', 'D', 'Pts', 'Últimos 5'];
   return (
     <>

@@ -8,6 +8,11 @@ import { Ranking } from './ranking';
 describe('Ranking', () => {
   const defaultProps = {
     ranking: aRanking(),
+    scoreSystem: {
+      victory: 3,
+      tie: 1,
+      defeat: 0,
+    },
   };
 
   it('should render successfully', () => {

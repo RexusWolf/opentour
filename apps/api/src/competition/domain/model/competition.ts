@@ -14,6 +14,9 @@ import {
 import { CompetitionId } from './competition-id';
 import { CompetitionName } from './competition-name';
 import { CompetitionType } from './competition-type';
+import { Score } from './score';
+
+type ScoreSystem = { victory: Score; tie: Score; defeat: Score };
 
 export class Competition extends AggregateRoot {
   private _id: CompetitionId;
@@ -21,6 +24,7 @@ export class Competition extends AggregateRoot {
   private _type: CompetitionType;
   private _sportName: SportName;
   private _moderatorIds: UserId[];
+  private _scoreSystem: ScoreSystem;
   private _hasStarted: boolean;
   private _deleted?: Date;
 
@@ -34,17 +38,23 @@ export class Competition extends AggregateRoot {
     type: CompetitionType;
     sportName: SportName;
     moderatorId: UserId;
+    scoreSystem: ScoreSystem;
   }): Competition {
-    const { id, name, type, sportName, moderatorId } = params;
+    const { id, name, type, sportName, moderatorId, scoreSystem } = params;
     const competition = new Competition();
 
-    const event = new CompetitionWasCreated(
-      id.value,
-      name.value,
-      type.value,
-      sportName.value,
-      moderatorId.value
-    );
+    const event = new CompetitionWasCreated({
+      id: id.value,
+      name: name.value,
+      type: type.value,
+      sportName: sportName.value,
+      moderatorId: moderatorId.value,
+      scoreSystem: {
+        victory: scoreSystem.victory.value,
+        defeat: scoreSystem.defeat.value,
+        tie: scoreSystem.tie.value,
+      },
+    });
     competition.apply(event);
 
     return competition;
@@ -68,6 +78,10 @@ export class Competition extends AggregateRoot {
 
   get sportName(): SportName {
     return this._sportName;
+  }
+
+  get scoreSystem(): ScoreSystem {
+    return this._scoreSystem;
   }
 
   get moderatorIds(): UserId[] {
@@ -143,9 +157,14 @@ export class Competition extends AggregateRoot {
     this._sportName = SportName.fromString(event.sportName);
     this._moderatorIds = [UserId.fromString(event.moderatorId)];
     this._hasStarted = false;
+    this._scoreSystem = {
+      victory: Score.fromNumber(event.scoreSystem.victory),
+      tie: Score.fromNumber(event.scoreSystem.tie),
+      defeat: Score.fromNumber(event.scoreSystem.defeat),
+    };
   }
 
-  private onCompetitionWasStarted(event: CompetitionWasStarted){
+  private onCompetitionWasStarted(event: CompetitionWasStarted) {
     this._hasStarted = true;
   }
 }

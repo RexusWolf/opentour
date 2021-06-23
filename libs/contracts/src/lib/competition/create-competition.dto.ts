@@ -4,4 +4,9 @@ export class CreateCompetitionDTO {
   type: string;
   sportName: string;
   moderatorId: string;
+  scoreSystem: {
+    victory: number;
+    tie: number;
+    defeat: number;
+  };
 }

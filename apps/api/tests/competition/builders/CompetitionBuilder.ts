@@ -3,6 +3,7 @@ import {
   CompetitionId,
   CompetitionName,
 } from '../../../src/competition/domain';
+import { Score } from '../../../src/competition/domain/model/score';
 import { SportName } from '../../../src/sport/domain';
 import { UserId } from '../../../src/user/domain';
 import { CompetitionTypeBuilder } from './CompetitionTypeBuilder';
@@ -16,6 +17,11 @@ export class CompetitionBuilder {
       type: CompetitionTypeBuilder.random(),
       sportName: SportName.fromString(faker.datatype.uuid()),
       moderatorId: UserId.fromString(faker.datatype.uuid()),
+      scoreSystem: {
+        victory: Score.fromNumber(faker.datatype.number({ min: 0 })),
+        tie: Score.fromNumber(faker.datatype.number({ min: 0 })),
+        defeat: Score.fromNumber(faker.datatype.number({ min: 0 })),
+      },
     });
   }
 }

@@ -2,13 +2,14 @@ export class RankingDTO {
   id: string;
   competitionId: string;
   teams: {
+    id: string;
     name: string;
     logo: string;
-    matchPlayeds: number;
-    victories: number;
-    ties: number;
-    defeats: number;
-    points: number;
-    lastFive: string[];
+    matchesPlayed: {
+      id: string;
+      index: number;
+      score: number;
+      result: string;
+    }[];
   }[];
 }

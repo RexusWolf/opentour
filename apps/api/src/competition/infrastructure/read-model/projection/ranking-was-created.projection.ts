@@ -38,12 +38,7 @@ export class RankingWasCreatedProjection
       id: team.id,
       name: team.name,
       logo: team.logo,
-      matchPlayeds: 0,
-      victories: 0,
-      ties: 0,
-      defeats: 0,
-      points: 0,
-      lastFive: ['null', 'null', 'null', 'null', 'null'],
+      matchesPlayed: [],
     };
   }
 }

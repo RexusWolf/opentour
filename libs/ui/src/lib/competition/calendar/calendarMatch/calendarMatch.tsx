@@ -18,13 +18,6 @@ const modifyMatch = async (matchId: string, editMatchDTO: EditMatchDTO) => {
     url: `/matches/${matchId}`,
     data: editMatchDTO,
   });
-};
-
-const registerMatch = async (matchId: string) => {
-  await doRequest({
-    method: 'PUT',
-    url: `/matches/${matchId}/register`,
-  });
   window.location.reload();
 };
 
@@ -33,7 +26,7 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
 }) => {
   const classes = useStyles();
 
-  const { localTeam, visitorTeam, date: matchDate, index, finished } = match;
+  const { localTeam, visitorTeam, date: matchDate, finished } = match;
 
   const matchResult = {
     localTeamScore: localTeam.score,
@@ -44,7 +37,6 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
   const [date, setDate] = React.useState(matchDate);
   const [isScheduled, setIsScheduled] = React.useState(match.date !== null);
   const [open, setOpen] = React.useState(false);
-  const [openFinishDialog, setOpenFinishDialog] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -52,10 +44,6 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
 
   const handleClose = () => {
     setOpen(false);
-  };
-
-  const closeFinishDialog = () => {
-    setOpenFinishDialog(false);
   };
 
   const handleLocalTeamScore = (value: string) => {
@@ -66,19 +54,12 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
     setResult({ ...result, visitorTeamScore: Number(value) });
   };
 
-  const handleDateChange = (date: Date) => {
+  const handleWasModified = async (date: Date) => {
     setDate(date);
-  };
-
-  const handleFinishMatch = async (match: MatchDTO) => {
-    await registerMatch(match.id);
-  };
-
-  const handleWasModified = async () => {
     await modifyMatch(match.id, { date, result });
   };
 
-  const handleWasScheduled = async () => {
+  const handleWasScheduled = () => {
     setIsScheduled(true);
   };
 
@@ -122,17 +103,6 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
             >
               Modificar
             </Button>
-            <Button
-              size="small"
-              className={[classes.tertiaryButton, classes.containerItem].join(
-                ' '
-              )}
-              disabled={finished !== null}
-              variant="contained"
-              onClick={() => setOpenFinishDialog(true)}
-            >
-              Finalizar
-            </Button>
           </>
         ) : (
           <Button
@@ -146,42 +116,17 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
         )}
         <Dialog onClose={handleClose} open={open}>
           <MatchManager
-            date={date}
+            matchDate={date}
             isScheduled={isScheduled}
             result={result}
             handleLocalTeamScore={handleLocalTeamScore}
             handleVisitorTeamScore={handleVisitorTeamScore}
-            handleDateChange={handleDateChange}
-            handleWasScheduled={async () => {
+            handleWasModified={async (date: Date) => {
               handleWasScheduled();
-              await handleWasModified();
+              await handleWasModified(date);
             }}
             onClose={handleClose}
           />
-        </Dialog>
-        <Dialog onClose={closeFinishDialog} open={openFinishDialog}>
-          <Grid container className={classes.container}>
-            <Grid item>
-              <Typography>
-                ¿Estás seguro de que quieres finalizar el partido? Los
-                resultados serán registrados de forma permanente.
-              </Typography>
-            </Grid>
-            <Grid container item justify="flex-end">
-              <Button
-                className={[classes.tertiaryButton, classes.containerItem].join(
-                  ' '
-                )}
-                variant="contained"
-                onClick={() => {
-                  handleFinishMatch(match);
-                  closeFinishDialog();
-                }}
-              >
-                Finalizar partido
-              </Button>
-            </Grid>
-          </Grid>
         </Dialog>
       </Grid>
     </Grid>

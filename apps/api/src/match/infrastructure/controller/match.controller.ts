@@ -16,12 +16,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import {
-  CreateMatchDTO,
-  EditMatchDTO,
-  MatchDTO,
-  RegisterMatchDTO,
-} from '@opentour/contracts';
+import { CreateMatchDTO, EditMatchDTO, MatchDTO } from '@opentour/contracts';
 import { Response } from 'express';
 
 import { MatchIdAlreadyTakenError, MatchIdNotFoundError } from '../../domain';
@@ -123,28 +118,7 @@ export class MatchController {
   @ApiResponse({ status: 404, description: 'Not found' })
   async update(@Param('id') id: string, @Body() editMatchDTO: EditMatchDTO) {
     try {
-      return await this.matchService.updateMatch(id, {
-        date: editMatchDTO.date,
-        result: editMatchDTO.result,
-      });
-    } catch (e) {
-      if (e instanceof MatchIdNotFoundError) {
-        throw new NotFoundException('Match not found');
-      } else if (e instanceof Error) {
-        throw new BadRequestException(e.message);
-      } else {
-        throw new BadRequestException('Server error');
-      }
-    }
-  }
-
-  @Put(':id/register')
-  @ApiOperation({ summary: 'Register match' })
-  @ApiResponse({ status: 200, description: 'Match registered' })
-  @ApiResponse({ status: 404, description: 'Not found' })
-  async registerMatch(@Param('id') id: string) {
-    try {
-      return await this.matchService.registerMatch(id);
+      return await this.matchService.updateMatch(id, editMatchDTO);
     } catch (e) {
       if (e instanceof MatchIdNotFoundError) {
         throw new NotFoundException('Match not found');

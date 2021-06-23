@@ -1,3 +1,4 @@
+import { Typography } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -31,28 +32,73 @@ export type RankingTeam = {
   lastFive: string[];
 };
 
+function getRankingTeamsFromRanking(ranking: RankingDTO): RankingTeam[] {
+  const rankingTeams: RankingTeam[] = [];
+  for (const team of ranking.teams) {
+    const matchPlayeds = team.matchesPlayed.length || 0;
+    const victories = team.matchesPlayed.filter(
+      (match) => match.result === 'victory'
+    ).length;
+    const ties = team.matchesPlayed.filter((match) => match.result === 'tie')
+      .length;
+    const defeats = team.matchesPlayed.filter(
+      (match) => match.result === 'defeat'
+    ).length;
+    const points = victories * 3 + ties * 1;
+
+    const sortedMatches = team.matchesPlayed.sort((a, b) =>
+      a.index > b.index ? 1 : b.index < a.index ? -1 : 0
+    );
+
+    console.log(sortedMatches);
+
+    const lastFive = sortedMatches.slice(0, 5).map((match) => match.result);
+
+    const rankingTeam = {
+      name: team.name,
+      logo: team.logo,
+      matchPlayeds,
+      victories,
+      ties,
+      defeats,
+      points,
+      lastFive,
+    };
+    rankingTeams.push(rankingTeam);
+  }
+
+  return rankingTeams;
+}
+
 export const Ranking: React.FunctionComponent<Props> = ({ ranking }) => {
+  const rankingTeams = ranking ? getRankingTeamsFromRanking(ranking) : null;
   const statistics = ['PJ', 'V', 'E', 'D', 'Pts', 'Últimos 5'];
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Club</TableCell>
-            {statistics.map((statistic, index) => (
-              <TableCell key={index} align="right">
-                {statistic}
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {ranking &&
-            getSortedRanking(ranking.teams).map((team) => (
-              <TeamRankingRow key={team.name} team={team} />
-            ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <>
+      {rankingTeams ? (
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Club</TableCell>
+                {statistics.map((statistic, index) => (
+                  <TableCell key={index} align="right">
+                    {statistic}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {ranking &&
+                getSortedRanking(rankingTeams).map((team) => (
+                  <TeamRankingRow key={team.name} team={team} />
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <Typography variant="h4"> No teams in the competition</Typography>
+      )}
+    </>
   );
 };

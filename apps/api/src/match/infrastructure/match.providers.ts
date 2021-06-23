@@ -3,6 +3,10 @@ import { Connection } from 'mongoose';
 
 import { DATABASE_CONNECTION } from '../../common/database/database.provider';
 import {
+  RankingSchema,
+  RANKING_MODEL,
+} from '../../competition/infrastructure/read-model/schema/ranking.schema';
+import {
   TEAM_MODEL,
   TeamSchema,
 } from '../../team/infrastructure/read-model/schema/team.schema';
@@ -22,6 +26,12 @@ export const MatchProviders: Provider[] = [
     provide: TEAM_MODEL,
     useFactory: (connection: Connection) =>
       connection.model('Team', TeamSchema),
+    inject: [DATABASE_CONNECTION],
+  },
+  {
+    provide: RANKING_MODEL,
+    useFactory: (connection: Connection) =>
+      connection.model('Ranking', RankingSchema),
     inject: [DATABASE_CONNECTION],
   },
   {

@@ -6,13 +6,12 @@ import { DateAndTimePicker } from '../dateAndTimePicker/dateAndTimePicker';
 
 export type Props = {
   isScheduled: boolean;
-  date: Date | null;
+  matchDate: Date | null;
   result: { localTeamScore: number; visitorTeamScore: number };
   onClose: () => void;
   handleLocalTeamScore: (value: string) => void;
   handleVisitorTeamScore: (value: string) => void;
-  handleDateChange: (date: Date) => void;
-  handleWasScheduled: () => void;
+  handleWasModified: (date: Date) => void;
 };
 
 export const MatchManager: React.FunctionComponent<Props> = (props) => {
@@ -20,28 +19,29 @@ export const MatchManager: React.FunctionComponent<Props> = (props) => {
 
   const {
     onClose,
-    date,
+    matchDate,
     result,
     handleLocalTeamScore,
     handleVisitorTeamScore,
-    handleDateChange,
-    handleWasScheduled,
+    handleWasModified,
   } = props;
 
   const [isScheduled, setIsScheduled] = React.useState(props.isScheduled);
+  const initialDate = matchDate ? matchDate : new Date();
+  const [date, setDate] = React.useState(initialDate);
 
   const handleClose = () => {
     onClose();
   };
 
-  const handleModify = (value: string) => {
-    handleWasScheduled();
+  const handleModify = () => {
+    handleWasModified(date);
     onClose();
   };
 
   const dateChange = (date: Date) => {
     setIsScheduled(true);
-    handleDateChange(date);
+    setDate(date);
   };
 
   return (
@@ -53,10 +53,7 @@ export const MatchManager: React.FunctionComponent<Props> = (props) => {
         justify="center"
         className={classes.containerItem}
       >
-        <DateAndTimePicker
-          initialDate={date ? date : new Date()}
-          dateChange={dateChange}
-        />
+        <DateAndTimePicker initialDate={date} dateChange={dateChange} />
       </Grid>
       <Grid
         container
@@ -105,7 +102,7 @@ export const MatchManager: React.FunctionComponent<Props> = (props) => {
           className={classes.containerItem}
           color="primary"
           variant="contained"
-          onClick={() => handleModify('')}
+          onClick={() => handleModify()}
         >
           {!isScheduled ? 'Programar partido' : 'Modificar partido'}
         </Button>

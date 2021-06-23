@@ -1,31 +1,32 @@
 import { Inject } from '@nestjs/common';
-import { IViewUpdater, ViewUpdaterHandler } from 'event-sourcing-nestjs';
+import { EventsHandler } from '@nestjs/cqrs';
+import { IViewUpdater } from 'event-sourcing-nestjs';
 import { Model } from 'mongoose';
 
-import { MatchWasRegistered } from '../../../../match/domain';
+import { MatchResultWasModified } from '../../../../match/domain';
 import { RankingView } from '../schema/ranking.schema';
 
 type Team = {
-  readonly id: string;
-  readonly name: string;
-  readonly logo: string;
-  readonly matchPlayeds: number;
-  readonly victories: number;
-  readonly ties: number;
-  readonly defeats: number;
-  readonly points: number;
-  readonly lastFive: string[];
+  id: string;
+  name: string;
+  logo: string;
+  matchesPlayed: {
+    id: string;
+    index: number;
+    score: number;
+    result: string;
+  }[];
 };
 
-@ViewUpdaterHandler(MatchWasRegistered)
+@EventsHandler(MatchResultWasModified)
 export class RankingWasUpdatedProjection
-  implements IViewUpdater<MatchWasRegistered> {
+  implements IViewUpdater<MatchResultWasModified> {
   constructor(
     @Inject('RANKING_MODEL')
     private readonly rankingModel: Model<RankingView>
   ) {}
 
-  async handle(event: MatchWasRegistered) {
+  async handle(event: MatchResultWasModified) {
     const ranking = await this.rankingModel
       .findOne({ competitionId: event.competitionId })
       .exec();
@@ -44,8 +45,7 @@ export class RankingWasUpdatedProjection
     const { local, visitor } = this.getTeamsFromResults({
       localTeam,
       visitorTeam,
-      localTeamResult: event.localTeam.score,
-      visitorTeamResult: event.visitorTeam.score,
+      event,
     });
 
     ranking.teams[localTeamIndex] = local;
@@ -63,76 +63,120 @@ export class RankingWasUpdatedProjection
   private getTeamsFromResults(params: {
     localTeam: Team;
     visitorTeam: Team;
-    localTeamResult: number;
-    visitorTeamResult: number;
+    event: MatchResultWasModified;
   }) {
-    const {
-      localTeam,
-      visitorTeam,
-      localTeamResult,
-      visitorTeamResult,
-    } = params;
+    const { localTeam, visitorTeam, event } = params;
 
-    localTeam.lastFive.shift();
-    visitorTeam.lastFive.shift();
+    const localTeamScore = event.localTeam.score;
+    const visitorTeamScore = event.visitorTeam.score;
 
-    if (localTeamResult === visitorTeamResult) {
+    const existingLocalMatchIndex = localTeam.matchesPlayed.findIndex(
+      (match) => match.id === event.id
+    );
+
+    const existingVisitorMatchIndex = visitorTeam.matchesPlayed.findIndex(
+      (match) => match.id === event.id
+    );
+
+    const { localTeamMatch, visitorTeamMatch } = this.getMatches(
+      event,
+      localTeamScore,
+      visitorTeamScore
+    );
+
+    existingLocalMatchIndex !== -1
+      ? (localTeam.matchesPlayed[existingLocalMatchIndex] = localTeamMatch)
+      : localTeam.matchesPlayed.push(localTeamMatch);
+
+    existingVisitorMatchIndex !== -1
+      ? (visitorTeam.matchesPlayed[
+          existingVisitorMatchIndex
+        ] = visitorTeamMatch)
+      : visitorTeam.matchesPlayed.push(visitorTeamMatch);
+
+    return {
+      local: localTeam,
+      visitor: visitorTeam,
+    };
+  }
+
+  private getMatches(event, localTeamScore, visitorTeamScore) {
+    if (localTeamScore === visitorTeamScore) {
+      const { localTeamMatch, visitorTeamMatch } = this.getTiedMatches(event);
+
       return {
-        local: this.getTiedTeam(localTeam),
-        visitor: this.getTiedTeam(visitorTeam),
+        localTeamMatch,
+        visitorTeamMatch,
       };
     }
+    if (localTeamScore > visitorTeamScore) {
+      const { localTeamMatch, visitorTeamMatch } = this.getLocalWonMatches(
+        event
+      );
 
-    return localTeamResult > visitorTeamResult
-      ? {
-          local: this.getWinnerTeam(localTeam),
-          visitor: this.getLoserTeam(visitorTeam),
-        }
-      : {
-          local: this.getLoserTeam(localTeam),
-          visitor: this.getWinnerTeam(visitorTeam),
-        };
-  }
+      return {
+        localTeamMatch,
+        visitorTeamMatch,
+      };
+    }
+    const { localTeamMatch, visitorTeamMatch } = this.getLocalLostMatches(
+      event
+    );
 
-  private getWinnerTeam(team: Team): Team {
     return {
-      id: team.id,
-      name: team.name,
-      logo: team.logo,
-      matchPlayeds: team.matchPlayeds,
-      victories: team.victories + 1,
-      ties: team.ties,
-      defeats: team.defeats,
-      points: team.points + 3,
-      lastFive: [...team.lastFive, 'victory'],
+      localTeamMatch,
+      visitorTeamMatch,
     };
   }
 
-  private getLoserTeam(team: Team): Team {
+  private getLocalWonMatches(event: MatchResultWasModified) {
     return {
-      id: team.id,
-      name: team.name,
-      logo: team.logo,
-      matchPlayeds: team.matchPlayeds,
-      victories: team.victories,
-      ties: team.ties,
-      defeats: team.defeats + 1,
-      points: team.points,
-      lastFive: [...team.lastFive, 'defeat'],
+      localTeamMatch: {
+        id: event.id,
+        index: event.index,
+        score: event.localTeam.score,
+        result: 'victory',
+      },
+      visitorTeamMatch: {
+        id: event.id,
+        index: event.index,
+        score: event.visitorTeam.score,
+        result: 'defeat',
+      },
     };
   }
 
-  private getTiedTeam(team: Team): Team {
+  private getLocalLostMatches(event: MatchResultWasModified) {
     return {
-      id: team.id,
-      name: team.name,
-      logo: team.logo,
-      matchPlayeds: team.matchPlayeds,
-      victories: team.victories,
-      ties: team.ties + 1,
-      defeats: team.defeats,
-      points: team.points + 1,
-      lastFive: [...team.lastFive, 'tie'],
+      localTeamMatch: {
+        id: event.id,
+        index: event.index,
+        score: event.localTeam.score,
+        result: 'defeat',
+      },
+      visitorTeamMatch: {
+        id: event.id,
+        index: event.index,
+        score: event.visitorTeam.score,
+        result: 'victory',
+      },
+    };
+  }
+
+  private getTiedMatches(event: MatchResultWasModified) {
+    return {
+      localTeamMatch: {
+        id: event.id,
+        index: event.index,
+        score: event.localTeam.score,
+        result: 'tie',
+      },
+      visitorTeamMatch: {
+        id: event.id,
+        index: event.index,
+        score: event.visitorTeam.score,
+        result: 'tie',
+      },
     };
   }
 }

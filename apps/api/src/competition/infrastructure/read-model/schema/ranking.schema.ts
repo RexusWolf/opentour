@@ -10,15 +10,15 @@ export interface RankingView extends Document {
   readonly _id: string;
   readonly competitionId: string;
   readonly teams: {
-    readonly id: string;
-    readonly name: string;
-    readonly logo: string;
-    readonly matchPlayeds: number;
-    readonly victories: number;
-    readonly ties: number;
-    readonly defeats: number;
-    readonly points: number;
-    readonly lastFive: string[];
+    id: string;
+    name: string;
+    logo: string;
+    matchesPlayed: {
+      id: string;
+      index: number;
+      score: number;
+      result: string;
+    }[];
   }[];
 }
 

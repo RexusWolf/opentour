@@ -28,7 +28,7 @@ export class UpdateMatchHandler implements ICommandHandler<UpdateMatchCommand> {
 
     match.schedule(command.date);
 
-    match.modifyResult(result);
+    match.modifyMatchResult(result);
 
     this.matches.save(match);
   }

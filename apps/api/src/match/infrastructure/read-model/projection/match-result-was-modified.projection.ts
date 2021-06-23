@@ -1,11 +1,11 @@
 import { Inject } from '@nestjs/common';
-import { IViewUpdater, ViewUpdaterHandler } from 'event-sourcing-nestjs';
+import { EventsHandler } from '@nestjs/cqrs';
+import { IViewUpdater } from 'event-sourcing-nestjs';
 import { Model } from 'mongoose';
-
 import { MatchResultWasModified } from '../../../domain';
 import { MatchView } from '../schema/match.schema';
 
-@ViewUpdaterHandler(MatchResultWasModified)
+@EventsHandler(MatchResultWasModified)
 export class MatchResultWasModifiedProjection
   implements IViewUpdater<MatchResultWasModified> {
   constructor(
@@ -18,8 +18,8 @@ export class MatchResultWasModifiedProjection
       .updateOne(
         { _id: event.id },
         {
-          'localTeam.score': event.result.localTeamScore,
-          'visitorTeam.score': event.result.visitorTeamScore,
+          'localTeam.score': event.localTeam.score,
+          'visitorTeam.score': event.visitorTeam.score,
         }
       )
       .exec();

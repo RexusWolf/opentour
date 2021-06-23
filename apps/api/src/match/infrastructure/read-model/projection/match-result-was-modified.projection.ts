@@ -2,6 +2,7 @@ import { Inject } from '@nestjs/common';
 import { EventsHandler } from '@nestjs/cqrs';
 import { IViewUpdater } from 'event-sourcing-nestjs';
 import { Model } from 'mongoose';
+
 import { MatchResultWasModified } from '../../../domain';
 import { MatchView } from '../schema/match.schema';
 

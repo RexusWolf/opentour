@@ -1,5 +1,6 @@
 import { Inject } from '@nestjs/common';
-import { IViewUpdater, ViewUpdaterHandler } from 'event-sourcing-nestjs';
+import { EventsHandler } from '@nestjs/cqrs';
+import { IViewUpdater } from 'event-sourcing-nestjs';
 import { Model } from 'mongoose';
 import { v4 as uuid } from 'uuid';
 
@@ -7,7 +8,7 @@ import { CompetitionWasStarted } from '../../../../competition/domain';
 import { TeamView } from '../../../../team/infrastructure/read-model/schema/team.schema';
 import { RankingView } from '../schema/ranking.schema';
 
-@ViewUpdaterHandler(CompetitionWasStarted)
+@EventsHandler(CompetitionWasStarted)
 export class RankingWasCreatedProjection
   implements IViewUpdater<CompetitionWasStarted> {
   constructor(

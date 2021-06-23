@@ -97,6 +97,7 @@ export const Competition: React.FunctionComponent<Props> = ({
           color="secondary"
           variant="contained"
           onClick={handleClickOpen}
+          disabled={competition.hasStarted}
         >
           Añadir equipo
         </Button>

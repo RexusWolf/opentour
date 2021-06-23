@@ -117,7 +117,6 @@ export class Match extends AggregateRoot {
     if (this.result === newResult) {
       return;
     }
-
     this.apply(
       new MatchResultWasModified({
         id: this.id.value,
@@ -139,7 +138,6 @@ export class Match extends AggregateRoot {
     if (this._date === date) {
       return;
     }
-    this.date = date;
     this.apply(new MatchWasScheduled(this.id.value, date));
   }
 
@@ -166,5 +164,9 @@ export class Match extends AggregateRoot {
       event.localTeam.score,
       event.visitorTeam.score
     );
+  }
+
+  private onMatchWasScheduled(event: MatchWasScheduled) {
+    this._date = event.date;
   }
 }

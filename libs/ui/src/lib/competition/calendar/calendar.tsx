@@ -1,4 +1,4 @@
-import { Grid } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import { MatchDTO } from '@opentour/contracts';
 import React from 'react';
 
@@ -13,10 +13,13 @@ export const Calendar: React.FunctionComponent<Props> = ({ matches }) => {
 
   return (
     <Grid container>
-      {matches &&
+      {matches.length ? (
         matches.map((match, index) => (
           <CalendarMatch key={index} match={match} />
-        ))}
+        ))
+      ) : (
+        <Typography variant="h4">Competition has not started</Typography>
+      )}
     </Grid>
   );
 };

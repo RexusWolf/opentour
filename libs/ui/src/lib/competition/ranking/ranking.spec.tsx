@@ -34,13 +34,10 @@ function aRanking(): RankingDTO {
     competitionId: faker.datatype.uuid(),
     teams: [
       {
+        id: faker.datatype.uuid(),
         name: faker.name.title(),
-        matchPlayeds: faker.datatype.number(),
-        victories: faker.datatype.number(),
-        ties: faker.datatype.number(),
-        defeats: faker.datatype.number(),
-        points: faker.datatype.number(),
-        lastFive: ['victory', 'tie', 'tie', 'defeat', 'tie'],
+        logo: faker.image.imageUrl(),
+        matchesPlayed: [],
       },
     ],
   };

@@ -26,9 +26,11 @@ export class UpdateMatchHandler implements ICommandHandler<UpdateMatchCommand> {
       throw MatchIdNotFoundError.with(id);
     }
 
-    match.schedule(command.date);
+    if (match.isScheduled()) {
+      match.modifyMatchResult(result);
+    }
 
-    match.modifyMatchResult(result);
+    match.schedule(command.date);
 
     this.matches.save(match);
   }

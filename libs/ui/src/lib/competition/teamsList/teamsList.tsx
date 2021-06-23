@@ -1,4 +1,4 @@
-import { Button, Divider, Grid } from '@material-ui/core';
+import { Button, Divider, Grid, Typography } from '@material-ui/core';
 import { TeamDTO } from '@opentour/contracts';
 import React from 'react';
 
@@ -37,7 +37,7 @@ export const TeamList: React.FunctionComponent<Props> = ({ teams }) => {
           </div>
         ))
       ) : (
-        <h2>No teams in the competition</h2>
+        <Typography variant="h4">No teams in the competition</Typography>
       )}
     </>
   );

@@ -50,8 +50,6 @@ function getRankingTeamsFromRanking(ranking: RankingDTO): RankingTeam[] {
       a.index > b.index ? 1 : b.index < a.index ? -1 : 0
     );
 
-    console.log(sortedMatches);
-
     const lastFive = sortedMatches.slice(0, 5).map((match) => match.result);
 
     const rankingTeam = {
@@ -97,7 +95,7 @@ export const Ranking: React.FunctionComponent<Props> = ({ ranking }) => {
           </Table>
         </TableContainer>
       ) : (
-        <Typography variant="h4"> No teams in the competition</Typography>
+        <Typography variant="h4">Competition has not started</Typography>
       )}
     </>
   );

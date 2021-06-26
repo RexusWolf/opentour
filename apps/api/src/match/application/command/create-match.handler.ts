@@ -8,8 +8,10 @@ import {
   MATCHES,
   Matches,
   MatchId,
- MatchIdAlreadyTakenError,  MatchIndex,
-  MatchJourney } from '../../domain';
+  MatchIdAlreadyTakenError,
+  MatchIndex,
+  MatchJourney,
+} from '../../domain';
 import { CreateMatchCommand } from './create-match.command';
 
 @CommandHandler(CreateMatchCommand)
@@ -17,6 +19,7 @@ export class CreateMatchHandler implements ICommandHandler<CreateMatchCommand> {
   constructor(@Inject(MATCHES) private matches: Matches) {}
 
   async execute(command: CreateMatchCommand) {
+    console.log('CREATING MATCH', command);
     const id = MatchId.fromString(command.id);
     const competitionId = CompetitionId.fromString(command.competitionId);
     const localTeamId = TeamId.fromString(command.localTeamId);

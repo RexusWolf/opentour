@@ -61,7 +61,7 @@ export const Competition: React.FunctionComponent<Props> = ({
   };
 
   const handleStartCompetition = async () => {
-    await generateMatches(teams, competition.id);
+    await generateMatches(teams, competition.id, competition.type);
     await startCompetition(competition.id);
     window.location.reload();
   };
@@ -110,7 +110,7 @@ export const Competition: React.FunctionComponent<Props> = ({
           className={classes.containerItem}
           color="primary"
           variant="contained"
-          disabled={competition.hasStarted || !hasMinimumTeams()}
+          disabled={!hasMinimumTeams()}
           onClick={handleStartCompetition}
         >
           Comenzar competición

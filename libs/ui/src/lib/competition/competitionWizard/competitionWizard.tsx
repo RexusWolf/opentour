@@ -40,9 +40,8 @@ export const CompetitionWizard: React.FunctionComponent<Props> = ({
     },
   };
 
-  const [competitionValues, setCompetitionValues] = React.useState(
-    initialValues
-  );
+  const [competitionValues, setCompetitionValues] =
+    React.useState(initialValues);
 
   const handleChange = (property, value) => {
     setCompetitionValues({
@@ -100,9 +99,7 @@ export const CompetitionWizard: React.FunctionComponent<Props> = ({
                 handleChange('type', type);
               }}
             >
-              <ToggleButton disabled={true} value="TORNEO">
-                Torneo
-              </ToggleButton>
+              <ToggleButton value="TORNEO">Torneo</ToggleButton>
               <ToggleButton value="LIGA">Liga</ToggleButton>
             </ToggleButtonGroup>
           </Grid>

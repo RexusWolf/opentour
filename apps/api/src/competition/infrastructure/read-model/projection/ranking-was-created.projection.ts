@@ -10,7 +10,8 @@ import { RankingView } from '../schema/ranking.schema';
 
 @EventsHandler(CompetitionWasStarted)
 export class RankingWasCreatedProjection
-  implements IViewUpdater<CompetitionWasStarted> {
+  implements IViewUpdater<CompetitionWasStarted>
+{
   constructor(
     @Inject('RANKING_MODEL')
     private readonly rankingModel: Model<RankingView>,

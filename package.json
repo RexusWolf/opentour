@@ -62,6 +62,7 @@
     "react": "17.0.2",
     "react-admin": "^3.11.1",
     "react-dom": "17.0.2",
+    "react-material-ui-carousel": "^2.2.6",
     "reflect-metadata": "^0.1.13",
     "regenerator-runtime": "0.13.7",
     "rxjs": "^6.6.7",

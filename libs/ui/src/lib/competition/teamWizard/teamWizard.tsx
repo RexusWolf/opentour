@@ -5,7 +5,8 @@ import { v4 as uuid } from 'uuid';
 
 import { useStyles } from '../../theme';
 import { doRequest } from '../../utils/doRequest';
-import { getRandomLogo } from '../utils/getRandomLogo';
+import { teams } from '../shared/teams';
+import { LogoSelector } from './logoSelector';
 
 export type Props = {
   open: boolean;
@@ -20,6 +21,7 @@ export async function createTeam(team: CreateTeamDTO) {
 export const TeamWizard: React.FunctionComponent<Props> = (props) => {
   const classes = useStyles();
   const [name, setName] = React.useState<string>('');
+  const [teamLogo, setTeamLogo] = React.useState(teams[0].logo);
 
   const { open, onClose } = props;
 
@@ -29,7 +31,7 @@ export const TeamWizard: React.FunctionComponent<Props> = (props) => {
       name,
       competitionId: props.competitionId,
       captainId: uuid(),
-      logo: getRandomLogo(),
+      logo: teamLogo,
     };
 
     await createTeam(team);
@@ -59,6 +61,23 @@ export const TeamWizard: React.FunctionComponent<Props> = (props) => {
                 setName(event.target.value);
               }}
             />
+          </Grid>
+          <Grid
+            container
+            item
+            justify="center"
+            className={classes.containerItem}
+          >
+            <Typography
+              variant="subtitle1"
+              className={classes.containerItem}
+              color="textSecondary"
+            >
+              Select team logo:
+            </Typography>
+            <Grid container>
+              <LogoSelector setTeamLogo={setTeamLogo} />
+            </Grid>
           </Grid>
           <Grid container justify="flex-end" className={classes.container}>
             <Button

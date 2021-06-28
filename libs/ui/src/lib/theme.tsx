@@ -30,6 +30,12 @@ export const useStyles = makeStyles((theme) => ({
     display: 'flex',
     height: '100vh',
   },
+  carouselNavButton: {
+    backgroundColor: theme.palette.secondary.main,
+  },
+  carousel: {
+    width: '60%',
+  },
   toolbar: {
     paddingRight: 24,
   },

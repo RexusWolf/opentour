@@ -3,8 +3,8 @@ import { Connection } from 'mongoose';
 
 import { DATABASE_CONNECTION } from '../../common/database/database.provider';
 import {
-  CompetitionSchema,
   COMPETITION_MODEL,
+  CompetitionSchema,
 } from '../../competition/infrastructure/read-model/schema/competition.schema';
 import {
   RANKING_MODEL,

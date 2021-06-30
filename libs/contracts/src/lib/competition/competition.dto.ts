@@ -10,4 +10,20 @@ export class CompetitionDTO {
     tie: number;
     defeat: number;
   };
+
+  static empty(): CompetitionDTO {
+    return {
+      id: '',
+      name: '',
+      type: '',
+      sportName: '',
+      moderatorIds: [],
+      hasStarted: false,
+      scoreSystem: {
+        victory: 0,
+        tie: 0,
+        defeat: 0,
+      },
+    };
+  }
 }

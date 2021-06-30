@@ -19,7 +19,6 @@ export class CreateMatchHandler implements ICommandHandler<CreateMatchCommand> {
   constructor(@Inject(MATCHES) private matches: Matches) {}
 
   async execute(command: CreateMatchCommand) {
-    console.log('CREATING MATCH', command);
     const id = MatchId.fromString(command.id);
     const competitionId = CompetitionId.fromString(command.competitionId);
     const localTeamId = TeamId.fromString(command.localTeamId);

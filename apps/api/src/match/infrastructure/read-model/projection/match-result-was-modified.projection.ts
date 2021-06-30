@@ -37,9 +37,11 @@ export class MatchResultWasModifiedProjection
     const competition = await this.competitionModel
       .findById(event.competitionId)
       .exec();
+
     if (!competition) {
       throw Error('No competition found with ID');
     }
+
     if (competition.type === COMPETITION_TYPES.TORNEO) {
       const competitionMatches = await this.matchModel
         .find({ competitionId: event.competitionId })
@@ -47,8 +49,9 @@ export class MatchResultWasModifiedProjection
 
       if (
         event.index === competitionMatches[competitionMatches.length - 1].index
-      )
+      ) {
         return;
+      }
 
       const matchFinished = competitionMatches.find(
         (match) => match.index === event.index

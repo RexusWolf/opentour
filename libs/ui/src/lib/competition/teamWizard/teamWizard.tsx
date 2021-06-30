@@ -26,7 +26,19 @@ export const TeamWizard: React.FunctionComponent<Props> = ({
 }) => {
   const classes = useStyles();
   const [name, setName] = React.useState<string>('');
-  const [teamLogo, setTeamLogo] = React.useState('');
+  const defaultLogo =
+    'https://www.greenteam92.com/wp-content/uploads/2017/05/team-placeholder-logo.e50b9536-128x128.png';
+  const teamLogosForSelector = availableTeamLogos && [
+    ...availableTeamLogos,
+    'https://www.greenteam92.com/wp-content/uploads/2017/05/team-placeholder-logo.e50b9536-128x128.png',
+  ];
+  const [teamLogo, setTeamLogo] = React.useState(defaultLogo);
+
+  React.useEffect(() => {
+    if (availableTeamLogos && availableTeamLogos.length) {
+      setTeamLogo(teamLogosForSelector[0]);
+    }
+  }, [availableTeamLogos]);
 
   const handleCreateTeam = async () => {
     const team: CreateTeamDTO = {
@@ -80,7 +92,7 @@ export const TeamWizard: React.FunctionComponent<Props> = ({
             </Typography>
             <Grid container>
               <LogoSelector
-                teamLogos={availableTeamLogos}
+                teamLogos={teamLogosForSelector}
                 setTeamLogo={setTeamLogo}
               />
             </Grid>

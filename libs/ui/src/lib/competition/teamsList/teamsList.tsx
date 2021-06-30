@@ -18,7 +18,7 @@ export const TeamList: React.FunctionComponent<Props> = ({ teams }) => {
     <>
       {teamsInList.length ? (
         teamsInList.map((team) => (
-          <div key={team.name}>
+          <div key={team.id}>
             {team !== teamsInList[0] && <Divider light />}
             <Grid
               container

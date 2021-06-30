@@ -62,6 +62,13 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
     setIsScheduled(true);
   };
 
+  const hasBothTeams = () => {
+    if (match.localTeam.name && match.visitorTeam.name) {
+      return true;
+    }
+    return false;
+  };
+
   return (
     <Grid
       container
@@ -100,7 +107,7 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
               className={classes.containerItem}
               color="secondary"
               variant="contained"
-              disabled={finished !== null}
+              disabled={finished !== null || !hasBothTeams()}
               onClick={handleClickOpen}
             >
               Modificar
@@ -111,6 +118,7 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
             size="small"
             color="primary"
             variant="contained"
+            disabled={!hasBothTeams()}
             onClick={handleClickOpen}
           >
             Programar

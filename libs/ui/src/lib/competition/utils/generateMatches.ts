@@ -56,7 +56,6 @@ async function createSemifinalMatches(
   competitionId: string,
   previousMatchIndex: number
 ) {
-  console.log('CREATING SEMIFINAL MATCHES');
   await doRequest({
     method: 'POST',
     url: '/matches',
@@ -88,7 +87,6 @@ async function createFinalMatch(
   competitionId: string,
   previousMatchIndex: number
 ) {
-  console.log('CREATING FINAL MATCH');
   await doRequest({
     method: 'POST',
     url: '/matches',

@@ -1,12 +1,15 @@
 import { render } from '@testing-library/react';
 import React from 'react';
 
+import { teamsWithLogos } from '../shared/teams';
 import { TeamWizard } from './teamWizard';
 
 describe('TeamWizard', () => {
   const defaultProps = {
     open: true,
     onClose: jest.fn(),
+    availableTeamLogos: teamsWithLogos.map((team) => team.logo),
+    competitionId: 'testId',
   };
 
   it('should render successfully', () => {

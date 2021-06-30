@@ -2,12 +2,11 @@ import { render } from '@testing-library/react';
 import faker from 'faker';
 import React from 'react';
 
-import { teams } from '../shared/teams';
 import { TeamList } from './teamsList';
 
 describe('TeamList', () => {
   const defaultProps = {
-    teams: [teams[0]],
+    teams: [],
   };
 
   it('should render successfully', () => {
@@ -16,8 +15,9 @@ describe('TeamList', () => {
   });
 
   it('should render a list with the teams and a remove button for each team', () => {
-    const { getByText } = render(<TeamList {...defaultProps} />);
-    getByText(teams[0].name);
+    const team = aTeam();
+    const { getByText } = render(<TeamList teams={[team]} />);
+    getByText(team.name);
     getByText('Eliminar');
   });
 });
@@ -25,7 +25,10 @@ describe('TeamList', () => {
 function aTeam() {
   return {
     id: faker.datatype.uuid(),
+    competitionId: faker.datatype.uuid(),
     name: faker.name.title(),
-    logo: faker.internet.url(),
+    captainId: faker.datatype.uuid(),
+    membersIds: [faker.datatype.uuid()],
+    logo: faker.image.imageUrl(),
   };
 }

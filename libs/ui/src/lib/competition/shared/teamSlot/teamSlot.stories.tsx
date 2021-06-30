@@ -2,7 +2,7 @@ import { Meta, Story } from '@storybook/react';
 import React from 'react';
 import { withNextRouter } from 'storybook-addon-next-router';
 
-import { teams } from '../teams';
+import { teamsWithLogos } from '../teams';
 import { Props, TeamSlot } from './teamSlot';
 
 export default {
@@ -15,6 +15,6 @@ const Template: Story<Props> = (args) => <TeamSlot {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  name: teams[0].name,
-  logo: teams[0].logo,
+  name: teamsWithLogos[0].name,
+  logo: teamsWithLogos[0].logo,
 };

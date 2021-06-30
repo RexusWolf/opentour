@@ -1,4 +1,4 @@
-export const teams = [
+export const teamsWithLogos = [
   {
     id: '1',
     name: 'Athletic Club',

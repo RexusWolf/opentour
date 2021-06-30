@@ -4,14 +4,15 @@ import Carousel from 'react-material-ui-carousel';
 import { __classPrivateFieldSet } from 'tslib';
 
 import { theme, useStyles } from '../../theme';
-import { teams } from '../shared/teams';
 
 type Props = {
+  teamLogos: string[];
   setTeamLogo: (logo: string) => void;
 };
 
 export const LogoSelector: React.FunctionComponent<Props> = ({
   setTeamLogo,
+  teamLogos,
 }) => {
   const classes = useStyles();
 
@@ -19,10 +20,10 @@ export const LogoSelector: React.FunctionComponent<Props> = ({
     <Grid container justify="center">
       <Carousel
         prev={(previous: number) => {
-          setTeamLogo(teams[previous].logo);
+          setTeamLogo(teamLogos[previous]);
         }}
         next={(next: number) => {
-          setTeamLogo(teams[next].logo);
+          setTeamLogo(teamLogos[next]);
         }}
         navButtonsProps={{
           className: 'carouselNavButton',
@@ -35,9 +36,9 @@ export const LogoSelector: React.FunctionComponent<Props> = ({
         indicators={false}
         autoPlay={false}
       >
-        {teams.map((team, i) => (
+        {teamLogos.map((logo) => (
           <Grid container justify="center" item>
-            <img src={team.logo} />
+            <img src={logo} />
           </Grid>
         ))}
       </Carousel>

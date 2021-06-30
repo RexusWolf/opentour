@@ -9,6 +9,12 @@ const defaultCompetition = {
   type: '',
   name: '',
   moderatorIds: [''],
+  hasStarted: false,
+  scoreSystem: {
+    victory: 3,
+    tie: 1,
+    defeat: 0,
+  },
 };
 
 describe('Competition', () => {

@@ -5,31 +5,34 @@ import { v4 as uuid } from 'uuid';
 
 import { useStyles } from '../../theme';
 import { doRequest } from '../../utils/doRequest';
-import { teams } from '../shared/teams';
 import { LogoSelector } from './logoSelector';
 
 export type Props = {
   open: boolean;
   onClose: () => void;
   competitionId: string;
+  availableTeamLogos: string[];
 };
 
 export async function createTeam(team: CreateTeamDTO) {
   doRequest({ method: 'POST', url: '/teams', data: team });
 }
 
-export const TeamWizard: React.FunctionComponent<Props> = (props) => {
+export const TeamWizard: React.FunctionComponent<Props> = ({
+  open,
+  onClose,
+  availableTeamLogos,
+  competitionId,
+}) => {
   const classes = useStyles();
   const [name, setName] = React.useState<string>('');
-  const [teamLogo, setTeamLogo] = React.useState(teams[0].logo);
-
-  const { open, onClose } = props;
+  const [teamLogo, setTeamLogo] = React.useState('');
 
   const handleCreateTeam = async () => {
     const team: CreateTeamDTO = {
       id: uuid(),
       name,
-      competitionId: props.competitionId,
+      competitionId,
       captainId: uuid(),
       logo: teamLogo,
     };
@@ -76,7 +79,10 @@ export const TeamWizard: React.FunctionComponent<Props> = (props) => {
               Select team logo:
             </Typography>
             <Grid container>
-              <LogoSelector setTeamLogo={setTeamLogo} />
+              <LogoSelector
+                teamLogos={availableTeamLogos}
+                setTeamLogo={setTeamLogo}
+              />
             </Grid>
           </Grid>
           <Grid container justify="flex-end" className={classes.container}>

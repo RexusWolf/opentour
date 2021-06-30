@@ -12,6 +12,7 @@ import { doRequest } from '../utils/doRequest';
 import { Calendar } from './calendar/calendar';
 import { CompetitionTab } from './competitionTab/competitionTab';
 import { Ranking } from './ranking/ranking';
+import { teamsWithLogos } from './shared/teams';
 import { TeamList } from './teamsList/teamsList';
 import { TeamWizard } from './teamWizard/teamWizard';
 import { generateMatches } from './utils/generateMatches';
@@ -29,6 +30,10 @@ export const Competition: React.FunctionComponent<Props> = ({
   const ranking = useRankingByCompetitionId(competition.id);
   const { name, type } = competition;
   const [open, setOpen] = React.useState(false);
+  const teamLogos = teamsWithLogos.map((team) => team.logo);
+  const availableTeamLogos =
+    teams &&
+    teamLogos.filter((logo) => !teams.find((team) => team.logo === logo));
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -102,6 +107,7 @@ export const Competition: React.FunctionComponent<Props> = ({
           Añadir equipo
         </Button>
         <TeamWizard
+          availableTeamLogos={availableTeamLogos}
           competitionId={competition.id}
           open={open}
           onClose={handleClose}

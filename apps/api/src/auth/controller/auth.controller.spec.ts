@@ -8,7 +8,7 @@ import { AuthService } from '../services/auth.service';
 import { AuthController } from './auth.controller';
 
 const ID = '78dbd5bd-86c1-4925-a08c-1d0170e4851d';
-const USERNAME = 'username';
+const EMAIL = 'randomEmail@uco.es';
 const PASSWORD = 'password';
 const CRYPT_PASSWORD =
   '$2a$04$J.qvJcqZRPBlGFKWIxPOYOsPRXpkZmTyTHScEF3Kq5/QXV.8oMcfy';
@@ -38,7 +38,7 @@ describe('AuthController', () => {
 
     user = {
       id: ID,
-      username: USERNAME,
+      email: EMAIL,
       password: CRYPT_PASSWORD,
       roles: [],
     };
@@ -52,13 +52,13 @@ describe('AuthController', () => {
 
   it('should login valid user', async () => {
     expect(
-      await controller.login({ username: USERNAME, password: PASSWORD })
+      await controller.login({ email: EMAIL, password: PASSWORD })
     ).toHaveProperty('access_token');
   });
 
   it('should not login invalid password', () => {
     expect(
-      controller.login({ username: USERNAME, password: 'wrong password' })
+      controller.login({ email: EMAIL, password: 'wrong password' })
     ).rejects.toThrow(UnauthorizedException);
   });
 
@@ -66,7 +66,7 @@ describe('AuthController', () => {
     queryBus.execute = jest.fn().mockResolvedValue(null);
 
     expect(
-      controller.login({ username: USERNAME, password: PASSWORD })
+      controller.login({ email: EMAIL, password: PASSWORD })
     ).rejects.toThrow(UnauthorizedException);
   });
 });

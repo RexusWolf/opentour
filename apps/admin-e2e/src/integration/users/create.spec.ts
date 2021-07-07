@@ -23,8 +23,8 @@ describe('Create users', () => {
     const values = [
       {
         type: 'input',
-        name: 'username',
-        value: 'johndoe',
+        name: 'email',
+        value: 'randomEmail@uco.es',
       },
       {
         type: 'input',
@@ -44,7 +44,7 @@ describe('Create users', () => {
     CreatePage.submit();
     EditPage.waitUntilVisible();
 
-    cy.get(EditPage.elements.input('username')).should((el) =>
+    cy.get(EditPage.elements.input('email')).should((el) =>
       expect(el).to.have.value('johndoe')
     );
     cy.get(EditPage.elements.input('plainPassword')).should(

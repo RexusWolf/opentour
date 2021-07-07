@@ -10,7 +10,7 @@ export class UserEntity implements UserDTO {
   @Column({
     unique: true,
   })
-  username: string;
+  email: string;
 
   @Column({
     type: 'varchar',
@@ -25,9 +25,9 @@ export class UserEntity implements UserDTO {
   })
   roles: string[];
 
-  constructor(id: string, username: string, password: string, roles: string[]) {
+  constructor(id: string, email: string, password: string, roles: string[]) {
     this.id = id;
-    this.username = username;
+    this.email = email;
     this.password = password;
     this.roles = roles;
   }

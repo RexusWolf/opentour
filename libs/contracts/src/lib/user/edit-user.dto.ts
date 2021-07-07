@@ -1,7 +1,7 @@
 import { Role } from '../auth';
 
 export class EditUserDTO {
-  username: string;
+  email: string;
   plainPassword: string;
   roles: Role[];
 }

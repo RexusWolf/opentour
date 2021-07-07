@@ -3,7 +3,7 @@ import { CredentialsInterface } from '@opentour/contracts';
 
 export class LoginDTO implements CredentialsInterface {
   @ApiProperty()
-  username: string;
+  email: string;
   @ApiProperty()
   password: string;
 }

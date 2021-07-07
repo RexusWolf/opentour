@@ -21,13 +21,13 @@ export class AuthController {
   @Post()
   async login(@Body() loginDTO: LoginDTO): Promise<AccessTokenInterface> {
     this.logger.debug(`login: ${JSON.stringify(loginDTO)}`);
-    const { username, password } = loginDTO;
-    const isValid = await this.authService.validateUser(username, password);
+    const { email, password } = loginDTO;
+    const isValid = await this.authService.validateUser(email, password);
 
     if (!isValid) {
       throw new UnauthorizedException();
     }
 
-    return this.authService.generateAccessToken(username);
+    return this.authService.generateAccessToken(email);
   }
 }

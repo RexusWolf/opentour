@@ -46,7 +46,7 @@ const authProvider: AuthProvider = {
     return getDecodedToken().roles ? Promise.resolve(roles) : Promise.reject();
   },
   getIdentity: () => {
-    const { username: id } = getDecodedToken();
+    const { email: id } = getDecodedToken();
 
     return Promise.resolve({ id, fullName: id });
   },

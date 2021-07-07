@@ -5,26 +5,26 @@ Given('que estoy en la página de inicio de sesión', () => {
 });
 
 When('introduzco el usuario y la contraseña de administrador', () => {
-  const username = 'admin';
+  const email = 'admin';
   const password = 'password';
 
-  cy.get('input[name=username]').type(username);
+  cy.get('input[name=email]').type(email);
   cy.get('input[name=password]').type(`${password}{enter}`);
 });
 
 When('introduzco mal la contraseña de administrador', () => {
-  const username = 'admin';
+  const email = 'admin';
   const password = 'password2';
 
-  cy.get('input[name=username]').type(username);
+  cy.get('input[name=email]').type(email);
   cy.get('input[name=password]').type(`${password}{enter}`);
 });
 
 When('introduzco el usuario y la contraseña de un usuario normal', () => {
-  const username = 'user';
+  const email = 'user';
   const password = 'password';
 
-  cy.get('input[name=username]').type(username);
+  cy.get('input[name=email]').type(email);
   cy.get('input[name=password]').type(`${password}{enter}`);
 });
 

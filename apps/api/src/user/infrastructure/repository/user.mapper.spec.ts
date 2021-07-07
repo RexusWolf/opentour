@@ -1,14 +1,14 @@
 import { Test } from '@nestjs/testing';
 import * as uuid from 'uuid';
 
-import { Password, Role, User, UserId, Username } from '../../domain';
+import { Email, Password, Role, User, UserId } from '../../domain';
 import { UserEntity } from '../entity/user.entity';
 import { UserMapper } from './user.mapper';
 
 describe('User mapper', () => {
   let userMapper: UserMapper;
   const userId = UserId.fromString(uuid.v4());
-  const username = Username.fromString('username');
+  const email = Email.fromString('randomEmail@uco.es');
   const password = Password.fromString('password');
   const roleUser = Role.fromString('ROLE_USER');
   const roleAdmin = Role.fromString('ROLE_ADMIN');
@@ -24,14 +24,14 @@ describe('User mapper', () => {
 
   it('converts from entity to aggregate', () => {
     const aggregate = userMapper.entityToAggregate(
-      new UserEntity(userId.value, username.value, password.value, [
+      new UserEntity(userId.value, email.value, password.value, [
         roleUser.value,
         roleAdmin.value,
       ])
     );
 
     expect(aggregate.id.equals(userId)).toBeTruthy();
-    expect(aggregate.username.equals(username)).toBeTruthy();
+    expect(aggregate.email.equals(email)).toBeTruthy();
     expect(aggregate.password.equals(password)).toBeTruthy();
     expect(aggregate.hasRole(roleUser)).toBeTruthy();
     expect(aggregate.hasRole(roleAdmin)).toBeTruthy();
@@ -39,14 +39,14 @@ describe('User mapper', () => {
   });
 
   it('converts from aggregate to entity', () => {
-    const user = User.add(userId, username, password);
+    const user = User.add(userId, email, password);
     user.addRole(roleUser);
     user.addRole(roleAdmin);
 
     const entity = userMapper.aggregateToEntity(user);
 
     expect(entity.id).toEqual(userId.value);
-    expect(entity.username).toEqual(username.value);
+    expect(entity.email).toEqual(email.value);
     expect(entity.password).toEqual(password.value);
     expect(entity.roles).toEqual(
       expect.arrayContaining([roleUser.value, roleAdmin.value])

@@ -57,7 +57,7 @@ export class UserController {
       return await this.commandBus.execute(
         new CreateUserCommand(
           createUserDto.id,
-          createUserDto.username,
+          createUserDto.email,
           password,
           createUserDto.roles
         )
@@ -135,7 +135,7 @@ export class UserController {
       return this.commandBus.execute(
         new UpdateUserCommand(
           id,
-          editUserDTO.username,
+          editUserDTO.email,
           editUserDTO.plainPassword,
           editUserDTO.roles
         )

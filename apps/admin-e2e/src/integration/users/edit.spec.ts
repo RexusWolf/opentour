@@ -26,7 +26,7 @@ describe('Edit users', () => {
     EditPage.submit();
     EditPage.navigate();
 
-    cy.get(EditPage.elements.input('username')).should((el) =>
+    cy.get(EditPage.elements.input('email')).should((el) =>
       expect(el).to.have.value('admin')
     );
     cy.get(EditPage.elements.input('plainPassword')).should(

@@ -16,10 +16,10 @@ export const seed = () => {
   const db = new Database(path.join(__dirname, '../../../../tmp/test.sqlite3'));
 
   db.run(
-    "INSERT INTO `users` (`id`, `username`, `password`, `roles`) VALUES ('f60d593d-9ea9-4add-8f6c-5d86dd8c9f87', 'admin', '$2a$04$J.qvJcqZRPBlGFKWIxPOYOsPRXpkZmTyTHScEF3Kq5/QXV.8oMcfy', 'ROLE_ADMIN')"
+    "INSERT INTO `users` (`id`, `email`, `password`, `roles`) VALUES ('f60d593d-9ea9-4add-8f6c-5d86dd8c9f87', 'admin', '$2a$04$J.qvJcqZRPBlGFKWIxPOYOsPRXpkZmTyTHScEF3Kq5/QXV.8oMcfy', 'ROLE_ADMIN')"
   );
   db.run(
-    "INSERT INTO `users` (`id`, `username`, `password`, `roles`) VALUES ('f60d593d-9ea9-4add-8f6c-5d86dd8c9f88', 'user', '$2a$04$J.qvJcqZRPBlGFKWIxPOYOsPRXpkZmTyTHScEF3Kq5/QXV.8oMcfy', 'ROLE_USER')"
+    "INSERT INTO `users` (`id`, `email`, `password`, `roles`) VALUES ('f60d593d-9ea9-4add-8f6c-5d86dd8c9f88', 'user', '$2a$04$J.qvJcqZRPBlGFKWIxPOYOsPRXpkZmTyTHScEF3Kq5/QXV.8oMcfy', 'ROLE_USER')"
   );
 
   return true;

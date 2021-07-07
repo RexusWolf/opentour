@@ -14,8 +14,8 @@ export class UserService {
     private userRepository: Repository<UserEntity>
   ) {}
 
-  async validatePassword(username: string, password: string): Promise<boolean> {
-    const user = await this.userRepository.findOne({ username });
+  async validatePassword(email: string, password: string): Promise<boolean> {
+    const user = await this.userRepository.findOne({ email });
 
     if (!user) {
       return false;

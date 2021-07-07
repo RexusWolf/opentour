@@ -117,7 +117,7 @@ export const Competition: React.FunctionComponent<Props> = ({
         <Grid item container alignItems="center" xs={9}>
           <TextField
             id="standard-size-small"
-            placeholder="i72abcdf@uco.es"
+            placeholder="email@uco.es"
             name="name"
             onChange={(event) => setModeratorEmail(event.target.value)}
           />

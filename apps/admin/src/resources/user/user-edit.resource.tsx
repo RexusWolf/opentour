@@ -14,7 +14,7 @@ export const UserEdit = ({ permissions, ...props }) => (
   <Edit {...props} transform={transformUserForm}>
     <SimpleForm validate={validateUserForm}>
       <TextInput disabled source="id" />
-      <TextInput source="username" />
+      <TextInput source="email" />
       <SelectInput
         source="roles"
         choices={[

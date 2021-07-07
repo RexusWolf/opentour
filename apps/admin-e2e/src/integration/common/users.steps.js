@@ -33,10 +33,10 @@ Then('tengo que ver {int} elementos', (count) => {
   cy.contains(`1-${count} of ${count}`);
 });
 
-Then('estoy en la página de edición del usuario {string}', (username) => {
+Then('estoy en la página de edición del usuario {string}', (email) => {
   EditPage.waitUntilVisible();
 
-  cy.get(EditPage.elements.input('username')).should((el) =>
-    expect(el).to.have.value(username)
+  cy.get(EditPage.elements.input('email')).should((el) =>
+    expect(el).to.have.value(email)
   );
 });

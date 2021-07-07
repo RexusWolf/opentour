@@ -1,9 +1,9 @@
-import { User, UserId, Username } from '../model';
+import { Email,User, UserId } from '../model';
 
 export interface Users {
   find(userId: UserId): Promise<User | null>;
   findAll(): Promise<User[]>;
-  findOneByUsername(username: Username): Promise<User | null>;
+  findOneByEmail(email: Email): Promise<User | null>;
   save(user: User): void;
 }
 

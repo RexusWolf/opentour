@@ -8,7 +8,7 @@ import {
 } from '@opentour/contracts';
 import * as bcrypt from 'bcrypt';
 
-import { GetUserByUsernameQuery } from '../../user/application';
+import { GetUserByEmailQuery } from '../../user/application';
 
 @Injectable()
 export class AuthService {
@@ -20,21 +20,21 @@ export class AuthService {
     return await bcrypt.hashSync(password, salt);
   }
 
-  async validateUser(username: string, password: string): Promise<boolean> {
-    const user = await this.queryBus.execute<GetUserByUsernameQuery, UserDTO>(
-      new GetUserByUsernameQuery(username)
+  async validateUser(email: string, password: string): Promise<boolean> {
+    const user = await this.queryBus.execute<GetUserByEmailQuery, UserDTO>(
+      new GetUserByEmailQuery(email)
     );
 
     return user && (await bcrypt.compareSync(password, user.password));
   }
 
-  async generateAccessToken(username: string): Promise<AccessTokenInterface> {
-    const user = await this.queryBus.execute<GetUserByUsernameQuery, UserDTO>(
-      new GetUserByUsernameQuery(username)
+  async generateAccessToken(email: string): Promise<AccessTokenInterface> {
+    const user = await this.queryBus.execute<GetUserByEmailQuery, UserDTO>(
+      new GetUserByEmailQuery(email)
     );
 
     const payload: JwtPayloadInterface = {
-      username: user.username,
+      email: user.email,
       roles: user.roles,
     };
 

@@ -2,12 +2,7 @@ import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import { SportName } from '../../../sport/domain/model';
-import {
-  UserId,
-  UsernameNotFoundError,
-  Users,
-  USERS,
-} from '../../../user/domain';
+import { EmailNotFoundError, UserId, USERS,Users } from '../../../user/domain';
 import {
   CompetitionIdAlreadyTakenError,
   CompetitionIdNotFoundError,
@@ -42,9 +37,9 @@ export class AddModeratorToCompetitionHandler
 
     const moderatorEmail = UserId.fromString(command.moderatorEmail);
 
-    const user = await this.users.findOneByUsername(moderatorEmail);
+    const user = await this.users.findOneByEmail(moderatorEmail);
     if (!user) {
-      throw UsernameNotFoundError.with(moderatorEmail);
+      throw EmailNotFoundError.with(moderatorEmail);
     }
 
     competition.addModerator(user.id);

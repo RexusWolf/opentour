@@ -28,7 +28,7 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
       throw UserIdNotFoundError.with(userId);
     }
 
-    // TODO: this.updateUsername(user, command);
+    // TODO: this.updateEmail(user, command);
     this.updatePassword(user, command);
     this.updateRoles(user, command);
 

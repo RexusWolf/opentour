@@ -6,7 +6,7 @@ export class UserWasCreated extends StorableEvent {
 
   constructor(
     readonly id: string,
-    readonly username: string,
+    readonly email: string,
     readonly password: string
   ) {
     super();

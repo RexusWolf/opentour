@@ -1,6 +1,6 @@
 export interface UserForm {
   id: string;
-  username: string;
+  email: string;
   roles: string;
   plainPassword: string;
   plainPasswordRepeat: string;

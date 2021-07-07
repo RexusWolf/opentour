@@ -1,4 +1,4 @@
-import { Button, Grid, Tab, Tabs } from '@material-ui/core';
+import { Button, Grid, Tab, Tabs, TextField } from '@material-ui/core';
 import { CompetitionDTO } from '@opentour/contracts';
 import {
   useMatchesByCompetitionId,
@@ -29,6 +29,7 @@ export const Competition: React.FunctionComponent<Props> = ({
   const matches = useMatchesByCompetitionId(competition.id);
   const ranking = useRankingByCompetitionId(competition.id);
   const { name, type } = competition;
+  const [moderatorEmail, setModeratorEmail] = React.useState('');
   const [open, setOpen] = React.useState(false);
   const teamLogos = teamsWithLogos.map((team) => team.logo);
   const availableTeamLogos =
@@ -57,6 +58,17 @@ export const Competition: React.FunctionComponent<Props> = ({
     });
   };
 
+  const inviteModerator = async (
+    competitionId: string,
+    moderatorEmail: string
+  ) => {
+    await doRequest({
+      method: 'PUT',
+      url: `/competitions/${competitionId}/moderators`,
+      data: moderatorEmail,
+    });
+  };
+
   const [tabIndex, setTabIndex] = React.useState(0);
   const handleChange = (
     event: React.ChangeEvent<unknown>,
@@ -68,6 +80,11 @@ export const Competition: React.FunctionComponent<Props> = ({
   const handleStartCompetition = async () => {
     await generateMatches(teams, competition.id, competition.type);
     await startCompetition(competition.id);
+    window.location.reload();
+  };
+
+  const handleInviteModerator = async () => {
+    await inviteModerator(competition.id, moderatorEmail);
     window.location.reload();
   };
 
@@ -96,31 +113,50 @@ export const Competition: React.FunctionComponent<Props> = ({
       <CompetitionTab value={tabIndex} index={2}>
         <Ranking ranking={ranking} scoreSystem={competition.scoreSystem} />
       </CompetitionTab>
-      <Grid container justify="flex-end" className={classes.container}>
-        <Button
-          className={classes.containerItem}
-          color="secondary"
-          variant="contained"
-          onClick={handleClickOpen}
-          disabled={competition.hasStarted}
-        >
-          Añadir equipo
-        </Button>
-        <TeamWizard
-          availableTeamLogos={availableTeamLogos}
-          competitionId={competition.id}
-          open={open}
-          onClose={handleClose}
-        />
-        <Button
-          className={classes.containerItem}
-          color="primary"
-          variant="contained"
-          disabled={!hasMinimumTeams()}
-          onClick={handleStartCompetition}
-        >
-          Comenzar competición
-        </Button>
+      <Grid container className={classes.container}>
+        <Grid item container alignItems="center" xs={9}>
+          <TextField
+            id="standard-size-small"
+            placeholder="i72abcdf@uco.es"
+            name="name"
+            onChange={(event) => setModeratorEmail(event.target.value)}
+          />
+          <Button
+            className={[classes.containerItem, classes.tertiaryButton].join(
+              ' '
+            )}
+            variant="contained"
+            onClick={handleInviteModerator}
+          >
+            Invitar moderador
+          </Button>
+        </Grid>
+        <Grid item container justify="space-evenly" xs={3}>
+          <Button
+            className={classes.containerItem}
+            color="secondary"
+            variant="contained"
+            onClick={handleClickOpen}
+            disabled={competition.hasStarted}
+          >
+            Añadir equipo
+          </Button>
+          <TeamWizard
+            availableTeamLogos={availableTeamLogos}
+            competitionId={competition.id}
+            open={open}
+            onClose={handleClose}
+          />
+          <Button
+            className={classes.containerItem}
+            color="primary"
+            variant="contained"
+            disabled={!hasMinimumTeams()}
+            onClick={handleStartCompetition}
+          >
+            Comenzar competición
+          </Button>
+        </Grid>
       </Grid>
     </Grid>
   );

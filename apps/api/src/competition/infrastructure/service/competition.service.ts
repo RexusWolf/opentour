@@ -8,6 +8,7 @@ import {
 } from '@opentour/contracts';
 
 import {
+  AddModeratorToCompetitionCommand,
   CreateCompetitionCommand,
   DeleteCompetitionCommand,
   GetCompetitionByNameQuery,
@@ -93,5 +94,11 @@ export class CompetitionService {
       RankingView
     >(new GetCompetitionRankingQuery(id));
     return this.rankingMapper.viewToDto(ranking);
+  }
+
+  async addModerator(id: string, moderatorEmail: string): Promise<void> {
+    return this.commandBus.execute(
+      new AddModeratorToCompetitionCommand(id, moderatorEmail)
+    );
   }
 }

@@ -167,4 +167,13 @@ export class Competition extends AggregateRoot {
   private onCompetitionWasStarted(event: CompetitionWasStarted) {
     this._hasStarted = true;
   }
+
+  private onModeratorWasAddedToCompetition(
+    event: ModeratorWasAddedToCompetition
+  ) {
+    this._moderatorIds = [
+      ...this.moderatorIds,
+      UserId.fromString(event.userId),
+    ];
+  }
 }

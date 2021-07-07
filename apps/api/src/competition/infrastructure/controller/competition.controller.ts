@@ -144,6 +144,30 @@ export class CompetitionController {
     }
   }
 
+  @Put(':id/moderators')
+  @ApiOperation({ summary: 'Add moderator to competition' })
+  @ApiResponse({ status: 204, description: 'Moderator added to competition' })
+  @ApiResponse({
+    status: 404,
+    description: 'Error adding moderator to competition',
+  })
+  async addModerator(
+    @Param('id') id: string,
+    @Param('moderatorEmail') moderatorEmail: string
+  ) {
+    try {
+      return await this.competitionService.addModerator(id, moderatorEmail);
+    } catch (error) {
+      if (error instanceof CompetitionIdNotFoundError) {
+        throw new NotFoundException('Competition not found');
+      } else if (error instanceof Error) {
+        throw new BadRequestException(error.message);
+      } else {
+        throw new BadRequestException('Server error');
+      }
+    }
+  }
+
   @ApiOperation({ summary: 'Delete competition' })
   @ApiResponse({ status: 200, description: 'Delete competition' })
   @ApiResponse({ status: 404, description: 'Not found' })

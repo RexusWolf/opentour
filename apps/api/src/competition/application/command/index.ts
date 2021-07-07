@@ -6,3 +6,5 @@ export * from './start-competition.command';
 export * from './start-competition.handler';
 export * from './update-competition.command';
 export * from './update-competition.handler';
+export * from './add-moderator-to-competition.command';
+export * from './add-moderator-to-competition.handler';

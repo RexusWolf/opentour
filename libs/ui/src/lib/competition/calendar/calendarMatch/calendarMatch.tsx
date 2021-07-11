@@ -87,7 +87,7 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
           </Typography>
         )}
         <Typography color="textSecondary" className={classes.containerItem}>
-          {match.journey}
+          {match.journey !== '-' ? match.journey : null}
         </Typography>
         <TeamSlot name={localTeam.name} logo={localTeam.logo} />
         <TeamSlot name={visitorTeam.name} logo={visitorTeam.logo} />

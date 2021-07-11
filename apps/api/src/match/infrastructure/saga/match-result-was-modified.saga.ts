@@ -35,14 +35,16 @@ export class MatchResultWasModifiedSaga
         .find({ competitionId: event.competitionId })
         .exec();
 
-      if (
-        event.index === competitionMatches[competitionMatches.length - 1].index
-      ) {
+      const finalMatch = competitionMatches.find(
+        (match) => match.journey === 'Final'
+      );
+
+      if (event.id === finalMatch!.id) {
         return;
       }
 
       const matchFinished = competitionMatches.find(
-        (match) => match.index === event.index
+        (match) => match.id === event.id
       );
 
       const nextMatchIndex = this.getNextMatchIndex(
@@ -51,16 +53,22 @@ export class MatchResultWasModifiedSaga
         event.index
       );
 
+      const nextMatchId = this.getNextMatchId(
+        competitionMatches,
+        matchFinished!.journey,
+        nextMatchIndex
+      );
+
       const matchWinnerId = this.getMatchWinnerId(event);
 
       event.index % 2 === 0
         ? this.commandBus.execute(
-            new UpdateMatchCommand(competitionMatches[nextMatchIndex].id, {
+            new UpdateMatchCommand(nextMatchId, {
               visitorTeamId: matchWinnerId,
             })
           )
         : this.commandBus.execute(
-            new UpdateMatchCommand(competitionMatches[nextMatchIndex].id, {
+            new UpdateMatchCommand(nextMatchId, {
               localTeamId: matchWinnerId,
             })
           );
@@ -92,9 +100,28 @@ export class MatchResultWasModifiedSaga
       matchPair.includes(matchIndex)
     );
 
-    const lastMatchOfRound = matchesWithJourney.pop();
+    return nextRoundJourneyMatchIndex;
+  }
 
-    return nextRoundJourneyMatchIndex + lastMatchOfRound!.index;
+  private getNextJourney(journey: string) {
+    if (journey === 'Dieciseisavos') return 'Octavos';
+    if (journey === 'Octavos') return 'Cuartos';
+    if (journey === 'Cuartos') return 'Semifinal';
+    if (journey === 'Semifinal') return 'Final';
+  }
+
+  private getNextMatchId(
+    matches: MatchView[],
+    previousMatchJourney: string,
+    matchIndex: number
+  ) {
+    const nextJourney = this.getNextJourney(previousMatchJourney);
+
+    const matchesWithJourneyIndexes = matches.filter(
+      (match) => match.journey === nextJourney
+    );
+
+    return matchesWithJourneyIndexes[matchIndex].id;
   }
 
   private chunkMatchesArray(array: number[], chunkSize: number) {

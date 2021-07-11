@@ -156,7 +156,6 @@ export class CompetitionController {
     @Body('moderatorEmail') moderatorEmail: string
   ) {
     try {
-      console.log(moderatorEmail);
       return await this.competitionService.addModerator(id, moderatorEmail);
     } catch (error) {
       if (error instanceof CompetitionIdNotFoundError) {

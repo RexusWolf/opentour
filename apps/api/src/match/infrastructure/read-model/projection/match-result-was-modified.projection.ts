@@ -1,12 +1,8 @@
-import { Inject, Param } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import { EventsHandler } from '@nestjs/cqrs';
-import { match } from 'assert';
 import { IViewUpdater } from 'event-sourcing-nestjs';
 import { Model } from 'mongoose';
 
-import { COMPETITION_TYPES } from '../../../../competition/domain';
-import { CompetitionView } from '../../../../competition/infrastructure/read-model/schema/competition.schema';
-import { TeamView } from '../../../../team/infrastructure/read-model/schema/team.schema';
 import { MatchResultWasModified } from '../../../domain';
 import { MatchView } from '../schema/match.schema';
 

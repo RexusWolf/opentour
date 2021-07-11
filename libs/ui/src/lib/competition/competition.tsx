@@ -9,7 +9,8 @@ import React from 'react';
 
 import { useStyles } from '../theme';
 import { doRequest } from '../utils/doRequest';
-import { Calendar } from './calendar/calendar';
+import { LeagueCalendar } from './calendar/leagueCalendar';
+import { TournamentCalendar } from './calendar/tournamentCalendar';
 import { CompetitionTab } from './competitionTab/competitionTab';
 import { Ranking } from './ranking/ranking';
 import { teamsWithLogos } from './shared/teams';
@@ -69,7 +70,7 @@ export const Competition: React.FunctionComponent<Props> = ({
     });
   };
 
-  const [tabIndex, setTabIndex] = React.useState(0);
+  const [tabIndex, setTabIndex] = React.useState(1);
   const handleChange = (
     event: React.ChangeEvent<unknown>,
     newTabIndex: number
@@ -108,7 +109,11 @@ export const Competition: React.FunctionComponent<Props> = ({
         <TeamList teams={teams} />
       </CompetitionTab>
       <CompetitionTab value={tabIndex} index={1}>
-        <Calendar matches={matches} />
+        {competition.type === 'LIGA' ? (
+          <LeagueCalendar matches={matches} />
+        ) : (
+          <TournamentCalendar matches={matches} />
+        )}
       </CompetitionTab>
       <CompetitionTab value={tabIndex} index={2}>
         <Ranking ranking={ranking} scoreSystem={competition.scoreSystem} />

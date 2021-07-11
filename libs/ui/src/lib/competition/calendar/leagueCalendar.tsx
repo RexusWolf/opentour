@@ -8,13 +8,13 @@ type Props = {
   matches: MatchDTO[];
 };
 
-export const Calendar: React.FunctionComponent<Props> = ({ matches }) => {
+export const LeagueCalendar: React.FunctionComponent<Props> = ({ matches }) => {
   const matchesInList = matches || [];
 
   return (
     <Grid container>
-      {matches.length ? (
-        matches.map((match, index) => (
+      {matchesInList.length ? (
+        matchesInList.map((match, index) => (
           <CalendarMatch key={index} match={match} />
         ))
       ) : (

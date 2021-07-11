@@ -133,6 +133,12 @@ export const useStyles = makeStyles((theme) => ({
     backgroundColor: '#003249',
     color: 'white',
   },
+  calendarBlock: {
+    backgroundColor: '#dbdbdb',
+    padding: 20,
+    margin: 10,
+    borderRadius: 6,
+  },
 }));
 
 let muiTheme = createMuiTheme({

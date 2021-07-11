@@ -2,28 +2,31 @@ import { render } from '@testing-library/react';
 import faker from 'faker';
 import React from 'react';
 
-import { Calendar } from './calendar';
+import { LeagueCalendar } from './leagueCalendar';
 
-describe('Calendar', () => {
+describe('LeagueCalendar', () => {
   const defaultProps = {
     matches: [
       {
+        id: 'testId',
+        competitionId: 'testId',
+        index: 0,
+        journey: '-',
         localTeam: aTeam(),
         visitorTeam: aTeam(),
         date: new Date(),
-        isScheduled: true,
-        result: { localTeam: 0, visitorTeam: 0 },
+        finished: null,
       },
     ],
   };
 
   it('should render successfully', () => {
-    const { baseElement } = render(<Calendar {...defaultProps} />);
+    const { baseElement } = render(<LeagueCalendar {...defaultProps} />);
     expect(baseElement).toBeTruthy();
   });
 
   it('should render a calendar with matches', () => {
-    const { getByText } = render(<Calendar {...defaultProps} />);
+    const { getByText } = render(<LeagueCalendar {...defaultProps} />);
     getByText(defaultProps.matches[0].localTeam.name);
     getByText(defaultProps.matches[0].visitorTeam.name);
   });
@@ -31,8 +34,8 @@ describe('Calendar', () => {
 
 function aTeam() {
   return {
-    id: faker.datatype.uuid(),
     name: faker.name.title(),
     logo: faker.internet.url(),
+    score: faker.datatype.number(),
   };
 }

@@ -3,7 +3,9 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { EventSourcingModule } from 'event-sourcing-nestjs';
 
 import { DatabaseModule } from '../../common/database/database.module';
+import { UserModule } from '../../user/infrastructure';
 import {
+  AddModeratorToCompetitionHandler,
   CreateCompetitionHandler,
   DeleteCompetitionHandler,
   GetCompetitionByNameHandler,
@@ -24,6 +26,7 @@ const CommandHandlers = [
   DeleteCompetitionHandler,
   UpdateCompetitionHandler,
   StartCompetitionHandler,
+  AddModeratorToCompetitionHandler,
 ];
 const QueryHandlers = [
   GetCompetitionByNameHandler,
@@ -34,7 +37,12 @@ const QueryHandlers = [
 
 @Module({
   controllers: [CompetitionController],
-  imports: [CqrsModule, DatabaseModule, EventSourcingModule.forFeature()],
+  imports: [
+    CqrsModule,
+    DatabaseModule,
+    UserModule,
+    EventSourcingModule.forFeature(),
+  ],
   providers: [
     ...competitionProviders,
     ...ProjectionHandlers,

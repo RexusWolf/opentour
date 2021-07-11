@@ -1,4 +1,6 @@
 export class EditMatchDTO {
-  result: { localTeamScore: number; visitorTeamScore: number };
-  date: Date;
+  localTeamId?: string;
+  visitorTeamId?: string;
+  result?: { localTeamScore: number; visitorTeamScore: number };
+  date?: Date;
 }

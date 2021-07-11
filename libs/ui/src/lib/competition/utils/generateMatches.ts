@@ -62,8 +62,6 @@ async function createSemifinalMatches(
     data: {
       id: uuid(),
       competitionId,
-      localTeamId: competitionId,
-      visitorTeamId: competitionId,
       index: previousMatchIndex,
       journey: 'Final',
     },
@@ -74,8 +72,6 @@ async function createSemifinalMatches(
     data: {
       id: uuid(),
       competitionId,
-      localTeamId: competitionId,
-      visitorTeamId: competitionId,
       index: previousMatchIndex + 1,
       journey: 'Final',
     },
@@ -93,8 +89,6 @@ async function createFinalMatch(
     data: {
       id: uuid(),
       competitionId,
-      localTeamId: competitionId,
-      visitorTeamId: competitionId,
       index: previousMatchIndex,
       journey: 'Final',
     },

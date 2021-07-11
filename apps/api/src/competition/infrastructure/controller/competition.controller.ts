@@ -153,9 +153,10 @@ export class CompetitionController {
   })
   async addModerator(
     @Param('id') id: string,
-    @Param('moderatorEmail') moderatorEmail: string
+    @Body('moderatorEmail') moderatorEmail: string
   ) {
     try {
+      console.log(moderatorEmail);
       return await this.competitionService.addModerator(id, moderatorEmail);
     } catch (error) {
       if (error instanceof CompetitionIdNotFoundError) {

@@ -15,6 +15,7 @@ import { MatchController } from './controller/match.controller';
 import { MatchEventStore } from './eventstore/matches.event-store';
 import { MatchProviders } from './match.providers';
 import { ProjectionHandlers } from './read-model/projection';
+import { MatchResultWasModifiedSaga } from './saga/match-result-was-modified.saga';
 import { MatchService } from './service/match.service';
 
 const CommandHandlers = [
@@ -28,6 +29,8 @@ const QueryHandlers = [
   GetMatchesHandler,
 ];
 
+const Sagas = [MatchResultWasModifiedSaga];
+
 @Module({
   controllers: [MatchController],
   imports: [DatabaseModule, CqrsModule, EventSourcingModule.forFeature()],
@@ -36,6 +39,7 @@ const QueryHandlers = [
     ...ProjectionHandlers,
     ...CommandHandlers,
     ...QueryHandlers,
+    ...Sagas,
     MatchService,
     MatchEventStore,
   ],

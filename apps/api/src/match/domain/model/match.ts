@@ -4,6 +4,7 @@ import { CompetitionId } from '../../../competition/domain';
 import { TeamId } from '../../../team/domain';
 import {
   MatchResultWasModified,
+  MatchTeamsWereModified,
   MatchWasCreated,
   MatchWasDeleted,
   MatchWasScheduled,
@@ -18,11 +19,11 @@ export class Match extends AggregateRoot {
   private _competitionId: CompetitionId;
   private _index: MatchIndex;
   private _journey: MatchJourney;
-  private _localTeamId: TeamId;
-  private _visitorTeamId: TeamId;
-  private _date?: Date;
   private _result: MatchResult;
   private _deleted: Date | null;
+  private _localTeamId?: TeamId;
+  private _visitorTeamId?: TeamId;
+  private _date?: Date;
 
   private constructor() {
     super();
@@ -31,19 +32,13 @@ export class Match extends AggregateRoot {
   public static create(params: {
     id: MatchId;
     competitionId: CompetitionId;
-    localTeamId: TeamId;
-    visitorTeamId: TeamId;
     index: MatchIndex;
     journey: MatchJourney;
+    localTeamId?: TeamId;
+    visitorTeamId?: TeamId;
   }): Match {
-    const {
-      id,
-      competitionId,
-      index,
-      journey,
-      localTeamId,
-      visitorTeamId,
-    } = params;
+    const { id, competitionId, index, journey, localTeamId, visitorTeamId } =
+      params;
 
     const match = new Match();
 
@@ -51,8 +46,8 @@ export class Match extends AggregateRoot {
       new MatchWasCreated({
         id: id.value,
         competitionId: competitionId.value,
-        localTeamId: localTeamId.value,
-        visitorTeamId: visitorTeamId.value,
+        localTeamId: localTeamId?.value,
+        visitorTeamId: visitorTeamId?.value,
         index: index.value,
         journey: journey.value,
       })
@@ -77,12 +72,20 @@ export class Match extends AggregateRoot {
     return this._journey;
   }
 
-  get localTeamId(): TeamId {
+  get localTeamId(): TeamId | undefined {
     return this._localTeamId;
   }
 
-  get visitorTeamId(): TeamId {
+  set localTeamId(localTeamId: TeamId | undefined) {
+    this._localTeamId = localTeamId;
+  }
+
+  get visitorTeamId(): TeamId | undefined {
     return this._visitorTeamId;
+  }
+
+  set visitorTeamId(visitorTeamId: TeamId | undefined) {
+    this._visitorTeamId = visitorTeamId;
   }
 
   get date(): Date | undefined {
@@ -113,8 +116,18 @@ export class Match extends AggregateRoot {
     return this._visitorTeamId ? true : false;
   }
 
+  modifyMatchTeams(localTeamId?: TeamId, visitorTeamId?: TeamId) {
+    this.apply(
+      new MatchTeamsWereModified({
+        id: this.id.value,
+        localTeamId: localTeamId?.value,
+        visitorTeamId: visitorTeamId?.value,
+      })
+    );
+  }
+
   modifyMatchResult(newResult: MatchResult): void {
-    if (this.result === newResult) {
+    if (this.result === newResult || !this.localTeamId || !this.visitorTeamId) {
       return;
     }
     this.apply(
@@ -152,18 +165,31 @@ export class Match extends AggregateRoot {
   private onMatchWasCreated(event: MatchWasCreated) {
     this._id = MatchId.fromString(event.id);
     this._competitionId = CompetitionId.fromString(event.competitionId);
-    this._localTeamId = TeamId.fromString(event.localTeamId);
-    this._visitorTeamId = TeamId.fromString(event.visitorTeamId);
+    this._localTeamId = event.localTeamId
+      ? TeamId.fromString(event.localTeamId)
+      : undefined;
+    this._visitorTeamId = event.visitorTeamId
+      ? TeamId.fromString(event.visitorTeamId)
+      : undefined;
     this._index = MatchIndex.fromNumber(event.index);
     this._journey = MatchJourney.fromString(event.journey);
     this._result = MatchResult.fromTeamScore(0, 0);
   }
 
-  private onMatchWasModified(event: MatchResultWasModified) {
+  private onMatchResultWasModified(event: MatchResultWasModified) {
     this._result = MatchResult.fromTeamScore(
       event.localTeam.score,
       event.visitorTeam.score
     );
+  }
+
+  private onMatchTeamsWereModified(event: MatchTeamsWereModified) {
+    if (event.localTeamId) {
+      this._localTeamId = TeamId.fromString(event.localTeamId);
+    }
+    if (event.visitorTeamId) {
+      this._visitorTeamId = TeamId.fromString(event.visitorTeamId);
+    }
   }
 
   private onMatchWasScheduled(event: MatchWasScheduled) {

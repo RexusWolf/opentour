@@ -65,7 +65,7 @@ export const Competition: React.FunctionComponent<Props> = ({
     await doRequest({
       method: 'PUT',
       url: `/competitions/${competitionId}/moderators`,
-      data: moderatorEmail,
+      data: { moderatorEmail },
     });
   };
 

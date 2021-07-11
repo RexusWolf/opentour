@@ -24,19 +24,13 @@ export class MatchService {
   async createMatch(params: {
     id: string;
     competitionId: string;
-    localTeamId: string;
-    visitorTeamId: string;
+    localTeamId?: string;
+    visitorTeamId?: string;
     index: number;
     journey: string;
   }) {
-    const {
-      id,
-      competitionId,
-      localTeamId,
-      visitorTeamId,
-      index,
-      journey,
-    } = params;
+    const { id, competitionId, localTeamId, visitorTeamId, index, journey } =
+      params;
     return this.commandBus.execute(
       new CreateMatchCommand({
         id,

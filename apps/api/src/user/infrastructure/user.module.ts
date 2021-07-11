@@ -27,6 +27,7 @@ const Sagas = [UserWasDeletedSaga];
 @Module({
   controllers: [UserController],
   imports: [AuthModule, CqrsModule, TypeOrmModule.forFeature([UserEntity])],
+  exports: [...userProviders],
   providers: [
     ...userProviders,
     ...CommandHandlers,

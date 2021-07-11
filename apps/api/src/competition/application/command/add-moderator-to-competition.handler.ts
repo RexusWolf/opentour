@@ -1,21 +1,19 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import { SportName } from '../../../sport/domain/model';
-import { EmailNotFoundError, UserId, USERS,Users } from '../../../user/domain';
 import {
-  CompetitionIdAlreadyTakenError,
+  Email,
+  EmailNotFoundError,
+  UserId,
+  USERS,
+  Users,
+} from '../../../user/domain';
+import {
   CompetitionIdNotFoundError,
   COMPETITIONS,
   Competitions,
 } from '../../domain';
-import {
-  Competition,
-  CompetitionId,
-  CompetitionName,
-  CompetitionType,
-} from '../../domain/model';
-import { Score } from '../../domain/model/score';
+import { CompetitionId } from '../../domain/model';
 import { AddModeratorToCompetitionCommand } from './add-moderator-to-competition.command';
 
 @CommandHandler(AddModeratorToCompetitionCommand)
@@ -35,14 +33,14 @@ export class AddModeratorToCompetitionHandler
       throw CompetitionIdNotFoundError.with(competitionId);
     }
 
-    const moderatorEmail = UserId.fromString(command.moderatorEmail);
+    const moderatorEmail = Email.fromString(command.moderatorEmail);
 
     const user = await this.users.findOneByEmail(moderatorEmail);
     if (!user) {
       throw EmailNotFoundError.with(moderatorEmail);
     }
 
-    competition.addModerator(user.id);
+    competition.addModerator(UserId.fromString(command.id));
 
     this.competitions.save(competition);
   }

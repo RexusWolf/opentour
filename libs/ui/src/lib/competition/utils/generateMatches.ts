@@ -1,4 +1,5 @@
-import { CreateMatchDTO, TeamDTO } from '@opentour/contracts';
+import { CreateMatchDTO, CreateTeamDTO, TeamDTO } from '@opentour/contracts';
+import { match } from 'assert';
 import { v4 as uuid } from 'uuid';
 
 import { doRequest } from '../../utils/doRequest';
@@ -57,7 +58,18 @@ export function generateTournamentMatches(
 ): CreateMatchDTO[] {
   const startingRound = getStartingRound(teams.length);
   const matchesForRound = createMatchesForRound(startingRound);
-  const teamPairs = getTeamPairs(teams);
+  const numberOfTeamsClassified = getNumberOfClassifiedTeams(
+    teams.length,
+    startingRound
+  );
+
+  const teamsNotClassified = teams.slice(
+    0,
+    teams.length - numberOfTeamsClassified
+  );
+  const teamsClassified = teams.slice(teams.length - numberOfTeamsClassified);
+
+  const teamPairs = getTeamPairs(teamsNotClassified);
 
   const eightFinalMatches: CreateMatchDTO[] =
     matchesForRound.Octavos === true
@@ -117,9 +129,58 @@ export function generateTournamentMatches(
           numberOfMatches: 1,
         });
 
+  const matches = eightFinalMatches.concat(
+    quarterFinalMatches.concat(semifinalMatches).concat(finalMatch)
+  );
+
+  teamsClassified.length &&
+    updateNextRoundMatchesWithTeams(startingRound, matches, teamsClassified);
+
   return eightFinalMatches.concat(
     quarterFinalMatches.concat(semifinalMatches).concat(finalMatch)
   );
+}
+
+function getNumberOfClassifiedTeams(
+  numberOfTeams: number,
+  startingRound: string
+) {
+  if (startingRound === 'Dieciseisavos') return 32 - numberOfTeams;
+  if (startingRound === 'Octavos') return 16 - numberOfTeams;
+  if (startingRound === 'Cuartos') return 8 - numberOfTeams;
+  if (startingRound === 'Semifinal') return 4 - numberOfTeams;
+  return 0;
+}
+
+function updateNextRoundMatchesWithTeams(
+  startingRound: string,
+  matches: CreateMatchDTO[],
+  teamsClassified: TeamDTO[]
+) {
+  const nextJourney = getNextJourney(startingRound);
+
+  const nextJourneyMatches = matches.filter(
+    (match) => match.journey === nextJourney
+  );
+  for (let index = 1; index <= teamsClassified.length; index++) {
+    const matchForClassifiedTeamIndex =
+      index === nextJourneyMatches.length
+        ? 0
+        : nextJourneyMatches.length - (index % nextJourneyMatches.length);
+
+    index <= nextJourneyMatches.length
+      ? (nextJourneyMatches[matchForClassifiedTeamIndex].visitorTeamId =
+          teamsClassified[index - 1].id)
+      : (nextJourneyMatches[matchForClassifiedTeamIndex].localTeamId =
+          teamsClassified[index - 1].id);
+  }
+}
+
+function getNextJourney(journey: string) {
+  if (journey === 'Dieciseisavos') return 'Octavos';
+  if (journey === 'Octavos') return 'Cuartos';
+  if (journey === 'Cuartos') return 'Semifinal';
+  if (journey === 'Semifinal') return 'Final';
 }
 
 function getTeamPairs(teamsArray: TeamDTO[]) {

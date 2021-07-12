@@ -1,5 +1,6 @@
 import { Inject } from '@nestjs/common';
 import { CommandBus, EventsHandler, IEventHandler } from '@nestjs/cqrs';
+import { AnyRecord } from 'dns';
 import { Model } from 'mongoose';
 
 import { COMPETITION_TYPES } from '../../../competition/domain';
@@ -18,7 +19,9 @@ export class MatchResultWasModifiedSaga
     @Inject('MATCH_MODEL')
     private readonly matchModel: Model<MatchView>,
     @Inject('COMPETITION_MODEL')
-    private readonly competitionModel: Model<CompetitionView>
+    private readonly competitionModel: Model<CompetitionView>,
+    @Inject('TEAM_MODEL')
+    private readonly teamModel: Model<TeamView>
   ) {}
 
   async handle(event: MatchResultWasModified) {
@@ -35,6 +38,10 @@ export class MatchResultWasModifiedSaga
         .find({ competitionId: event.competitionId })
         .exec();
 
+      const competitionTeams = await this.teamModel
+        .find({ competitionId: event.competitionId })
+        .exec();
+
       const finalMatch = competitionMatches.find(
         (match) => match.journey === 'Final'
       );
@@ -47,29 +54,28 @@ export class MatchResultWasModifiedSaga
         (match) => match.id === event.id
       );
 
-      const nextMatchIndex = this.getNextMatchIndex(
-        competitionMatches,
-        matchFinished!.journey,
-        event.index
-      );
-
       const nextMatchId = this.getNextMatchId(
         competitionMatches,
         matchFinished!.journey,
-        nextMatchIndex
+        matchFinished!.index
       );
 
       const matchWinnerId = this.getMatchWinnerId(event);
 
-      event.index % 2 === 0
+      const numberOfNextJourneyMatches = this.getNumberOfNextJourneyMatches(
+        competitionMatches,
+        matchFinished!.journey
+      );
+
+      event.index <= numberOfNextJourneyMatches - 1
         ? this.commandBus.execute(
             new UpdateMatchCommand(nextMatchId, {
-              visitorTeamId: matchWinnerId,
+              localTeamId: matchWinnerId,
             })
           )
         : this.commandBus.execute(
             new UpdateMatchCommand(nextMatchId, {
-              localTeamId: matchWinnerId,
+              visitorTeamId: matchWinnerId,
             })
           );
     }
@@ -79,28 +85,6 @@ export class MatchResultWasModifiedSaga
     if (event.localTeam.score > event.visitorTeam.score)
       return event.localTeam.id;
     return event.visitorTeam.id;
-  }
-
-  private getNextMatchIndex(
-    matches: MatchView[],
-    journey: string,
-    matchIndex: number
-  ) {
-    const matchesWithJourney = matches.filter(
-      (match) => match.journey === journey
-    );
-
-    const matchesWithJourneyIndexes = matchesWithJourney.map(
-      (match) => match.index
-    );
-
-    const matchesChunks = this.chunkMatchesArray(matchesWithJourneyIndexes, 2);
-
-    const nextRoundJourneyMatchIndex = matchesChunks.findIndex((matchPair) =>
-      matchPair.includes(matchIndex)
-    );
-
-    return nextRoundJourneyMatchIndex;
   }
 
   private getNextJourney(journey: string) {
@@ -113,24 +97,30 @@ export class MatchResultWasModifiedSaga
   private getNextMatchId(
     matches: MatchView[],
     previousMatchJourney: string,
-    matchIndex: number
+    previousMatchIndex: number
   ) {
     const nextJourney = this.getNextJourney(previousMatchJourney);
 
-    const matchesWithJourneyIndexes = matches.filter(
+    const nextJourneyMatches = matches.filter(
       (match) => match.journey === nextJourney
     );
 
-    return matchesWithJourneyIndexes[matchIndex].id;
+    const nextMatchIndex = previousMatchIndex % nextJourneyMatches.length;
+    const match = nextJourneyMatches.find(
+      (match) => match.index === nextMatchIndex
+    );
+
+    return match!.id;
   }
 
-  private chunkMatchesArray(array: number[], chunkSize: number) {
-    const results: number[][] = [];
-
-    while (array.length) {
-      results.push(array.splice(0, chunkSize));
-    }
-
-    return results;
+  private getNumberOfNextJourneyMatches(
+    matches: MatchView[],
+    previousMatchJourney: string
+  ) {
+    const nextJourney = this.getNextJourney(previousMatchJourney);
+    const nextJourneyMatches = matches.filter(
+      (match) => match.journey === nextJourney
+    );
+    return nextJourneyMatches.length;
   }
 }

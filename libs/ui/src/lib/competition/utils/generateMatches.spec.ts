@@ -41,6 +41,32 @@ describe('Generate matches', () => {
     expect(semifinalMatches).toHaveLength(2);
     expect(finalMatches).toHaveLength(1);
   });
+
+  it.only('should generate an extra match if teams are not divisible by 4', () => {
+    const teams = [
+      TeamDTOBuilder.random(),
+      TeamDTOBuilder.random(),
+      TeamDTOBuilder.random(),
+      TeamDTOBuilder.random(),
+      TeamDTOBuilder.random(),
+      TeamDTOBuilder.random(),
+    ];
+
+    const matches = generateTournamentMatches(teams, faker.datatype.uuid());
+    const quarterMatches = matches.filter(
+      (match) => match.journey === 'Cuartos'
+    );
+    const semifinalMatches = matches.filter(
+      (match) => match.journey === 'Semifinal'
+    );
+    const finalMatches = matches.filter((match) => match.journey === 'Final');
+
+    console.log(matches);
+    expect(matches).toHaveLength(5);
+    expect(quarterMatches).toHaveLength(2);
+    expect(semifinalMatches).toHaveLength(2);
+    expect(finalMatches).toHaveLength(1);
+  });
 });
 
 export class TeamDTOBuilder {

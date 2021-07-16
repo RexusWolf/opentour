@@ -10,6 +10,7 @@ import { doRequest } from '../../utils/doRequest';
 import { CounterButton } from './CounterButton';
 
 type Props = {
+  userId: string;
   open: boolean;
   onClose: () => void;
 };
@@ -21,17 +22,17 @@ export async function createCompetition(competition: CreateCompetitionDTO) {
 export const CompetitionWizard: React.FunctionComponent<Props> = ({
   open,
   onClose,
+  userId,
 }) => {
   const classes = useStyles();
-  const currentUserId = uuid();
   const [sport, setSport] = React.useState<string>('');
   const [type, setType] = React.useState<string>('');
 
   const initialValues: CreateCompetitionDTO = {
-    id: currentUserId,
+    id: userId,
     name: '',
     sportName: sport,
-    moderatorId: currentUserId,
+    moderatorId: userId,
     type,
     scoreSystem: {
       victory: 0,
@@ -40,8 +41,9 @@ export const CompetitionWizard: React.FunctionComponent<Props> = ({
     },
   };
 
-  const [competitionValues, setCompetitionValues] =
-    React.useState(initialValues);
+  const [competitionValues, setCompetitionValues] = React.useState(
+    initialValues
+  );
 
   const handleChange = (property, value) => {
     setCompetitionValues({

@@ -1,4 +1,3 @@
-import { CompetitionDTO } from '@opentour/contracts';
 import { useCompetition } from '@opentour/hooks';
 import { Competition as CompetitionComponent, Layout } from '@opentour/ui';
 import { useRouter } from 'next/dist/client/router';
@@ -10,7 +9,7 @@ export default function Competition() {
 
   const { id } = router.query;
   const competition = useCompetition(id as string);
-  const [session, loading] = useSession();
+  const [session, _loading] = useSession();
 
   return (
     <Layout session={session!}>

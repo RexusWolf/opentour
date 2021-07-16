@@ -6,12 +6,14 @@ import {
   Layout,
   useStyles,
 } from '@opentour/ui';
+import { v4 as uuid } from 'uuid';
 import { useSession } from 'next-auth/client';
 import React from 'react';
 
 export default function Competitions() {
   const classes = useStyles();
-  const [session, loading] = useSession();
+  const [session, _loading] = useSession();
+  const currentUserId = uuid();
   const competitions = useCompetitions();
 
   const [open, setOpen] = React.useState(false);
@@ -32,16 +34,14 @@ export default function Competitions() {
             <Typography variant="h2">Lista de Competiciones</Typography>
           </Grid>
           <Grid item xs={2}>
-            <Button
-              color="secondary"
-              variant="contained"
-              onClick={handleClickOpen}
-            >
-              <Typography variant="button">Crear competición</Typography>
-            </Button>
+            <CreateCompetitionButton handleClickOpen={handleClickOpen} />
           </Grid>
-          <CompetitionWizard open={open} onClose={handleClose} />
         </Grid>
+        <CompetitionWizard
+          userId={currentUserId}
+          open={open}
+          onClose={handleClose}
+        />
         <Grid item container>
           <CompetitionsList competitions={competitions} />
         </Grid>
@@ -49,3 +49,11 @@ export default function Competitions() {
     </Layout>
   );
 }
+
+const CreateCompetitionButton = ({ handleClickOpen }) => {
+  return (
+    <Button color="secondary" variant="contained" onClick={handleClickOpen}>
+      <Typography variant="button">Crear competición</Typography>
+    </Button>
+  );
+};

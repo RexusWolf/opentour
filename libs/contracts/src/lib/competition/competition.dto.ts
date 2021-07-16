@@ -5,11 +5,7 @@ export class CompetitionDTO {
   sportName: string;
   moderatorIds: string[];
   hasStarted: boolean;
-  scoreSystem: {
-    victory: number;
-    tie: number;
-    defeat: number;
-  };
+  scoreSystem: CompetitionScoreSystem;
 
   static empty(): CompetitionDTO {
     return {
@@ -27,3 +23,9 @@ export class CompetitionDTO {
     };
   }
 }
+
+export type CompetitionScoreSystem = {
+  victory: number;
+  tie: number;
+  defeat: number;
+};

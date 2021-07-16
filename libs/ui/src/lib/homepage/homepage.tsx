@@ -6,7 +6,6 @@ import { useStyles } from '../theme';
 
 export const Homepage: React.FunctionComponent = () => {
   const classes = useStyles();
-
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {

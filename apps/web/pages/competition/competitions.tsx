@@ -6,9 +6,9 @@ import {
   Layout,
   useStyles,
 } from '@opentour/ui';
-import { v4 as uuid } from 'uuid';
 import { useSession } from 'next-auth/client';
 import React from 'react';
+import { v4 as uuid } from 'uuid';
 
 export default function Competitions() {
   const classes = useStyles();

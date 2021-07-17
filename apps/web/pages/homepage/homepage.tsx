@@ -1,6 +1,6 @@
+import { Button, Grid, Typography } from '@material-ui/core';
 import { CompetitionWizard, Layout, useStyles } from '@opentour/ui';
 import { useSession } from 'next-auth/client';
-import { Button, Grid, Typography } from '@material-ui/core';
 import React from 'react';
 import { v4 as uuid } from 'uuid';
 

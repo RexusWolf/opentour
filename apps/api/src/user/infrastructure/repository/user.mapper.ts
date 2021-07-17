@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { Email,Password, Role, User, UserId } from '../../domain';
+import { EmailAddress, Password, Role, User, UserId } from '../../domain';
 import { UserEntity } from '../entity/user.entity';
 
 @Injectable()
@@ -10,7 +10,7 @@ export class UserMapper {
 
     const user: User = Reflect.construct(User, []);
     Reflect.set(user, '_userId', UserId.fromString(id));
-    Reflect.set(user, '_email', Email.fromString(email));
+    Reflect.set(user, '_email', EmailAddress.fromString(email));
     Reflect.set(user, '_password', Password.fromString(password));
     Reflect.set(
       user,

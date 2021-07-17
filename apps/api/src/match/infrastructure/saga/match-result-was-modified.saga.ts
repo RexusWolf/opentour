@@ -19,9 +19,7 @@ export class MatchResultWasModifiedSaga
     @Inject('MATCH_MODEL')
     private readonly matchModel: Model<MatchView>,
     @Inject('COMPETITION_MODEL')
-    private readonly competitionModel: Model<CompetitionView>,
-    @Inject('TEAM_MODEL')
-    private readonly teamModel: Model<TeamView>
+    private readonly competitionModel: Model<CompetitionView>
   ) {}
 
   async handle(event: MatchResultWasModified) {
@@ -35,10 +33,6 @@ export class MatchResultWasModifiedSaga
 
     if (competition.type === COMPETITION_TYPES.TORNEO) {
       const competitionMatches = await this.matchModel
-        .find({ competitionId: event.competitionId })
-        .exec();
-
-      const competitionTeams = await this.teamModel
         .find({ competitionId: event.competitionId })
         .exec();
 

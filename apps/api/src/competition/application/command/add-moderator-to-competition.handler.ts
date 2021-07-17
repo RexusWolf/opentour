@@ -1,8 +1,9 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
+import { transporter } from '../../../config/mailerService';
 import {
-  Email,
+  EmailAddress,
   EmailNotFoundError,
   UserId,
   USERS,
@@ -33,7 +34,7 @@ export class AddModeratorToCompetitionHandler
       throw CompetitionIdNotFoundError.with(competitionId);
     }
 
-    const moderatorEmail = Email.fromString(command.moderatorEmail);
+    const moderatorEmail = EmailAddress.fromString(command.moderatorEmail);
 
     const user = await this.users.findOneByEmail(moderatorEmail);
     if (!user) {

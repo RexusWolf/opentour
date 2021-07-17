@@ -2,7 +2,7 @@ import { Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { UserDTO } from '@opentour/contracts';
 
-import { Email, USERS, Users } from '../../domain';
+import { EmailAddress, USERS, Users } from '../../domain';
 import { UserMapper } from '../../infrastructure/repository/user.mapper';
 import { GetUserByEmailQuery } from './get-user-by-email.query';
 
@@ -16,7 +16,9 @@ export class GetUserByEmailHandler
   ) {}
 
   async execute(query: GetUserByEmailQuery): Promise<UserDTO | null> {
-    const user = await this.users.findOneByEmail(Email.fromString(query.email));
+    const user = await this.users.findOneByEmail(
+      EmailAddress.fromString(query.email)
+    );
 
     if (!user) {
       return null;

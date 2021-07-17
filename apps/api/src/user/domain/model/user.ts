@@ -7,14 +7,14 @@ import {
   UserWasCreated,
   UserWasDeleted,
 } from '../event';
-import { Email } from './email';
+import { EmailAddress } from './email-address';
 import { Password } from './password';
 import { Role } from './role';
 import { UserId } from './user-id';
 
 export class User extends AggregateRoot {
   private _userId: UserId;
-  private _email: Email;
+  private _email: EmailAddress;
   private _password: Password;
   private _roles: Role[];
   private _deleted?: Date;
@@ -23,7 +23,11 @@ export class User extends AggregateRoot {
     super();
   }
 
-  public static add(userId: UserId, email: Email, password: Password): User {
+  public static add(
+    userId: UserId,
+    email: EmailAddress,
+    password: Password
+  ): User {
     const user = new User();
 
     user.apply(new UserWasCreated(userId.value, email.value, password.value));
@@ -35,7 +39,7 @@ export class User extends AggregateRoot {
     return this._userId;
   }
 
-  get email(): Email {
+  get email(): EmailAddress {
     return this._email;
   }
 
@@ -85,7 +89,7 @@ export class User extends AggregateRoot {
 
   private onUserWasCreated(event: UserWasCreated) {
     this._userId = UserId.fromString(event.id);
-    this._email = Email.fromString(event.email);
+    this._email = EmailAddress.fromString(event.email);
     this._password = Password.fromString(event.password);
     this._roles = [];
     this._deleted = undefined;

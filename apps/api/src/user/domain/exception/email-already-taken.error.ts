@@ -1,7 +1,7 @@
-import { Email } from '../model';
+import { EmailAddress } from '../model';
 
 export class EmailAlreadyTakenError extends Error {
-  public static with(email: Email): EmailAlreadyTakenError {
+  public static with(email: EmailAddress): EmailAlreadyTakenError {
     return new EmailAlreadyTakenError(`Email ${email.value} already taken`);
   }
 }

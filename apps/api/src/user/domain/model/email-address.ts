@@ -5,8 +5,8 @@ interface Props {
   value: string;
 }
 
-export class Email extends ValueObject<Props> {
-  public static fromString(email: string): Email {
+export class EmailAddress extends ValueObject<Props> {
+  public static fromString(email: string): EmailAddress {
     if (email.length === 0) {
       throw new Error('Email cannot be empty');
     }
@@ -18,7 +18,7 @@ export class Email extends ValueObject<Props> {
       throw new Error('Email must be a valid email');
     }
 
-    return new Email({ value: email });
+    return new EmailAddress({ value: email });
   }
 
   get value(): string {

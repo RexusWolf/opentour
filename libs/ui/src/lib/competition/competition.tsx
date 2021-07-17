@@ -1,4 +1,4 @@
-import { Button, Grid, TextField, Typography } from '@material-ui/core';
+import { Button, Grid, Tab, Tabs, TextField } from '@material-ui/core';
 import { CompetitionDTO } from '@opentour/contracts';
 import {
   useMatchesByCompetitionId,
@@ -9,8 +9,12 @@ import React from 'react';
 
 import { useStyles } from '../theme';
 import { doRequest } from '../utils/doRequest';
-import { CompetitionTabs } from './CompetitionTabs';
+import { LeagueCalendar } from './calendar/leagueCalendar';
+import { TournamentCalendar } from './calendar/tournamentCalendar';
+import { CompetitionTab } from './competitionTab/competitionTab';
+import { Ranking } from './ranking/ranking';
 import { teamsWithLogos } from './shared/teams';
+import { TeamList } from './teamsList/teamsList';
 import { TeamWizard } from './teamWizard/teamWizard';
 import { generateMatches } from './utils/generateMatches';
 
@@ -66,6 +70,14 @@ export const Competition: React.FunctionComponent<Props> = ({
     });
   };
 
+  const [tabIndex, setTabIndex] = React.useState(1);
+  const handleChange = (
+    event: React.ChangeEvent<unknown>,
+    newTabIndex: number
+  ) => {
+    setTabIndex(newTabIndex);
+  };
+
   const handleStartCompetition = async () => {
     await generateMatches(teams, competition.id, competition.type);
     await startCompetition(competition.id);
@@ -84,17 +96,28 @@ export const Competition: React.FunctionComponent<Props> = ({
       className={[classes.marginContainer, classes.paper].join(' ')}
     >
       <Grid item container justify="center">
-        <Typography variant="h4">
-          {type}-{name}
-        </Typography>
+        <h1>
+          {type} - {name}
+        </h1>
       </Grid>
-      <CompetitionTabs
-        teams={teams}
-        matches={matches}
-        ranking={ranking}
-        competitionScoreSystem={competition.scoreSystem}
-        competitionType={competition.type}
-      />
+      <Tabs indicatorColor="primary" value={tabIndex} onChange={handleChange}>
+        <Tab label="Equipos" />
+        <Tab label="Calendario" />
+        <Tab label="Ranking" />
+      </Tabs>
+      <CompetitionTab value={tabIndex} index={0}>
+        <TeamList teams={teams} />
+      </CompetitionTab>
+      <CompetitionTab value={tabIndex} index={1}>
+        {competition.type === 'LIGA' ? (
+          <LeagueCalendar matches={matches} />
+        ) : (
+          <TournamentCalendar matches={matches} />
+        )}
+      </CompetitionTab>
+      <CompetitionTab value={tabIndex} index={2}>
+        <Ranking ranking={ranking} scoreSystem={competition.scoreSystem} />
+      </CompetitionTab>
       <Grid container className={classes.container}>
         <Grid item container alignItems="center" xs={9}>
           <TextField

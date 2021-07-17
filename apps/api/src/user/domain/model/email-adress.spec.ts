@@ -1,14 +1,14 @@
-import { Email } from './email';
+import { EmailAddress } from './email-address';
 
 describe('Email', () => {
   it('should not be empty', () => {
     expect(() => {
-      Email.fromString('');
+      EmailAddress.fromString('');
     }).toThrow();
   });
   it('must be a valid email', () => {
     expect(() => {
-      Email.fromString('notValidEmail');
+      EmailAddress.fromString('notValidEmail');
     }).toThrow();
   });
 });

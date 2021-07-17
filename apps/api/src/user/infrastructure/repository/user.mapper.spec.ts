@@ -1,14 +1,14 @@
 import { Test } from '@nestjs/testing';
 import * as uuid from 'uuid';
 
-import { Email, Password, Role, User, UserId } from '../../domain';
+import { EmailAddress, Password, Role, User, UserId } from '../../domain';
 import { UserEntity } from '../entity/user.entity';
 import { UserMapper } from './user.mapper';
 
 describe('User mapper', () => {
   let userMapper: UserMapper;
   const userId = UserId.fromString(uuid.v4());
-  const email = Email.fromString('randomEmail@uco.es');
+  const email = EmailAddress.fromString('randomEmail@uco.es');
   const password = Password.fromString('password');
   const roleUser = Role.fromString('ROLE_USER');
   const roleAdmin = Role.fromString('ROLE_ADMIN');

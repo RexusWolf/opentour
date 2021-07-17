@@ -2,7 +2,7 @@ import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import {
-  Email,
+  EmailAddress,
   EmailAlreadyTakenError,
   Password,
   Role,
@@ -24,7 +24,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
 
   async execute(command: CreateUserCommand) {
     const userId = UserId.fromString(command.userId);
-    const email = Email.fromString(command.email);
+    const email = EmailAddress.fromString(command.email);
     const password = Password.fromString(command.password);
 
     if (await this.users.find(userId)) {

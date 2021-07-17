@@ -1,4 +1,4 @@
-export * from './email';
+export * from './email-address';
 export * from './password';
 export * from './role';
 export * from './user';

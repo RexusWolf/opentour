@@ -3,7 +3,7 @@ import { EventPublisher } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { Email, User, UserId, Users } from '../../domain';
+import { EmailAddress, User, UserId, Users } from '../../domain';
 import { UserEntity } from '../entity/user.entity';
 import { UserMapper } from './user.mapper';
 
@@ -32,7 +32,7 @@ export class UserRepository implements Users {
     return users.map(this.userMapper.entityToAggregate);
   }
 
-  async findOneByEmail(email: Email): Promise<User | null> {
+  async findOneByEmail(email: EmailAddress): Promise<User | null> {
     const user = await this.userRepository.findOne({
       email: email.value,
     });

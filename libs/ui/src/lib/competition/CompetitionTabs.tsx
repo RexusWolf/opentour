@@ -1,11 +1,12 @@
 import { Tab, Tabs } from '@material-ui/core';
-import React from 'react';
 import {
   CompetitionScoreSystem,
   MatchDTO,
   RankingDTO,
   TeamDTO,
-} from '../../../../contracts/src';
+} from '@opentour/contracts';
+import React from 'react';
+
 import { LeagueCalendar } from './calendar/leagueCalendar';
 import { TournamentCalendar } from './calendar/tournamentCalendar';
 import { CompetitionTab } from './competitionTab/competitionTab';

@@ -6,48 +6,51 @@ import { Repository } from 'typeorm';
 
 import { SendEmailCommand } from '../../../shared/emails/commands/send-email.command';
 import EmailAddress from '../../../shared/emails/EmailAddress';
-import { CompetitionWasStartedEmail } from '../../../shared/emails/templates/CompetitionWasStartedEmail';
+import { MatchResultWasModifiedEmail } from '../../../shared/emails/templates/MatchResultWasModifiedEmail';
 import { TeamView } from '../../../team/infrastructure/read-model/schema/team.schema';
 import { UserEntity } from '../../../user/infrastructure/entity/user.entity';
-import { CompetitionWasStarted } from '../../domain';
+import { MatchResultWasModified } from '../../domain';
 
-@EventsHandler(CompetitionWasStarted)
-export class SendEmailOnCompetitionWasStartedSaga
-  implements IEventHandler<CompetitionWasStarted>
+@EventsHandler(MatchResultWasModified)
+export class SendEmailOnMatchResultWasModifiedSaga
+  implements IEventHandler<MatchResultWasModified>
 {
   constructor(
     private readonly commandBus: CommandBus,
-    @Inject('TEAM_MODEL') private readonly teamModel: Model<TeamView>,
+    @Inject('MATCH_MODEL')
+    private readonly teamModel: Model<TeamView>,
     @InjectRepository(UserEntity) private userRepository: Repository<UserEntity>
   ) {}
 
-  async handle(event: CompetitionWasStarted) {
-    const teamsInCompetition = await this.teamModel
-      .find({ competitionId: event.id })
+  async handle(event: MatchResultWasModified) {
+    const localTeam = await this.teamModel.findById(event.localTeam.id).exec();
+    const visitorTeam = await this.teamModel
+      .findById(event.visitorTeam.id)
       .exec();
 
-    //const recipientsEmails = await this.getCaptainsEmails(teamsInCompetition);
+    //const recipientsEmails = await this.getCaptainsEmails(localTeam!, visitorTeam!);
 
     const recipientsEmails = [
       EmailAddress.fromString(process.env.MAILER_USER!),
     ];
 
     const competitionUrl = `${process.env.NODE_API_URL!}/competition/${
-      event.id
+      event.competitionId
     }`;
 
-    const email = new CompetitionWasStartedEmail({
+    const email = new MatchResultWasModifiedEmail({
       recipientsEmails,
       competitionUrl,
     });
 
-    await this.commandBus.execute(new SendEmailCommand(email));
+    this.commandBus.execute(new SendEmailCommand(email));
   }
 
-  private async getCaptainsEmails(teams: TeamView[]) {
-    const teamsCaptainsIds = teams.map((team) => team.captainId);
-
-    const teamsCaptains = await this.userRepository.findByIds(teamsCaptainsIds);
+  private async getCaptainsEmails(localTeam: TeamView, visitorTeam: TeamView) {
+    const teamsCaptains = await this.userRepository.findByIds([
+      localTeam?.captainId,
+      visitorTeam?.captainId,
+    ]);
 
     const captainsEmails = teamsCaptains.map((captain) =>
       EmailAddress.fromString(captain.email)

@@ -20,9 +20,11 @@ export class RankingWasCreatedProjection
   ) {}
 
   async handle(event: CompetitionWasStarted) {
-    const teamsInCompetition = await this.teamModel.find({
-      competitionId: event.id,
-    });
+    const teamsInCompetition = await this.teamModel
+      .find({
+        competitionId: event.id,
+      })
+      .exec();
 
     const teamsForRanking = teamsInCompetition.map(this.getRankingForTeam);
 

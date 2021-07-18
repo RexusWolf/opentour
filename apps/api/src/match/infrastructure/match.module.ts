@@ -3,6 +3,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { EventSourcingModule } from 'event-sourcing-nestjs';
 
 import { DatabaseModule } from '../../common/database/database.module';
+import { UserModule } from '../../user/infrastructure';
 import {
   CreateMatchHandler,
   DeleteMatchHandler,
@@ -16,6 +17,7 @@ import { MatchEventStore } from './eventstore/matches.event-store';
 import { MatchProviders } from './match.providers';
 import { ProjectionHandlers } from './read-model/projection';
 import { MatchResultWasModifiedSaga } from './saga/match-result-was-modified.saga';
+import { SendEmailOnMatchResultWasModifiedSaga } from './saga/send-email-on-match-result-was-modified.saga';
 import { MatchService } from './service/match.service';
 
 const CommandHandlers = [
@@ -29,11 +31,19 @@ const QueryHandlers = [
   GetMatchesHandler,
 ];
 
-const Sagas = [MatchResultWasModifiedSaga];
+const Sagas = [
+  MatchResultWasModifiedSaga,
+  SendEmailOnMatchResultWasModifiedSaga,
+];
 
 @Module({
   controllers: [MatchController],
-  imports: [DatabaseModule, CqrsModule, EventSourcingModule.forFeature()],
+  imports: [
+    DatabaseModule,
+    CqrsModule,
+    UserModule,
+    EventSourcingModule.forFeature(),
+  ],
   providers: [
     ...MatchProviders,
     ...ProjectionHandlers,

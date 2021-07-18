@@ -1,7 +1,7 @@
 export default function getMessage(competitionUrl: string): string {
   return `
     <p>Hola!</p>
-    <p>Una de las competiciones en la que te inscribiste acaba de comenzar. Puedes entrar a la página de la competición pulsando el botón más abajo.</p>
+    <p>El resultado de uno de los partidos de una competición en la que te inscribiste acaba de ser actualizado. Puedes entrar a la página de la competición para ver los resultados pulsando el botón más abajo.</p>
     <p style="font-size: 14px; margin: 10px 0px 30px 5px;display: block; text-align:center">
     <a
       href="${competitionUrl}"
@@ -11,6 +11,5 @@ export default function getMessage(competitionUrl: string): string {
       Ver competición
     </a>
     </p>
-    <p>¡A jugar!</p>
     `;
 }

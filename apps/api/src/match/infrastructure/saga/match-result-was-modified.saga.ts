@@ -5,7 +5,6 @@ import { Model } from 'mongoose';
 
 import { COMPETITION_TYPES } from '../../../competition/domain';
 import { CompetitionView } from '../../../competition/infrastructure/read-model/schema/competition.schema';
-import { TeamView } from '../../../team/infrastructure/read-model/schema/team.schema';
 import { UpdateMatchCommand } from '../../application';
 import { MatchResultWasModified } from '../../domain';
 import { MatchView } from '../read-model/schema/match.schema';

@@ -126,8 +126,22 @@ export class Match extends AggregateRoot {
     );
   }
 
+  resultIsEqual(newResult: MatchResult) {
+    if (
+      this.result.localTeamScore.equals(newResult.localTeamScore) &&
+      this.result.visitorTeamScore.equals(newResult.visitorTeamScore)
+    ) {
+      return true;
+    }
+    return false;
+  }
+
   modifyMatchResult(newResult: MatchResult): void {
-    if (this.result === newResult || !this.localTeamId || !this.visitorTeamId) {
+    if (
+      this.resultIsEqual(newResult) ||
+      !this.localTeamId ||
+      !this.visitorTeamId
+    ) {
       return;
     }
     this.apply(

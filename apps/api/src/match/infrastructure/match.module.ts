@@ -18,6 +18,7 @@ import { MatchProviders } from './match.providers';
 import { ProjectionHandlers } from './read-model/projection';
 import { MatchResultWasModifiedSaga } from './saga/match-result-was-modified.saga';
 import { SendEmailOnMatchResultWasModifiedSaga } from './saga/send-email-on-match-result-was-modified.saga';
+import { SendEmailOnMatchWasScheduledSaga } from './saga/send-email-on-match-was-scheduled.saga';
 import { MatchService } from './service/match.service';
 
 const CommandHandlers = [
@@ -34,6 +35,7 @@ const QueryHandlers = [
 const Sagas = [
   MatchResultWasModifiedSaga,
   SendEmailOnMatchResultWasModifiedSaga,
+  SendEmailOnMatchWasScheduledSaga,
 ];
 
 @Module({

@@ -6,26 +6,40 @@ import { Repository } from 'typeorm';
 
 import { SendEmailCommand } from '../../../shared/emails/commands/send-email.command';
 import EmailAddress from '../../../shared/emails/EmailAddress';
-import { MatchResultWasModifiedEmail } from '../../../shared/emails/templates/MatchResultWasModifiedEmail';
+import { MatchWasScheduledEmail } from '../../../shared/emails/templates/MatchWasScheduledEmail';
 import { TeamView } from '../../../team/infrastructure/read-model/schema/team.schema';
 import { UserEntity } from '../../../user/infrastructure/entity/user.entity';
-import { MatchResultWasModified } from '../../domain';
+import { MatchWasScheduled } from '../../domain';
+import { MatchView } from '../read-model/schema/match.schema';
 
-@EventsHandler(MatchResultWasModified)
-export class SendEmailOnMatchResultWasModifiedSaga
-  implements IEventHandler<MatchResultWasModified>
+@EventsHandler(MatchWasScheduled)
+export class SendEmailOnMatchWasScheduledSaga
+  implements IEventHandler<MatchWasScheduled>
 {
   constructor(
     private readonly commandBus: CommandBus,
+    @Inject('MATCH_MODEL')
+    private readonly matchModel: Model<MatchView>,
     @Inject('TEAM_MODEL')
     private readonly teamModel: Model<TeamView>,
     @InjectRepository(UserEntity) private userRepository: Repository<UserEntity>
   ) {}
 
-  async handle(event: MatchResultWasModified) {
-    const localTeam = await this.teamModel.findById(event.localTeam.id).exec();
+  async handle(event: MatchWasScheduled) {
+    const match = await this.matchModel.findById(event.id).exec();
+
+    const localTeam = await this.teamModel
+      .findOne({
+        name: match!.localTeam.name,
+        competitionId: match?.competitionId,
+      })
+      .exec();
+
     const visitorTeam = await this.teamModel
-      .findById(event.visitorTeam.id)
+      .findOne({
+        name: match!.visitorTeam.name,
+        competitionId: match?.competitionId,
+      })
       .exec();
 
     //const recipientsEmails = await this.getCaptainsEmails(localTeam!, visitorTeam!);
@@ -35,10 +49,10 @@ export class SendEmailOnMatchResultWasModifiedSaga
     ];
 
     const competitionUrl = `${process.env.NODE_API_URL!}/competition/${
-      event.competitionId
+      match!.competitionId
     }`;
 
-    const email = new MatchResultWasModifiedEmail({
+    const email = new MatchWasScheduledEmail({
       recipientsEmails,
       competitionUrl,
     });

@@ -11,7 +11,7 @@ export default function SignIn({ providers }) {
       container
       style={{
         minHeight: '100vh',
-        backgroundImage: `url(https://fondosmil.com/fondo/5769.jpg)`,
+        backgroundImage: `url(https://images.unsplash.com/photo-1484482340112-e1e2682b4856?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8)`,
         objectFit: 'cover',
       }}
     >

@@ -43,7 +43,7 @@ describe('User mapper', () => {
     user.addRole(roleUser);
     user.addRole(roleAdmin);
 
-    const entity = userMapper.aggregateToEntity(user);
+    const entity = userMapper.aggregateToDocument(user);
 
     expect(entity.id).toEqual(userId.value);
     expect(entity.email).toEqual(email.value);

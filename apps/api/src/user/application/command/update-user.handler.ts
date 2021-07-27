@@ -34,7 +34,7 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
 
     this.users.save(user);
 
-    return this.userMapper.aggregateToEntity(user);
+    return this.userMapper.aggregateToDocument(user);
   }
 
   private updatePassword(user: User, command: UpdateUserCommand) {

@@ -24,6 +24,6 @@ export class GetUserByEmailHandler
       return null;
     }
 
-    return this.userMapper.aggregateToEntity(user);
+    return this.userMapper.aggregateToDTO(user);
   }
 }

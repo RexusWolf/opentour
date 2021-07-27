@@ -17,6 +17,6 @@ export class GetUsersHandler implements IQueryHandler<GetUsersQuery> {
   async execute(query: GetUsersQuery): Promise<UserDTO[] | null> {
     const users = await this.users.findAll();
 
-    return users.map(this.userMapper.aggregateToEntity);
+    return users.map(this.userMapper.aggregateToDTO);
   }
 }

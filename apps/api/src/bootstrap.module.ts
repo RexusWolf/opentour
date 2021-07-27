@@ -10,11 +10,11 @@ import { configService } from './config/config.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
     EventSourcingModule.forRoot({
       mongoURL: process.env.NODE_EVENTSOURCING_URI!,
     }),
     DatabaseModule,
+    TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
   ],
   providers: [
     {

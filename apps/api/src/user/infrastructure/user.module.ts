@@ -3,6 +3,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AuthModule } from '../../auth/auth.module';
+import { DatabaseModule } from '../../common/database/database.module';
 import { CreateUserHandler } from '../application/command/create-user.handler';
 import { DeleteUserHandler } from '../application/command/delete-user.handler';
 import { UpdateUserHandler } from '../application/command/update-user.handler';
@@ -11,7 +12,6 @@ import { GetUserByEmailHandler } from '../application/query/get-user-by-email.ha
 import { GetUsersHandler } from '../application/query/get-users.handler';
 import { UserController } from './controller/user.controller';
 import { UserEntity } from './entity/user.entity';
-import { UserMapper } from './repository/user.mapper';
 import { UserWasDeletedSaga } from './saga/user-was-deleted.saga';
 import { userProviders } from './user.providers';
 
@@ -26,14 +26,13 @@ const Sagas = [UserWasDeletedSaga];
 
 @Module({
   controllers: [UserController],
-  imports: [AuthModule, CqrsModule, TypeOrmModule.forFeature([UserEntity])],
-  exports: [...userProviders, TypeOrmModule.forFeature([UserEntity])],
-  providers: [
-    ...userProviders,
-    ...CommandHandlers,
-    ...QueryHandlers,
-    ...Sagas,
-    UserMapper,
+  imports: [
+    AuthModule,
+    CqrsModule,
+    DatabaseModule,
+    TypeOrmModule.forFeature([UserEntity]),
   ],
+  exports: [...userProviders, TypeOrmModule.forFeature([UserEntity])],
+  providers: [...userProviders, ...CommandHandlers, ...QueryHandlers, ...Sagas],
 })
 export class UserModule {}

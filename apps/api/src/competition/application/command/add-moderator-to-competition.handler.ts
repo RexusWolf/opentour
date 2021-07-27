@@ -41,7 +41,7 @@ export class AddModeratorToCompetitionHandler
       throw EmailNotFoundError.with(moderatorEmail);
     }
 
-    competition.addModerator(UserId.fromString(command.id));
+    competition.addModerator(user.id);
 
     this.competitions.save(competition);
   }

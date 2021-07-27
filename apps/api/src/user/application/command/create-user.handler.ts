@@ -40,6 +40,6 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
 
     this.users.save(user);
 
-    return this.userMapper.aggregateToEntity(user);
+    return this.userMapper.aggregateToDocument(user);
   }
 }

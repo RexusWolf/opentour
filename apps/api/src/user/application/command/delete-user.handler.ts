@@ -24,6 +24,6 @@ export class DeleteUserHandler implements ICommandHandler<DeleteUserCommand> {
 
     this.users.save(user);
 
-    return this.userMapper.aggregateToEntity(user);
+    return this.userMapper.aggregateToDocument(user);
   }
 }

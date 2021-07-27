@@ -10,8 +10,6 @@ import {
   TEAM_MODEL,
   TeamSchema,
 } from '../../team/infrastructure/read-model/schema/team.schema';
-import { USERS } from '../../user/domain';
-import { UserRepository } from '../../user/infrastructure/repository/user.repository';
 import { COMPETITIONS } from '../domain';
 import { CompetitionMapper } from './eventstore/competition.mapper';
 import { CompetitionEventStore } from './eventstore/competitions.event-store';

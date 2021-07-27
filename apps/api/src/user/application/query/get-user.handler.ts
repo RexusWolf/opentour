@@ -21,6 +21,6 @@ export class GetUserHandler implements IQueryHandler<GetUserQuery> {
       return null;
     }
 
-    return this.userMapper.aggregateToEntity(user);
+    return this.userMapper.aggregateToDTO(user);
   }
 }

@@ -6,8 +6,8 @@ import { UserDocument, UserSchema } from './user.model';
 
 @Injectable()
 export class UserMapper {
-  documentToAggregate(userEntity: UserDocument): User {
-    const { _id, email, password, roles } = userEntity;
+  documentToAggregate(userDocument: UserDocument): User {
+    const { _id, email, password, roles } = userDocument;
 
     const user: User = Reflect.construct(User, []);
     Reflect.set(user, '_userId', UserId.fromString(_id));

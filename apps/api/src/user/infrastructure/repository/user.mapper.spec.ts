@@ -2,7 +2,6 @@ import { Test } from '@nestjs/testing';
 import * as uuid from 'uuid';
 
 import { EmailAddress, Password, Role, User, UserId } from '../../domain';
-import { UserEntity } from '../entity/user.entity';
 import { UserMapper } from './user.mapper';
 
 describe('User mapper', () => {
@@ -23,12 +22,12 @@ describe('User mapper', () => {
   });
 
   it('converts from entity to aggregate', () => {
-    const aggregate = userMapper.entityToAggregate(
-      new UserEntity(userId.value, email.value, password.value, [
-        roleUser.value,
-        roleAdmin.value,
-      ])
-    );
+    const aggregate = userMapper.documentToAggregate({
+      _id: userId.value,
+      email: email.value,
+      password: password.value,
+      roles: [roleUser.value, roleAdmin.value],
+    });
 
     expect(aggregate.id.equals(userId)).toBeTruthy();
     expect(aggregate.email.equals(email)).toBeTruthy();
@@ -45,7 +44,7 @@ describe('User mapper', () => {
 
     const entity = userMapper.aggregateToDocument(user);
 
-    expect(entity.id).toEqual(userId.value);
+    expect(entity._id).toEqual(userId.value);
     expect(entity.email).toEqual(email.value);
     expect(entity.password).toEqual(password.value);
     expect(entity.roles).toEqual(

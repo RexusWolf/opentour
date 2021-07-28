@@ -1,14 +1,12 @@
 import { Inject } from '@nestjs/common';
 import { CommandBus, EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Model } from 'mongoose';
-import { Repository } from 'typeorm';
 
 import { SendEmailCommand } from '../../../shared/emails/commands/send-email.command';
 import EmailAddress from '../../../shared/emails/EmailAddress';
 import { MatchWasScheduledEmail } from '../../../shared/emails/templates/MatchWasScheduledEmail';
 import { TeamView } from '../../../team/infrastructure/read-model/schema/team.schema';
-import { UserEntity } from '../../../user/infrastructure/entity/user.entity';
+import { UserId, USERS,Users } from '../../../user/domain';
 import { MatchWasScheduled } from '../../domain';
 import { MatchView } from '../read-model/schema/match.schema';
 
@@ -22,7 +20,7 @@ export class SendEmailOnMatchWasScheduledSaga
     private readonly matchModel: Model<MatchView>,
     @Inject('TEAM_MODEL')
     private readonly teamModel: Model<TeamView>,
-    @InjectRepository(UserEntity) private userRepository: Repository<UserEntity>
+    @Inject(USERS) private userRepository: Users
   ) {}
 
   async handle(event: MatchWasScheduled) {
@@ -61,15 +59,13 @@ export class SendEmailOnMatchWasScheduledSaga
   }
 
   private async getCaptainsEmails(localTeam: TeamView, visitorTeam: TeamView) {
-    const teamsCaptains = await this.userRepository.findByIds([
-      localTeam?.captainId,
-      visitorTeam?.captainId,
-    ]);
-
-    const captainsEmails = teamsCaptains.map((captain) =>
-      EmailAddress.fromString(captain.email)
+    const localTeamCaptain = await this.userRepository.find(
+      UserId.fromString(localTeam.captainId)
+    );
+    const visitorTeamCaptain = await this.userRepository.find(
+      UserId.fromString(visitorTeam.captainId)
     );
 
-    return captainsEmails;
+    return [localTeamCaptain!.email, visitorTeamCaptain!.email];
   }
 }

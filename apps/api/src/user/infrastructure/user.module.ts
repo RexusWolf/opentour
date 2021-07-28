@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
-import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AuthModule } from '../../auth/auth.module';
 import { DatabaseModule } from '../../common/database/database.module';
@@ -11,7 +10,6 @@ import { GetUserHandler } from '../application/query/get-user.handler';
 import { GetUserByEmailHandler } from '../application/query/get-user-by-email.handler';
 import { GetUsersHandler } from '../application/query/get-users.handler';
 import { UserController } from './controller/user.controller';
-import { UserEntity } from './entity/user.entity';
 import { UserWasDeletedSaga } from './saga/user-was-deleted.saga';
 import { userProviders } from './user.providers';
 
@@ -26,13 +24,8 @@ const Sagas = [UserWasDeletedSaga];
 
 @Module({
   controllers: [UserController],
-  imports: [
-    AuthModule,
-    CqrsModule,
-    DatabaseModule,
-    TypeOrmModule.forFeature([UserEntity]),
-  ],
-  exports: [...userProviders, TypeOrmModule.forFeature([UserEntity])],
+  imports: [AuthModule, CqrsModule, DatabaseModule],
+  exports: [...userProviders],
   providers: [...userProviders, ...CommandHandlers, ...QueryHandlers, ...Sagas],
 })
 export class UserModule {}

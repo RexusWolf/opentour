@@ -1,23 +1,21 @@
+import { Inject } from '@nestjs/common';
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 
-import { UserWasDeleted } from '../../domain';
-import { UserEntity } from '../entity/user.entity';
+import { User, UserId, USERS, Users, UserWasDeleted } from '../../domain';
 
 @EventsHandler(UserWasDeleted)
 export class UserWasDeletedSaga implements IEventHandler<UserWasDeleted> {
-  constructor(
-    @InjectRepository(UserEntity) private userRepository: Repository<UserEntity>
-  ) {}
+  constructor(@Inject(USERS) private userRepository: Users) {}
 
   async handle(event: UserWasDeleted) {
-    const user = await this.userRepository.findOne(event.id);
+    const user = await this.userRepository.find(UserId.fromString(event.id));
 
     if (!user) {
       return;
     }
 
-    this.userRepository.remove(user);
+    user.delete();
+
+    this.userRepository.save(user);
   }
 }

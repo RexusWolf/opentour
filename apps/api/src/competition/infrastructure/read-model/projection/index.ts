@@ -1,3 +1,4 @@
+import { CompetitionNextRoundWasStartedProjection } from './competition-next-round-was-started.projection';
 import { CompetitionWasCreatedProjection } from './competition-was-created.projection';
 import { CompetitionWasDeletedProjection } from './competition-was-deleted.projection';
 import { CompetitionWasStartedProjection } from './competition-was-started.projection';
@@ -10,6 +11,7 @@ export const ProjectionHandlers = [
   CompetitionWasUpdatedProjection,
   CompetitionWasDeletedProjection,
   CompetitionWasStartedProjection,
+  CompetitionNextRoundWasStartedProjection,
   RankingWasCreatedProjection,
   RankingWasUpdatedProjection,
 ];

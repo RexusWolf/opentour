@@ -1,6 +1,7 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 
 import { CompetitionId } from '../../../competition/domain';
+import { Journey } from '../../../shared/domain/journey';
 import { TeamId } from '../../../team/domain';
 import {
   MatchResultWasModified,
@@ -11,14 +12,13 @@ import {
 } from '../event';
 import { MatchId } from './match-id';
 import { MatchIndex } from './match-index';
-import { MatchJourney } from './match-journey';
 import { MatchResult } from './match-result';
 
 export class Match extends AggregateRoot {
   private _id: MatchId;
   private _competitionId: CompetitionId;
   private _index: MatchIndex;
-  private _journey: MatchJourney;
+  private _journey: Journey;
   private _result: MatchResult;
   private _deleted: Date | null;
   private _localTeamId?: TeamId;
@@ -33,7 +33,7 @@ export class Match extends AggregateRoot {
     id: MatchId;
     competitionId: CompetitionId;
     index: MatchIndex;
-    journey: MatchJourney;
+    journey: Journey;
     localTeamId?: TeamId;
     visitorTeamId?: TeamId;
   }): Match {
@@ -68,7 +68,7 @@ export class Match extends AggregateRoot {
     return this._index;
   }
 
-  get journey(): MatchJourney | undefined {
+  get journey(): Journey | undefined {
     return this._journey;
   }
 
@@ -186,7 +186,7 @@ export class Match extends AggregateRoot {
       ? TeamId.fromString(event.visitorTeamId)
       : undefined;
     this._index = MatchIndex.fromNumber(event.index);
-    this._journey = MatchJourney.fromString(event.journey);
+    this._journey = Journey.fromString(event.journey);
     this._result = MatchResult.fromTeamScore(0, 0);
   }
 

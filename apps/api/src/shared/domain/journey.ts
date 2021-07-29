@@ -4,13 +4,13 @@ interface Props {
   value: string;
 }
 
-export class MatchJourney extends ValueObject<Props> {
-  public static fromString(name: string): MatchJourney {
+export class Journey extends ValueObject<Props> {
+  public static fromString(name: string): Journey {
     if (name.length === 0) {
       throw new Error('Match journey cannot be empty');
     }
 
-    return new MatchJourney({ value: name });
+    return new Journey({ value: name });
   }
 
   get value(): string {

@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { EventStore, StoreEventPublisher } from 'event-sourcing-nestjs';
 
-import { Team, TeamId , Teams } from '../../domain';
-
+import { Team, TeamId, Teams } from '../../domain';
 
 @Injectable()
 export class TeamEventStore implements Teams {

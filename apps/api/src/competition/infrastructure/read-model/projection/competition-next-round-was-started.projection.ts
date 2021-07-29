@@ -3,24 +3,24 @@ import { EventsHandler } from '@nestjs/cqrs';
 import { IViewUpdater } from 'event-sourcing-nestjs';
 import { Model } from 'mongoose';
 
-import { CompetitionWasStarted } from '../../../domain';
+import { CompetitionNextRoundWasStarted } from '../../../domain/event/competition-next-round-was-started.event';
 import { CompetitionView } from '../schema/competition.schema';
 
-@EventsHandler(CompetitionWasStarted)
-export class CompetitionWasStartedProjection
-  implements IViewUpdater<CompetitionWasStarted>
+@EventsHandler(CompetitionNextRoundWasStarted)
+export class CompetitionNextRoundWasStartedProjection
+  implements IViewUpdater<CompetitionNextRoundWasStarted>
 {
   constructor(
     @Inject('COMPETITION_MODEL')
     private readonly competitionModel: Model<CompetitionView>
   ) {}
 
-  async handle(event: CompetitionWasStarted) {
-    const currentJourney = event.currentJourney;
+  async handle(event: CompetitionNextRoundWasStarted) {
+    const nextJourney = event.nextJourney;
     await this.competitionModel
       .updateOne(
         { _id: event.id },
-        { $set: { hasStarted: true, currentJourney } }
+        { $set: { hasStarted: true, currentJourney: nextJourney } }
       )
       .exec();
   }

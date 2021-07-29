@@ -17,6 +17,7 @@ import {
   StartCompetitionCommand,
   UpdateCompetitionCommand,
 } from '../../application';
+import { StartNextRoundOfCompetitionCommand } from '../../application/command/start-next-round-of-competition.command';
 import { GetCompetitionRankingQuery } from '../../application/query/get-competition-ranking.query';
 import { CompetitionMapper } from '../eventstore/competition.mapper';
 import { RankingMapper } from '../eventstore/ranking.mapper';
@@ -62,6 +63,12 @@ export class CompetitionService {
 
   async startCompetition(id: string): Promise<void> {
     return await this.commandBus.execute(new StartCompetitionCommand(id));
+  }
+
+  async nextRound(id: string): Promise<void> {
+    return await this.commandBus.execute(
+      new StartNextRoundOfCompetitionCommand(id)
+    );
   }
 
   async getCompetition(id: string): Promise<CompetitionDTO | null> {

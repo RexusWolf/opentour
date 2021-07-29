@@ -61,7 +61,6 @@ describe('Generate matches', () => {
     );
     const finalMatches = matches.filter((match) => match.journey === 'Final');
 
-    console.log(matches);
     expect(matches).toHaveLength(5);
     expect(quarterMatches).toHaveLength(2);
     expect(semifinalMatches).toHaveLength(2);

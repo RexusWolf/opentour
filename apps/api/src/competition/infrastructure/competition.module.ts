@@ -13,6 +13,7 @@ import {
   GetCompetitionHandler,
   GetCompetitionsHandler,
   StartCompetitionHandler,
+  StartNextRoundOfCompetitionHandler,
   UpdateCompetitionHandler,
 } from '../application';
 import { GetCompetitionRankingHandler } from '../application/query/get-competition-ranking.handler';
@@ -28,6 +29,7 @@ const CommandHandlers = [
   DeleteCompetitionHandler,
   UpdateCompetitionHandler,
   StartCompetitionHandler,
+  StartNextRoundOfCompetitionHandler,
   AddModeratorToCompetitionHandler,
 ];
 const QueryHandlers = [

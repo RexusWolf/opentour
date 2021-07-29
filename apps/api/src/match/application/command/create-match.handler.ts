@@ -2,6 +2,7 @@ import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import { CompetitionId } from '../../../competition/domain';
+import { Journey } from '../../../shared/domain';
 import { TeamId } from '../../../team/domain';
 import {
   Match,
@@ -10,7 +11,6 @@ import {
   MatchId,
   MatchIdAlreadyTakenError,
   MatchIndex,
-  MatchJourney,
 } from '../../domain';
 import { CreateMatchCommand } from './create-match.command';
 
@@ -28,7 +28,7 @@ export class CreateMatchHandler implements ICommandHandler<CreateMatchCommand> {
       ? TeamId.fromString(command.visitorTeamId)
       : undefined;
     const index = MatchIndex.fromNumber(command.index);
-    const journey = MatchJourney.fromString(command.journey);
+    const journey = Journey.fromString(command.journey);
 
     if (await this.matches.find(id)) {
       throw MatchIdAlreadyTakenError.with(id);

@@ -7,10 +7,12 @@ import { CalendarMatch } from './calendarMatch/calendarMatch';
 
 type Props = {
   matches: MatchDTO[];
+  currentJourney?: string;
 };
 
 export const TournamentCalendar: React.FunctionComponent<Props> = ({
   matches,
+  currentJourney,
 }) => {
   const classes = useStyles();
   const matchesInList = matches || [];
@@ -39,7 +41,11 @@ export const TournamentCalendar: React.FunctionComponent<Props> = ({
             <Typography variant="h5">RONDA DE OCTAVOS</Typography>
           </Grid>
           {eightFinalMatches.map((match, index) => (
-            <CalendarMatch key={index} match={match} />
+            <CalendarMatch
+              key={index}
+              match={match}
+              editable={match.journey === currentJourney}
+            />
           ))}
         </Grid>
       ) : null}
@@ -54,7 +60,11 @@ export const TournamentCalendar: React.FunctionComponent<Props> = ({
             <Typography variant="h5">RONDA DE CUARTOS</Typography>
           </Grid>
           {quarterFinalMatches.map((match, index) => (
-            <CalendarMatch key={index} match={match} />
+            <CalendarMatch
+              key={index}
+              match={match}
+              editable={match.journey === currentJourney}
+            />
           ))}
         </Grid>
       ) : null}
@@ -69,7 +79,11 @@ export const TournamentCalendar: React.FunctionComponent<Props> = ({
             <Typography variant="h5">RONDA SEMIFINAL</Typography>
           </Grid>
           {semifinalMatches.map((match, index) => (
-            <CalendarMatch key={index} match={match} />
+            <CalendarMatch
+              key={index}
+              match={match}
+              editable={match.journey === currentJourney}
+            />
           ))}
         </Grid>
       ) : null}
@@ -84,7 +98,11 @@ export const TournamentCalendar: React.FunctionComponent<Props> = ({
             <Typography variant="h5">RONDA FINAL</Typography>
           </Grid>
           {finalMatch.map((match, index) => (
-            <CalendarMatch key={index} match={match} />
+            <CalendarMatch
+              key={index}
+              match={match}
+              editable={match.journey === currentJourney}
+            />
           ))}
         </Grid>
       ) : null}

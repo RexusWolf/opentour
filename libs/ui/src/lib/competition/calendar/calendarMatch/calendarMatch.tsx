@@ -10,6 +10,7 @@ import { MatchManager } from '../matchManager/matchManager';
 
 type CalendarMatchProps = {
   match: MatchDTO;
+  editable: boolean;
 };
 
 const modifyMatch = async (matchId: string, editMatchDTO: EditMatchDTO) => {
@@ -22,6 +23,7 @@ const modifyMatch = async (matchId: string, editMatchDTO: EditMatchDTO) => {
 
 export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
   match,
+  editable,
 }) => {
   const classes = useStyles();
 
@@ -69,6 +71,12 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
     return false;
   };
 
+  const canModifyMatch = () => {
+    if (!editable) return false;
+    if (hasBothTeams()) return true;
+    return false;
+  };
+
   return (
     <Grid
       container
@@ -107,7 +115,7 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
               className={classes.containerItem}
               color="secondary"
               variant="contained"
-              disabled={finished !== null || !hasBothTeams()}
+              disabled={!canModifyMatch()}
               onClick={handleClickOpen}
             >
               Modificar
@@ -118,7 +126,7 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
             size="small"
             color="primary"
             variant="contained"
-            disabled={!hasBothTeams()}
+            disabled={!hasBothTeams() || !canModifyMatch()}
             onClick={handleClickOpen}
           >
             Programar

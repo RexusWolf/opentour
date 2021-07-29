@@ -144,6 +144,27 @@ export class CompetitionController {
     }
   }
 
+  @Put(':id/nextRound')
+  @ApiOperation({ summary: 'Go to next round of competition' })
+  @ApiResponse({
+    status: 204,
+    description: 'Competition next round has started',
+  })
+  @ApiResponse({ status: 404, description: 'Not found' })
+  async nextRound(@Param('id') id: string) {
+    try {
+      return await this.competitionService.nextRound(id);
+    } catch (error) {
+      if (error instanceof CompetitionIdNotFoundError) {
+        throw new NotFoundException('Competition not found');
+      } else if (error instanceof Error) {
+        throw new BadRequestException(error.message);
+      } else {
+        throw new BadRequestException('Server error');
+      }
+    }
+  }
+
   @Put(':id/moderators')
   @ApiOperation({ summary: 'Add moderator to competition' })
   @ApiResponse({ status: 204, description: 'Moderator added to competition' })

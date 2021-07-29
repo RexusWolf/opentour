@@ -1,5 +1,6 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 
+import { Journey } from '../../../shared/domain';
 import { SportName } from '../../../sport/domain';
 import { UserId } from '../../../user/domain';
 import { UpdateCompetitionCommand } from '../../application';
@@ -11,6 +12,7 @@ import {
   CompetitionWasUpdated,
   ModeratorWasAddedToCompetition,
 } from '../event';
+import { CompetitionNextRoundWasStarted } from '../event/competition-next-round-was-started.event';
 import { CompetitionId } from './competition-id';
 import { CompetitionName } from './competition-name';
 import { CompetitionType } from './competition-type';
@@ -26,6 +28,7 @@ export class Competition extends AggregateRoot {
   private _moderatorIds: UserId[];
   private _scoreSystem: ScoreSystem;
   private _hasStarted: boolean;
+  private _currentJourney?: Journey;
   private _deleted?: Date;
 
   private constructor() {
@@ -96,8 +99,20 @@ export class Competition extends AggregateRoot {
     this._hasStarted = hasStarted;
   }
 
-  start() {
-    this.apply(new CompetitionWasStarted(this.id.value));
+  get currentJourney(): Journey | undefined {
+    return this._currentJourney;
+  }
+
+  set currentJourney(journey: Journey | undefined) {
+    this._currentJourney = journey;
+  }
+
+  start(currentJourney?: string) {
+    this.apply(new CompetitionWasStarted(this.id.value, currentJourney));
+  }
+
+  nextRound(nextJourney: string) {
+    this.apply(new CompetitionNextRoundWasStarted(this.id.value, nextJourney));
   }
 
   isModerator(userId: UserId): boolean {
@@ -166,6 +181,9 @@ export class Competition extends AggregateRoot {
 
   private onCompetitionWasStarted(event: CompetitionWasStarted) {
     this._hasStarted = true;
+    this._currentJourney = event.currentJourney
+      ? Journey.fromString(event.currentJourney)
+      : undefined;
   }
 
   private onModeratorWasAddedToCompetition(
@@ -175,5 +193,11 @@ export class Competition extends AggregateRoot {
       ...this.moderatorIds,
       UserId.fromString(event.userId),
     ];
+  }
+
+  private onCompetitionNextRoundWasStarted(
+    event: CompetitionNextRoundWasStarted
+  ) {
+    this._currentJourney = Journey.fromString(event.nextJourney);
   }
 }

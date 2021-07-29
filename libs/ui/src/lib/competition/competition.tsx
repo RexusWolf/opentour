@@ -5,6 +5,7 @@ import {
   useRankingByCompetitionId,
   useTeamsByCompetitionId,
 } from '@opentour/hooks';
+import { match } from 'assert';
 import React from 'react';
 
 import { useStyles } from '../theme';
@@ -45,6 +46,18 @@ export const Competition: React.FunctionComponent<Props> = ({
     setOpen(false);
   };
 
+  const roundMatchesAreFinished = () => {
+    if (matches) {
+      const roundMatches =
+        matches &&
+        matches.filter((match) => match.journey === competition.currentJourney);
+      for (const match of roundMatches) {
+        if (match.date === null) return false;
+      }
+      return true;
+    }
+  };
+
   const hasMinimumTeams = () => {
     if (teams) {
       if (teams.length > 1) return true;
@@ -56,6 +69,13 @@ export const Competition: React.FunctionComponent<Props> = ({
     await doRequest({
       method: 'PUT',
       url: `/competitions/${competitionId}/start`,
+    });
+  };
+
+  const nextRound = async (competitionId: string) => {
+    await doRequest({
+      method: 'PUT',
+      url: `/competitions/${competitionId}/nextRound`,
     });
   };
 
@@ -81,6 +101,11 @@ export const Competition: React.FunctionComponent<Props> = ({
   const handleStartCompetition = async () => {
     await generateMatches(teams, competition.id, competition.type);
     await startCompetition(competition.id);
+    window.location.reload();
+  };
+
+  const handleNextRound = async () => {
+    await nextRound(competition.id);
     window.location.reload();
   };
 
@@ -112,14 +137,17 @@ export const Competition: React.FunctionComponent<Props> = ({
         {competition.type === 'LIGA' ? (
           <LeagueCalendar matches={matches} />
         ) : (
-          <TournamentCalendar matches={matches} />
+          <TournamentCalendar
+            matches={matches}
+            currentJourney={competition.currentJourney}
+          />
         )}
       </CompetitionTab>
       <CompetitionTab value={tabIndex} index={2}>
         <Ranking ranking={ranking} scoreSystem={competition.scoreSystem} />
       </CompetitionTab>
       <Grid container className={classes.container}>
-        <Grid item container alignItems="center" xs={9}>
+        <Grid item container alignItems="center" xs={8}>
           <TextField
             id="standard-size-small"
             placeholder="email@uco.es"
@@ -136,7 +164,21 @@ export const Competition: React.FunctionComponent<Props> = ({
             Invitar moderador
           </Button>
         </Grid>
-        <Grid item container justify="space-evenly" xs={3}>
+        <Grid item container justify="space-evenly" xs={4}>
+          {competition.hasStarted && competition.type === 'TORNEO' && (
+            <Button
+              className={classes.containerItem}
+              color="primary"
+              variant="contained"
+              disabled={
+                competition.currentJourney === 'Final' ||
+                !roundMatchesAreFinished()
+              }
+              onClick={handleNextRound}
+            >
+              Siguiente Ronda
+            </Button>
+          )}
           <Button
             className={classes.containerItem}
             color="secondary"
@@ -156,7 +198,7 @@ export const Competition: React.FunctionComponent<Props> = ({
             className={classes.containerItem}
             color="primary"
             variant="contained"
-            disabled={!hasMinimumTeams()}
+            disabled={!hasMinimumTeams() || competition.hasStarted}
             onClick={handleStartCompetition}
           >
             Comenzar competición

@@ -5,6 +5,7 @@ export class CompetitionDTO {
   sportName: string;
   moderatorIds: string[];
   hasStarted: boolean;
+  currentJourney?: string;
   scoreSystem: CompetitionScoreSystem;
 
   static empty(): CompetitionDTO {
@@ -15,6 +16,7 @@ export class CompetitionDTO {
       sportName: '',
       moderatorIds: [],
       hasStarted: false,
+      currentJourney: undefined,
       scoreSystem: {
         victory: 0,
         tie: 0,

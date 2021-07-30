@@ -63,7 +63,7 @@ export const TeamWizard: React.FunctionComponent<Props> = ({
       <form>
         <Grid container className={classes.container}>
           <Typography className={classes.containerItem} color="textSecondary">
-            Team name
+            Nombre del equipo
           </Typography>
           <Grid container item className={classes.containerItem}>
             <TextField
@@ -88,7 +88,7 @@ export const TeamWizard: React.FunctionComponent<Props> = ({
               className={classes.containerItem}
               color="textSecondary"
             >
-              Select team logo:
+              Elige el logo del equipo:
             </Typography>
             <Grid container>
               <LogoSelector
@@ -112,7 +112,7 @@ export const TeamWizard: React.FunctionComponent<Props> = ({
               variant="contained"
               onClick={handleCreateTeam}
             >
-              Create team
+              Crear equipo
             </Button>
           </Grid>
         </Grid>

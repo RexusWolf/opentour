@@ -45,8 +45,9 @@ function getRankingTeamsFromRanking(
     const victories = team.matchesPlayed.filter(
       (match) => match.result === 'victory'
     ).length;
-    const ties = team.matchesPlayed.filter((match) => match.result === 'tie')
-      .length;
+    const ties = team.matchesPlayed.filter(
+      (match) => match.result === 'tie'
+    ).length;
     const defeats = team.matchesPlayed.filter(
       (match) => match.result === 'defeat'
     ).length;
@@ -109,7 +110,7 @@ export const Ranking: React.FunctionComponent<Props> = ({
           </Table>
         </TableContainer>
       ) : (
-        <Typography variant="h4">Competition has not started</Typography>
+        <Typography variant="h4">La competición no ha comenzado</Typography>
       )}
     </>
   );

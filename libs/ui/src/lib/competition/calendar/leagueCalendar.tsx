@@ -15,10 +15,15 @@ export const LeagueCalendar: React.FunctionComponent<Props> = ({ matches }) => {
     <Grid container>
       {matchesInList.length ? (
         matchesInList.map((match, index) => (
-          <CalendarMatch key={index} match={match} />
+          <CalendarMatch
+            allowDrawn={true}
+            editable={true}
+            key={index}
+            match={match}
+          />
         ))
       ) : (
-        <Typography variant="h4">Competition has not started</Typography>
+        <Typography variant="h4">La competición no ha comenzado</Typography>
       )}
     </Grid>
   );

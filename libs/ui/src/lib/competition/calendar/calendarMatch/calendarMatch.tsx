@@ -11,6 +11,7 @@ import { MatchManager } from '../matchManager/matchManager';
 type CalendarMatchProps = {
   match: MatchDTO;
   editable: boolean;
+  allowDrawn: boolean;
 };
 
 const modifyMatch = async (matchId: string, editMatchDTO: EditMatchDTO) => {
@@ -24,6 +25,7 @@ const modifyMatch = async (matchId: string, editMatchDTO: EditMatchDTO) => {
 export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
   match,
   editable,
+  allowDrawn,
 }) => {
   const classes = useStyles();
 
@@ -74,6 +76,7 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
   const canModifyMatch = () => {
     if (!editable) return false;
     if (hasBothTeams()) return true;
+
     return false;
   };
 
@@ -137,6 +140,7 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
             matchDate={date}
             isScheduled={isScheduled}
             result={result}
+            allowDrawn={allowDrawn}
             handleLocalTeamScore={handleLocalTeamScore}
             handleVisitorTeamScore={handleVisitorTeamScore}
             handleWasModified={async (date: Date) => {

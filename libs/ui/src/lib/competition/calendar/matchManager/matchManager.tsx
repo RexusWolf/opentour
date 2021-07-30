@@ -6,6 +6,7 @@ import { DateAndTimePicker } from '../dateAndTimePicker/dateAndTimePicker';
 
 export type Props = {
   isScheduled: boolean;
+  allowDrawn: boolean;
   matchDate: Date | null;
   result: { localTeamScore: number; visitorTeamScore: number };
   onClose: () => void;
@@ -24,6 +25,7 @@ export const MatchManager: React.FunctionComponent<Props> = (props) => {
     handleLocalTeamScore,
     handleVisitorTeamScore,
     handleWasModified,
+    allowDrawn,
   } = props;
 
   const [isScheduled, setIsScheduled] = React.useState(props.isScheduled);
@@ -42,6 +44,13 @@ export const MatchManager: React.FunctionComponent<Props> = (props) => {
   const dateChange = (date: Date) => {
     setIsScheduled(true);
     setDate(date);
+  };
+
+  const resultIsInvalid = () => {
+    if (result.localTeamScore === result.visitorTeamScore && !allowDrawn) {
+      return true;
+    }
+    return false;
   };
 
   return (
@@ -102,6 +111,7 @@ export const MatchManager: React.FunctionComponent<Props> = (props) => {
           className={classes.containerItem}
           color="primary"
           variant="contained"
+          disabled={isScheduled && resultIsInvalid()}
           onClick={() => handleModify()}
         >
           {!isScheduled ? 'Programar partido' : 'Modificar partido'}

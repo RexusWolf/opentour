@@ -10,12 +10,8 @@ import React from 'react';
 
 import { useStyles } from '../theme';
 import { doRequest } from '../utils/doRequest';
-import { LeagueCalendar } from './calendar/leagueCalendar';
-import { TournamentCalendar } from './calendar/tournamentCalendar';
-import { CompetitionTab } from './competitionTab/competitionTab';
-import { Ranking } from './ranking/ranking';
+import { CompetitionTabs } from './CompetitionTabs';
 import { teamsWithLogos } from './shared/teams';
-import { TeamList } from './teamsList/teamsList';
 import { TeamWizard } from './teamWizard/teamWizard';
 import { generateMatches } from './utils/generateMatches';
 
@@ -52,7 +48,9 @@ export const Competition: React.FunctionComponent<Props> = ({
         matches &&
         matches.filter((match) => match.journey === competition.currentJourney);
       for (const match of roundMatches) {
-        if (match.date === null) return false;
+        if (match.date === null) {
+          return false;
+        }
       }
       return true;
     }
@@ -90,14 +88,6 @@ export const Competition: React.FunctionComponent<Props> = ({
     });
   };
 
-  const [tabIndex, setTabIndex] = React.useState(1);
-  const handleChange = (
-    event: React.ChangeEvent<unknown>,
-    newTabIndex: number
-  ) => {
-    setTabIndex(newTabIndex);
-  };
-
   const handleStartCompetition = async () => {
     await generateMatches(teams, competition.id, competition.type);
     await startCompetition(competition.id);
@@ -125,27 +115,14 @@ export const Competition: React.FunctionComponent<Props> = ({
           {type} - {name}
         </h1>
       </Grid>
-      <Tabs indicatorColor="primary" value={tabIndex} onChange={handleChange}>
-        <Tab label="Equipos" />
-        <Tab label="Calendario" />
-        <Tab label="Ranking" />
-      </Tabs>
-      <CompetitionTab value={tabIndex} index={0}>
-        <TeamList teams={teams} />
-      </CompetitionTab>
-      <CompetitionTab value={tabIndex} index={1}>
-        {competition.type === 'LIGA' ? (
-          <LeagueCalendar matches={matches} />
-        ) : (
-          <TournamentCalendar
-            matches={matches}
-            currentJourney={competition.currentJourney}
-          />
-        )}
-      </CompetitionTab>
-      <CompetitionTab value={tabIndex} index={2}>
-        <Ranking ranking={ranking} scoreSystem={competition.scoreSystem} />
-      </CompetitionTab>
+      <CompetitionTabs
+        matches={matches}
+        ranking={ranking}
+        teams={teams}
+        competitionType={competition.type}
+        competitionScoreSystem={competition.scoreSystem}
+        currentJourney={competition.currentJourney}
+      />
       <Grid container className={classes.container}>
         <Grid item container alignItems="center" xs={8}>
           <TextField

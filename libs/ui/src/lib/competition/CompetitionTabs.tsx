@@ -18,6 +18,7 @@ export type CompetitionTabsProps = {
   teams: TeamDTO[];
   ranking: RankingDTO;
   competitionType: string;
+  currentJourney?: string;
   competitionScoreSystem: CompetitionScoreSystem;
 };
 
@@ -27,8 +28,9 @@ export const CompetitionTabs = ({
   ranking,
   competitionType,
   competitionScoreSystem,
+  currentJourney,
 }: CompetitionTabsProps) => {
-  const [tabIndex, setTabIndex] = React.useState(1);
+  const [tabIndex, setTabIndex] = React.useState(0);
   const handleChange = (
     event: React.ChangeEvent<unknown>,
     newTabIndex: number
@@ -41,7 +43,7 @@ export const CompetitionTabs = ({
       <Tabs indicatorColor="primary" value={tabIndex} onChange={handleChange}>
         <Tab label="Equipos" />
         <Tab label="Calendario" />
-        <Tab label="Ranking" />
+        {competitionType === 'LIGA' && <Tab label="Ranking" />}
       </Tabs>
       <CompetitionTab value={tabIndex} index={0}>
         <TeamList teams={teams} />
@@ -50,12 +52,17 @@ export const CompetitionTabs = ({
         {competitionType === 'LIGA' ? (
           <LeagueCalendar matches={matches} />
         ) : (
-          <TournamentCalendar matches={matches} />
+          <TournamentCalendar
+            currentJourney={currentJourney}
+            matches={matches}
+          />
         )}
       </CompetitionTab>
-      <CompetitionTab value={tabIndex} index={2}>
-        <Ranking ranking={ranking} scoreSystem={competitionScoreSystem} />
-      </CompetitionTab>
+      {competitionType === 'LIGA' && (
+        <CompetitionTab value={tabIndex} index={2}>
+          <Ranking ranking={ranking} scoreSystem={competitionScoreSystem} />
+        </CompetitionTab>
+      )}
     </>
   );
 };

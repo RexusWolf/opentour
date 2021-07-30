@@ -37,7 +37,7 @@ export const TeamList: React.FunctionComponent<Props> = ({ teams }) => {
           </div>
         ))
       ) : (
-        <Typography variant="h4">No teams in the competition</Typography>
+        <Typography variant="h4">No hay equipos en la competición</Typography>
       )}
     </>
   );

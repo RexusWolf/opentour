@@ -42,6 +42,7 @@ export const TournamentCalendar: React.FunctionComponent<Props> = ({
           </Grid>
           {eightFinalMatches.map((match, index) => (
             <CalendarMatch
+              allowDrawn={false}
               key={index}
               match={match}
               editable={match.journey === currentJourney}
@@ -61,6 +62,7 @@ export const TournamentCalendar: React.FunctionComponent<Props> = ({
           </Grid>
           {quarterFinalMatches.map((match, index) => (
             <CalendarMatch
+              allowDrawn={false}
               key={index}
               match={match}
               editable={match.journey === currentJourney}
@@ -80,6 +82,7 @@ export const TournamentCalendar: React.FunctionComponent<Props> = ({
           </Grid>
           {semifinalMatches.map((match, index) => (
             <CalendarMatch
+              allowDrawn={false}
               key={index}
               match={match}
               editable={match.journey === currentJourney}
@@ -99,6 +102,7 @@ export const TournamentCalendar: React.FunctionComponent<Props> = ({
           </Grid>
           {finalMatch.map((match, index) => (
             <CalendarMatch
+              allowDrawn={false}
               key={index}
               match={match}
               editable={match.journey === currentJourney}

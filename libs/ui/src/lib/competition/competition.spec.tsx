@@ -25,9 +25,19 @@ describe('Competition', () => {
     expect(baseElement).toBeTruthy();
   });
 
-  it('should render three tabs and two buttons', () => {
+  it('should render two tabs and two buttons', () => {
     const { getByText } = render(
       <Competition competition={defaultCompetition} />
+    );
+    getByText('Equipos');
+    getByText('Calendario');
+    getByText('Añadir equipo');
+    getByText('Comenzar competición');
+  });
+
+  it('should render three tabs and two buttons', () => {
+    const { getByText } = render(
+      <Competition competition={{ ...defaultCompetition, type: 'LIGA' }} />
     );
     getByText('Equipos');
     getByText('Calendario');

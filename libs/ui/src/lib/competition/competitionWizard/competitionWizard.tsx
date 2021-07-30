@@ -41,9 +41,8 @@ export const CompetitionWizard: React.FunctionComponent<Props> = ({
     },
   };
 
-  const [competitionValues, setCompetitionValues] = React.useState(
-    initialValues
-  );
+  const [competitionValues, setCompetitionValues] =
+    React.useState(initialValues);
 
   const handleChange = (property, value) => {
     setCompetitionValues({
@@ -127,64 +126,71 @@ export const CompetitionWizard: React.FunctionComponent<Props> = ({
               <ToggleButton value="Voleibol">Voleibol</ToggleButton>
             </ToggleButtonGroup>
           </Grid>
-          <Typography className={classes.containerItem} color="textSecondary">
-            Selecciona sistema de puntuación:
-          </Typography>
-          <Grid
-            item
-            container
-            justify="space-around"
-            className={classes.containerItem}
-          >
-            <Grid item>
+          {competitionValues.type === 'LIGA' && (
+            <>
               <Typography
                 className={classes.containerItem}
                 color="textSecondary"
               >
-                Ptos por Victoria:
+                Selecciona sistema de puntuación:
               </Typography>
-              <CounterButton
-                handleCounterChange={(counter: number) => {
-                  handleChange('scoreSystem', {
-                    ...competitionValues.scoreSystem,
-                    victory: counter,
-                  });
-                }}
-              />
-            </Grid>
-            <Grid item>
-              <Typography
+              <Grid
+                item
+                container
+                justify="space-around"
                 className={classes.containerItem}
-                color="textSecondary"
               >
-                Ptos por Empate:
-              </Typography>
-              <CounterButton
-                handleCounterChange={(counter: number) => {
-                  handleChange('scoreSystem', {
-                    ...competitionValues.scoreSystem,
-                    tie: counter,
-                  });
-                }}
-              />
-            </Grid>
-            <Grid item>
-              <Typography
-                className={classes.containerItem}
-                color="textSecondary"
-              >
-                Ptos por Derrota:
-              </Typography>
-              <CounterButton
-                handleCounterChange={(counter: number) => {
-                  handleChange('scoreSystem', {
-                    ...competitionValues.scoreSystem,
-                    defeat: counter,
-                  });
-                }}
-              />
-            </Grid>
-          </Grid>
+                <Grid item>
+                  <Typography
+                    className={classes.containerItem}
+                    color="textSecondary"
+                  >
+                    Ptos por Victoria:
+                  </Typography>
+                  <CounterButton
+                    handleCounterChange={(counter: number) => {
+                      handleChange('scoreSystem', {
+                        ...competitionValues.scoreSystem,
+                        victory: counter,
+                      });
+                    }}
+                  />
+                </Grid>
+                <Grid item>
+                  <Typography
+                    className={classes.containerItem}
+                    color="textSecondary"
+                  >
+                    Ptos por Empate:
+                  </Typography>
+                  <CounterButton
+                    handleCounterChange={(counter: number) => {
+                      handleChange('scoreSystem', {
+                        ...competitionValues.scoreSystem,
+                        tie: counter,
+                      });
+                    }}
+                  />
+                </Grid>
+                <Grid item>
+                  <Typography
+                    className={classes.containerItem}
+                    color="textSecondary"
+                  >
+                    Ptos por Derrota:
+                  </Typography>
+                  <CounterButton
+                    handleCounterChange={(counter: number) => {
+                      handleChange('scoreSystem', {
+                        ...competitionValues.scoreSystem,
+                        defeat: counter,
+                      });
+                    }}
+                  />
+                </Grid>
+              </Grid>
+            </>
+          )}
           <Grid container justify="flex-end" className={classes.container}>
             <Button
               className={classes.containerItem}

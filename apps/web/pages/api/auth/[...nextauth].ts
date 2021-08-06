@@ -36,8 +36,19 @@ const options = {
   },
   callbacks: {
     session: async (session, user) => {
+      const maxAge = 2592000;
+      const secret = process.env.JWT_SECRET || 'changeme';
+      const signingOptions: jose.JWT.SignOptions = {
+        expiresIn: `${maxAge}s`,
+        algorithm: 'HS512',
+      };
+
+      delete user.access_token;
       session.roles = user.roles;
-      session.access_token = user.access_token;
+      session.access_token = await jose.JWT.sign(user, secret, signingOptions);
+
+      console.debug('session', session, user);
+
       return session;
     },
     jwt: async (token, user, account, profile) => {

@@ -37,6 +37,7 @@ export class AddModeratorToCompetitionHandler
     const moderatorEmail = EmailAddress.fromString(command.moderatorEmail);
 
     const user = await this.users.findOneByEmail(moderatorEmail);
+
     if (!user) {
       throw EmailNotFoundError.with(moderatorEmail);
     }

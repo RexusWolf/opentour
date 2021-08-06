@@ -22,12 +22,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     );
 
     if (!user) {
-      const event = new CreateUserCommand(
-        uuid(),
-        'password',
-        payload.email,
-        payload.roles
-      );
+      const event = new CreateUserCommand({
+        userId: uuid(),
+        password: 'password',
+        email: payload.email,
+        roles: payload.roles,
+      });
       await this.commandBus.execute(event);
     }
 

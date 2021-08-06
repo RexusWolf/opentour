@@ -12,6 +12,7 @@ import {
   Put,
   Query,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -24,14 +25,16 @@ import {
   CreateCompetitionDTO,
   EditCompetitionDTO,
   RankingDTO,
+  Resource,
 } from '@opentour/contracts';
 import { Response } from 'express';
-
+import { ACGuard, UseRoles } from 'nest-access-control';
 import {
   CompetitionIdAlreadyTakenError,
   CompetitionIdNotFoundError,
   CompetitionNameAlreadyTakenError,
 } from '../../domain';
+import { CompetitionGuard } from '../auth/competition.guard';
 import { CompetitionService } from '../service/competition.service';
 
 @ApiBearerAuth()
@@ -106,6 +109,12 @@ export class CompetitionController {
   @ApiOperation({ summary: 'Update competition' })
   @ApiResponse({ status: 204, description: 'Competition updated' })
   @ApiResponse({ status: 404, description: 'Not found' })
+  @UseRoles({
+    resource: Resource.Competition,
+    action: 'update',
+    possession: 'own',
+  })
+  @UseGuards(CompetitionGuard, ACGuard)
   async update(
     @Param('id') id: string,
     @Body() editCompetitionDTO: EditCompetitionDTO
@@ -130,6 +139,12 @@ export class CompetitionController {
   @ApiOperation({ summary: 'Start competition' })
   @ApiResponse({ status: 204, description: 'Competition started' })
   @ApiResponse({ status: 404, description: 'Not found' })
+  @UseRoles({
+    resource: Resource.Competition,
+    action: 'update',
+    possession: 'own',
+  })
+  @UseGuards(CompetitionGuard, ACGuard)
   async start(@Param('id') id: string) {
     try {
       return await this.competitionService.startCompetition(id);
@@ -151,6 +166,12 @@ export class CompetitionController {
     description: 'Competition next round has started',
   })
   @ApiResponse({ status: 404, description: 'Not found' })
+  @UseRoles({
+    resource: Resource.Competition,
+    action: 'update',
+    possession: 'own',
+  })
+  @UseGuards(CompetitionGuard, ACGuard)
   async nextRound(@Param('id') id: string) {
     try {
       return await this.competitionService.nextRound(id);
@@ -172,6 +193,12 @@ export class CompetitionController {
     status: 404,
     description: 'Error adding moderator to competition',
   })
+  @UseRoles({
+    resource: Resource.Competition,
+    action: 'update',
+    possession: 'own',
+  })
+  @UseGuards(CompetitionGuard, ACGuard)
   async addModerator(
     @Param('id') id: string,
     @Body('moderatorEmail') moderatorEmail: string
@@ -193,6 +220,12 @@ export class CompetitionController {
   @ApiResponse({ status: 200, description: 'Delete competition' })
   @ApiResponse({ status: 404, description: 'Not found' })
   @HttpCode(200)
+  @UseRoles({
+    resource: Resource.Competition,
+    action: 'delete',
+    possession: 'own',
+  })
+  @UseGuards(CompetitionGuard, ACGuard)
   @Delete(':id')
   async remove(@Query('id') id: string): Promise<CompetitionDTO> {
     try {

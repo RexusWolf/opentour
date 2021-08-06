@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { APP_GUARD } from '@nestjs/core';
 import { EventSourcingModule } from 'event-sourcing-nestjs';
+import { AccessControlModule } from 'nest-access-control';
+import { acl } from './app.acl';
 
-import { RolesGuard } from './auth/security/roles.guard';
 import { DatabaseModule } from './common/database/database.module';
 // eslint-disable @typescript-eslint/no-non-null-assertion
 
@@ -12,12 +12,7 @@ import { DatabaseModule } from './common/database/database.module';
       mongoURL: process.env.NODE_EVENTSOURCING_URI!,
     }),
     DatabaseModule,
-  ],
-  providers: [
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
+    AccessControlModule.forRoles(acl),
   ],
 })
 export class BootstrapModule {}

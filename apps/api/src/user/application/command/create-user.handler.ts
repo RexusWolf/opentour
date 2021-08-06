@@ -25,6 +25,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
   async execute(command: CreateUserCommand) {
     const userId = UserId.fromString(command.userId);
     const email = EmailAddress.fromString(command.email);
+
     const password = Password.fromString(command.password);
 
     if (await this.users.find(userId)) {

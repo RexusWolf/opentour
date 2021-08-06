@@ -1,14 +1,14 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { PassportStrategy } from '@nestjs/passport';
 import { JwtPayloadInterface, UserDTO } from '@opentour/contracts';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-
-import { GetUserByEmailQuery } from '../../user/application';
+import { v4 as uuid } from 'uuid';
+import { CreateUserCommand, GetUserByEmailQuery } from '../../user/application';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private queryBus: QueryBus) {
+  constructor(private queryBus: QueryBus, private commandBus: CommandBus) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -22,7 +22,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     );
 
     if (!user) {
-      throw new UnauthorizedException();
+      const event = new CreateUserCommand({
+        userId: uuid(),
+        password: 'password',
+        email: payload.email,
+        roles: payload.roles,
+      });
+      await this.commandBus.execute(event);
     }
 
     return user;

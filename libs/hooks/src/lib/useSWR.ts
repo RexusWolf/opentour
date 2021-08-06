@@ -5,26 +5,38 @@ import {
   TeamDTO,
 } from '@opentour/contracts';
 import useSWR from 'swr';
+import { useSession } from 'next-auth/client';
 
 export function useCompetition(id: string): CompetitionDTO {
+  const [session, loading] = useSession();
+
   const { data, error } = useSWR(['/api/competitions/{id}?id=' + id], fetchUrl);
 
   return data;
 }
 
 export function useCompetitions(): CompetitionDTO[] {
-  const { data, error } = useSWR(['/api/competitions'], fetchUrl);
+  const [session, loading] = useSession();
+
+  const { data, error } = useSWR(
+    !loading ? ['/api/competitions', session.access_token] : null,
+    fetchUrl
+  );
 
   return data;
 }
 
 export function useTeams(): TeamDTO[] {
+  const [session, loading] = useSession();
+
   const { data, error } = useSWR(['/api/teams'], fetchUrl);
 
   return data;
 }
 
 export function useMatchesByCompetitionId(competitionId: string): MatchDTO[] {
+  const [session, loading] = useSession();
+
   const { data, error } = useSWR(
     [`/api/matches/{competitionId}/matches?competitionId=${competitionId}`],
     fetchUrl
@@ -34,10 +46,15 @@ export function useMatchesByCompetitionId(competitionId: string): MatchDTO[] {
 }
 
 export function useRankingByCompetitionId(competitionId: string): RankingDTO {
+  const [session, loading] = useSession();
+
   const { data, error } = useSWR(
-    [
-      `/api/competitions/{competitionId}/ranking?competitionId=${competitionId}`,
-    ],
+    !loading
+      ? [
+          `/api/competitions/{competitionId}/ranking?competitionId=${competitionId}`,
+          session!.access_token,
+        ]
+      : null,
     fetchUrl
   );
 
@@ -45,6 +62,8 @@ export function useRankingByCompetitionId(competitionId: string): RankingDTO {
 }
 
 export function useTeamsByCompetitionId(competitionId: string): TeamDTO[] {
+  const [session, loading] = useSession();
+
   const { data, error } = useSWR(
     [`/api/teams/{competitionId}/teams?competitionId=${competitionId}`],
     fetchUrl
@@ -53,11 +72,13 @@ export function useTeamsByCompetitionId(competitionId: string): TeamDTO[] {
   return data;
 }
 
-export const fetchUrl = async (url: string) => {
+export const fetchUrl = async (url: string, token: string) => {
   return fetch(`${process.env.NEXT_PUBLIC_API_URL}${url}`, {
     method: 'GET',
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
+      Authorization: `Bearer ${token}`,
     },
   }).then((res) => {
     if (res.ok) {

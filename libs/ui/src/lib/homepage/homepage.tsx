@@ -45,9 +45,6 @@ export const Homepage: React.FunctionComponent = () => {
         >
           <Typography variant="h4">Lista de Competiciones</Typography>
         </Button>
-        <Button className={classes.homeButton} variant="text">
-          <Typography variant="h4">Mis competiciones</Typography>
-        </Button>
         <Button
           className={classes.homeButton}
           variant="text"
@@ -55,7 +52,7 @@ export const Homepage: React.FunctionComponent = () => {
         >
           <Typography variant="h4">Crear competición</Typography>
         </Button>
-        <CompetitionWizard open={open} onClose={handleClose} />
+        <CompetitionWizard userId={'Id'} open={open} onClose={handleClose} />
       </Grid>
     </Grid>
   );

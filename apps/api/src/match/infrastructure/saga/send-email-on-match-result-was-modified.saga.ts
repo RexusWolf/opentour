@@ -6,7 +6,7 @@ import { SendEmailCommand } from '../../../shared/emails/commands/send-email.com
 import EmailAddress from '../../../shared/emails/EmailAddress';
 import { MatchResultWasModifiedEmail } from '../../../shared/emails/templates/MatchResultWasModifiedEmail';
 import { TeamView } from '../../../team/infrastructure/read-model/schema/team.schema';
-import { User, UserId, USERS,Users } from '../../../user/domain';
+import { User, UserId, USERS, Users } from '../../../user/domain';
 import { MatchResultWasModified } from '../../domain';
 
 @EventsHandler(MatchResultWasModified)
@@ -26,11 +26,10 @@ export class SendEmailOnMatchResultWasModifiedSaga
       .findById(event.visitorTeam.id)
       .exec();
 
-    //const recipientsEmails = await this.getCaptainsEmails(localTeam!, visitorTeam!);
-
-    const recipientsEmails = [
-      EmailAddress.fromString(process.env.MAILER_USER!),
-    ];
+    const recipientsEmails = await this.getCaptainsEmails(
+      localTeam!,
+      visitorTeam!
+    );
 
     const competitionUrl = `${process.env.NODE_API_URL!}/competition/${
       event.competitionId

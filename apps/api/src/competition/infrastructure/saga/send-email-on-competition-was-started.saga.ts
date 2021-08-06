@@ -6,7 +6,7 @@ import { SendEmailCommand } from '../../../shared/emails/commands/send-email.com
 import EmailAddress from '../../../shared/emails/EmailAddress';
 import { CompetitionWasStartedEmail } from '../../../shared/emails/templates/CompetitionWasStartedEmail';
 import { TeamView } from '../../../team/infrastructure/read-model/schema/team.schema';
-import { User, UserId, USERS,Users } from '../../../user/domain';
+import { User, UserId, USERS, Users } from '../../../user/domain';
 import { CompetitionWasStarted } from '../../domain';
 
 @EventsHandler(CompetitionWasStarted)
@@ -24,11 +24,7 @@ export class SendEmailOnCompetitionWasStartedSaga
       .find({ competitionId: event.id })
       .exec();
 
-    //const recipientsEmails = await this.getCaptainsEmails(teamsInCompetition);
-
-    const recipientsEmails = [
-      EmailAddress.fromString(process.env.MAILER_USER!),
-    ];
+    const recipientsEmails = await this.getCaptainsEmails(teamsInCompetition);
 
     const competitionUrl = `${process.env.NODE_API_URL!}/competition/${
       event.id

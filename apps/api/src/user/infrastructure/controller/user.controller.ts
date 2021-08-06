@@ -54,12 +54,12 @@ export class UserController {
       );
 
       return await this.commandBus.execute(
-        new CreateUserCommand(
-          createUserDto.id,
-          createUserDto.email,
+        new CreateUserCommand({
+          userId: createUserDto.id,
+          email: createUserDto.email,
           password,
-          createUserDto.roles
-        )
+          roles: createUserDto.roles,
+        })
       );
     } catch (e) {
       if (e instanceof Error) {

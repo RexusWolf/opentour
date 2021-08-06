@@ -6,6 +6,7 @@ import {
   useTeamsByCompetitionId,
 } from '@opentour/hooks';
 import { match } from 'assert';
+import { useSession } from 'next-auth/client';
 import React from 'react';
 
 import { useStyles } from '../theme';
@@ -22,6 +23,7 @@ export type Props = {
 export const Competition: React.FunctionComponent<Props> = ({
   competition,
 }) => {
+  const [session, loading] = useSession();
   const classes = useStyles();
   const teams = useTeamsByCompetitionId(competition.id);
   const matches = useMatchesByCompetitionId(competition.id);
@@ -81,11 +83,13 @@ export const Competition: React.FunctionComponent<Props> = ({
     competitionId: string,
     moderatorEmail: string
   ) => {
-    await doRequest({
-      method: 'PUT',
-      url: `/competitions/${competitionId}/moderators`,
-      data: { moderatorEmail },
-    });
+    !loading &&
+      (await doRequest({
+        method: 'PUT',
+        url: `/competitions/${competitionId}/moderators`,
+        data: { moderatorEmail },
+        session,
+      }));
   };
 
   const handleStartCompetition = async () => {
@@ -101,7 +105,7 @@ export const Competition: React.FunctionComponent<Props> = ({
 
   const handleInviteModerator = async () => {
     await inviteModerator(competition.id, moderatorEmail);
-    window.location.reload();
+    //window.location.reload();
   };
 
   return (

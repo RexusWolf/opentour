@@ -34,6 +34,10 @@ export class CompetitionGuard extends AuthGuard('jwt') {
   }
 
   handleRequest(err, user, info, context: ExecutionContext) {
+    console.log(
+      '🚀 ~ file: competition.guard.ts ~ line 38 ~ CompetitionGuard ~ handleRequest ~ user',
+      user
+    );
     if (err || !user) {
       throw err || new UnauthorizedException();
     }

@@ -10,6 +10,7 @@ import {
   Post,
   Query,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -17,14 +18,16 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { CreateTeamDTO, TeamDTO } from '@opentour/contracts';
+import { CreateTeamDTO, Resource, TeamDTO } from '@opentour/contracts';
 import { Response } from 'express';
+import { ACGuard, UseRoles } from 'nest-access-control';
 
 import {
   TeamIdAlreadyTakenError,
   TeamIdNotFoundError,
   TeamNameAlreadyTakenError,
 } from '../../domain';
+import { TeamGuard } from '../auth/team.guard';
 import { TeamService } from '../service/team.service';
 
 @ApiBearerAuth()
@@ -118,6 +121,12 @@ export class TeamController {
   @ApiResponse({ status: 404, description: 'Not found' })
   @HttpCode(200)
   @Delete(':id')
+  @UseRoles({
+    resource: Resource.Team,
+    action: 'delete',
+    possession: 'own',
+  })
+  @UseGuards(TeamGuard, ACGuard)
   async remove(@Query('id') id: string): Promise<TeamDTO> {
     try {
       return this.teamService.deleteTeam(id);

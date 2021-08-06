@@ -26,12 +26,9 @@ import {
   EditCompetitionDTO,
   RankingDTO,
   Resource,
-  Role,
 } from '@opentour/contracts';
 import { Response } from 'express';
 import { ACGuard, UseRoles } from 'nest-access-control';
-import { Roles } from '../../../auth/security/roles.decorator';
-
 import {
   CompetitionIdAlreadyTakenError,
   CompetitionIdNotFoundError,
@@ -223,6 +220,12 @@ export class CompetitionController {
   @ApiResponse({ status: 200, description: 'Delete competition' })
   @ApiResponse({ status: 404, description: 'Not found' })
   @HttpCode(200)
+  @UseRoles({
+    resource: Resource.Competition,
+    action: 'delete',
+    possession: 'own',
+  })
+  @UseGuards(CompetitionGuard, ACGuard)
   @Delete(':id')
   async remove(@Query('id') id: string): Promise<CompetitionDTO> {
     try {

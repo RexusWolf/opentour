@@ -13,13 +13,21 @@ import {
   Put,
   Query,
   Res,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CreateMatchDTO, EditMatchDTO, MatchDTO } from '@opentour/contracts';
+import {
+  CreateMatchDTO,
+  EditMatchDTO,
+  MatchDTO,
+  Resource,
+} from '@opentour/contracts';
 import { Response } from 'express';
+import { ACGuard, UseRoles } from 'nest-access-control';
 
 import { MatchIdAlreadyTakenError, MatchIdNotFoundError } from '../../domain';
+import { MatchGuard } from '../auth/match.guard';
 import { MatchService } from '../service/match.service';
 
 @ApiTags('matches')
@@ -116,6 +124,12 @@ export class MatchController {
   @ApiOperation({ summary: 'Updated match' })
   @ApiResponse({ status: 200, description: 'Match updated' })
   @ApiResponse({ status: 404, description: 'Not found' })
+  @UseRoles({
+    resource: Resource.Match,
+    action: 'update',
+    possession: 'own',
+  })
+  @UseGuards(MatchGuard, ACGuard)
   async update(@Param('id') id: string, @Body() editMatchDTO: EditMatchDTO) {
     try {
       return await this.matchService.updateMatch(id, editMatchDTO);
@@ -133,6 +147,12 @@ export class MatchController {
   @ApiOperation({ summary: 'Delete match' })
   @ApiResponse({ status: 200, description: 'Delete match' })
   @ApiResponse({ status: 404, description: 'Not found' })
+  @UseRoles({
+    resource: Resource.Match,
+    action: 'delete',
+    possession: 'own',
+  })
+  @UseGuards(MatchGuard, ACGuard)
   @HttpCode(200)
   @Delete(':id')
   async remove(@Query('id') id: string): Promise<MatchDTO> {

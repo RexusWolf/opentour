@@ -15,7 +15,6 @@ const authProvider: AuthProvider = {
     }
     const res = await axios.post(`/api/login`, credentials);
 
-    console.log(res);
     saveToken(res.data);
   },
   logout: () => {

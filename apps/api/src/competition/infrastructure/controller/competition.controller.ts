@@ -72,7 +72,6 @@ export class CompetitionController {
   }
 
   @Get()
-  @Roles(Role.User)
   @ApiOperation({ summary: 'Get competitions' })
   @ApiResponse({ status: 200, description: 'Returns all competitions' })
   async getCompetitions(@Res({ passthrough: true }) res: Response) {
@@ -143,6 +142,12 @@ export class CompetitionController {
   @ApiOperation({ summary: 'Start competition' })
   @ApiResponse({ status: 204, description: 'Competition started' })
   @ApiResponse({ status: 404, description: 'Not found' })
+  @UseRoles({
+    resource: Resource.Competition,
+    action: 'update',
+    possession: 'own',
+  })
+  @UseGuards(CompetitionGuard, ACGuard)
   async start(@Param('id') id: string) {
     try {
       return await this.competitionService.startCompetition(id);
@@ -164,6 +169,12 @@ export class CompetitionController {
     description: 'Competition next round has started',
   })
   @ApiResponse({ status: 404, description: 'Not found' })
+  @UseRoles({
+    resource: Resource.Competition,
+    action: 'update',
+    possession: 'own',
+  })
+  @UseGuards(CompetitionGuard, ACGuard)
   async nextRound(@Param('id') id: string) {
     try {
       return await this.competitionService.nextRound(id);
@@ -185,6 +196,12 @@ export class CompetitionController {
     status: 404,
     description: 'Error adding moderator to competition',
   })
+  @UseRoles({
+    resource: Resource.Competition,
+    action: 'update',
+    possession: 'own',
+  })
+  @UseGuards(CompetitionGuard, ACGuard)
   async addModerator(
     @Param('id') id: string,
     @Body('moderatorEmail') moderatorEmail: string

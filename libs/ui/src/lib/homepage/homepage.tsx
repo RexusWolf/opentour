@@ -52,7 +52,7 @@ export const Homepage: React.FunctionComponent = () => {
         >
           <Typography variant="h4">Crear competición</Typography>
         </Button>
-        <CompetitionWizard open={open} onClose={handleClose} />
+        <CompetitionWizard userId={'Id'} open={open} onClose={handleClose} />
       </Grid>
     </Grid>
   );

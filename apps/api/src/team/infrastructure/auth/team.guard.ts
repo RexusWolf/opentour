@@ -7,13 +7,12 @@ import {
 import { QueryBus } from '@nestjs/cqrs';
 import { AuthGuard } from '@nestjs/passport';
 import { Role } from '@opentour/contracts';
-
-import { GetCompetitionQuery } from '../../application';
-import { CompetitionView } from '../read-model/schema/competition.schema';
+import { GetTeamQuery } from '../../application';
+import { TeamView } from '../read-model/schema/team.schema';
 
 @Injectable()
-export class CompetitionGuard extends AuthGuard('jwt') {
-  private readonly logger = new Logger(CompetitionGuard.name);
+export class TeamGuard extends AuthGuard('jwt') {
+  private readonly logger = new Logger(TeamGuard.name);
 
   constructor(private readonly queryBus: QueryBus) {
     super();
@@ -25,9 +24,7 @@ export class CompetitionGuard extends AuthGuard('jwt') {
     const { id } = req?.params;
 
     if (id) {
-      req.competition = await this.queryBus.execute(
-        new GetCompetitionQuery(id)
-      );
+      req.team = await this.queryBus.execute(new GetTeamQuery(id));
     }
 
     return super.canActivate(context) as boolean;
@@ -38,12 +35,10 @@ export class CompetitionGuard extends AuthGuard('jwt') {
       throw err || new UnauthorizedException();
     }
 
-    const competition: CompetitionView = context
-      .switchToHttp()
-      .getRequest()?.competition;
+    const team: TeamView = context.switchToHttp().getRequest()?.team;
 
-    if (competition && competition.moderatorIds.includes(user.id)) {
-      user?.roles.push(Role.CompetitionOwner);
+    if (team && team.captainId === user.id) {
+      user?.roles.push(Role.TeamOwner);
     }
 
     return user;

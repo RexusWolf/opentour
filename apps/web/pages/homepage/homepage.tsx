@@ -64,9 +64,6 @@ const HomepageButtons = ({ handleClickOpen, children }) => {
       >
         <Typography variant="h4">Lista de Competiciones</Typography>
       </Button>
-      <Button className={classes.homeButton} variant="text">
-        <Typography variant="h4">Mis competiciones</Typography>
-      </Button>
       <Button
         className={classes.homeButton}
         variant="text"

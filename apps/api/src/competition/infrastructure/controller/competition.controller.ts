@@ -12,6 +12,7 @@ import {
   Put,
   Query,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -24,14 +25,19 @@ import {
   CreateCompetitionDTO,
   EditCompetitionDTO,
   RankingDTO,
+  Resource,
+  Role,
 } from '@opentour/contracts';
 import { Response } from 'express';
+import { ACGuard, UseRoles } from 'nest-access-control';
+import { Roles } from '../../../auth/security/roles.decorator';
 
 import {
   CompetitionIdAlreadyTakenError,
   CompetitionIdNotFoundError,
   CompetitionNameAlreadyTakenError,
 } from '../../domain';
+import { CompetitionGuard } from '../auth/competition.guard';
 import { CompetitionService } from '../service/competition.service';
 
 @ApiBearerAuth()
@@ -66,6 +72,7 @@ export class CompetitionController {
   }
 
   @Get()
+  @Roles(Role.User)
   @ApiOperation({ summary: 'Get competitions' })
   @ApiResponse({ status: 200, description: 'Returns all competitions' })
   async getCompetitions(@Res({ passthrough: true }) res: Response) {
@@ -106,6 +113,12 @@ export class CompetitionController {
   @ApiOperation({ summary: 'Update competition' })
   @ApiResponse({ status: 204, description: 'Competition updated' })
   @ApiResponse({ status: 404, description: 'Not found' })
+  @UseRoles({
+    resource: Resource.Competition,
+    action: 'update',
+    possession: 'own',
+  })
+  @UseGuards(CompetitionGuard, ACGuard)
   async update(
     @Param('id') id: string,
     @Body() editCompetitionDTO: EditCompetitionDTO

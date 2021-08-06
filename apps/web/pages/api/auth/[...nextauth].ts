@@ -1,10 +1,15 @@
 import jose from 'jose';
 import { NextApiRequest, NextApiResponse } from 'next';
 import NextAuth, { NextAuthOptions } from 'next-auth';
+import { session, signIn } from 'next-auth/client';
 
 import UCOProvider from '../../../lib/auth/providers/UCOProvider';
 
 const options = {
+  session: {
+    jwt: true,
+  },
+  secret: process.env.JWT_SECRET,
   jwt: {
     secret: process.env.JWT_SECRET,
     encode: async ({ secret, token, maxAge }) => {
@@ -28,6 +33,20 @@ const options = {
   },
   pages: {
     signIn: '/signIn',
+  },
+  callbacks: {
+    session: async (session, user) => {
+      session.roles = user.roles;
+      session.access_token = user.access_token;
+      return session;
+    },
+    jwt: async (token, user, account, profile) => {
+      if (account?.access_token) {
+        token.roles = ['ROLE_USER'];
+        token.access_token = account.access_token;
+      }
+      return Promise.resolve(token);
+    },
   },
   providers: [
     UCOProvider({

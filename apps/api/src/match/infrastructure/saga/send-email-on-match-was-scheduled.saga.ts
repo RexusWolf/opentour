@@ -6,7 +6,7 @@ import { SendEmailCommand } from '../../../shared/emails/commands/send-email.com
 import EmailAddress from '../../../shared/emails/EmailAddress';
 import { MatchWasScheduledEmail } from '../../../shared/emails/templates/MatchWasScheduledEmail';
 import { TeamView } from '../../../team/infrastructure/read-model/schema/team.schema';
-import { UserId, USERS,Users } from '../../../user/domain';
+import { UserId, USERS, Users } from '../../../user/domain';
 import { MatchWasScheduled } from '../../domain';
 import { MatchView } from '../read-model/schema/match.schema';
 
@@ -40,11 +40,10 @@ export class SendEmailOnMatchWasScheduledSaga
       })
       .exec();
 
-    //const recipientsEmails = await this.getCaptainsEmails(localTeam!, visitorTeam!);
-
-    const recipientsEmails = [
-      EmailAddress.fromString(process.env.MAILER_USER!),
-    ];
+    const recipientsEmails = await this.getCaptainsEmails(
+      localTeam!,
+      visitorTeam!
+    );
 
     const competitionUrl = `${process.env.NODE_API_URL!}/competition/${
       match!.competitionId

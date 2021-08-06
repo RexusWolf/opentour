@@ -24,6 +24,10 @@ export class AuthService {
     const user = await this.queryBus.execute<GetUserByEmailQuery, UserDTO>(
       new GetUserByEmailQuery(email)
     );
+    console.log(
+      '🚀 ~ file: auth.service.ts ~ line 27 ~ AuthService ~ validateUser ~ user',
+      user
+    );
 
     return user && (await bcrypt.compareSync(password, user.password));
   }

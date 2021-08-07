@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { EventSourcingModule } from 'event-sourcing-nestjs';
 import { AccessControlModule } from 'nest-access-control';
-import { acl } from './app.acl';
 
+import { acl } from './app.acl';
 import { DatabaseModule } from './common/database/database.module';
 // eslint-disable @typescript-eslint/no-non-null-assertion
 

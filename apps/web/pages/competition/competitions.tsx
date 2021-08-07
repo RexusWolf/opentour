@@ -8,12 +8,10 @@ import {
 } from '@opentour/ui';
 import { useSession } from 'next-auth/client';
 import React from 'react';
-import { v4 as uuid } from 'uuid';
 
 export default function Competitions() {
   const classes = useStyles();
   const [session, _loading] = useSession();
-  const currentUserId = uuid();
   const competitions = useCompetitions();
 
   const [open, setOpen] = React.useState(false);
@@ -37,11 +35,7 @@ export default function Competitions() {
             <CreateCompetitionButton handleClickOpen={handleClickOpen} />
           </Grid>
         </Grid>
-        <CompetitionWizard
-          userId={currentUserId}
-          open={open}
-          onClose={handleClose}
-        />
+        <CompetitionWizard open={open} onClose={handleClose} />
         <Grid item container>
           <CompetitionsList competitions={competitions} />
         </Grid>

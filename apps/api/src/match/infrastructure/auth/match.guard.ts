@@ -7,6 +7,7 @@ import {
 import { QueryBus } from '@nestjs/cqrs';
 import { AuthGuard } from '@nestjs/passport';
 import { Role } from '@opentour/contracts';
+
 import { GetCompetitionQuery } from '../../../competition/application';
 import { CompetitionView } from '../../../competition/infrastructure/read-model/schema/competition.schema';
 import { GetMatchQuery } from '../../application';

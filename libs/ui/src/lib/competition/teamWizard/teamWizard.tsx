@@ -1,5 +1,6 @@
 import { Button, Dialog, Grid, TextField, Typography } from '@material-ui/core';
 import { CreateTeamDTO } from '@opentour/contracts';
+import { useSession } from 'next-auth/client';
 import React from 'react';
 import { v4 as uuid } from 'uuid';
 
@@ -24,6 +25,7 @@ export const TeamWizard: React.FunctionComponent<Props> = ({
   availableTeamLogos,
   competitionId,
 }) => {
+  const [session, loading] = useSession();
   const classes = useStyles();
   const [name, setName] = React.useState<string>('');
   const defaultLogo =
@@ -45,10 +47,11 @@ export const TeamWizard: React.FunctionComponent<Props> = ({
       id: uuid(),
       name,
       competitionId,
-      captainId: uuid(),
+      captainId: !loading ? (session!.id as string) : '',
       logo: teamLogo,
     };
 
+    console.log(team);
     await createTeam(team);
     window.location.reload();
     onClose();

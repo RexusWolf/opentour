@@ -5,7 +5,7 @@ import {
   useRankingByCompetitionId,
   useTeamsByCompetitionId,
 } from '@opentour/hooks';
-import { match } from 'assert';
+import axios from 'axios';
 import { useSession } from 'next-auth/client';
 import React from 'react';
 
@@ -23,8 +23,12 @@ export type Props = {
 export const Competition: React.FunctionComponent<Props> = ({
   competition,
 }) => {
-  const [session, loading] = useSession();
   const classes = useStyles();
+  const [session, loading] = useSession();
+  axios.defaults.headers.common['Authorization'] = `Bearer ${
+    !loading ? session!.access_token : null
+  }`;
+
   const teams = useTeamsByCompetitionId(competition.id);
   const matches = useMatchesByCompetitionId(competition.id);
   const ranking = useRankingByCompetitionId(competition.id);
@@ -83,13 +87,11 @@ export const Competition: React.FunctionComponent<Props> = ({
     competitionId: string,
     moderatorEmail: string
   ) => {
-    !loading &&
-      (await doRequest({
-        method: 'PUT',
-        url: `/competitions/${competitionId}/moderators`,
-        data: { moderatorEmail },
-        session,
-      }));
+    await doRequest({
+      method: 'PUT',
+      url: `/competitions/${competitionId}/moderators`,
+      data: { moderatorEmail },
+    });
   };
 
   const handleStartCompetition = async () => {

@@ -1,8 +1,8 @@
 import { CompetitionId } from '../../../src/competition/domain';
 import { Match, MatchId, MatchIndex } from '../../../src/match/domain';
+import { Journey } from '../../../src/shared/domain';
 import { TeamId } from '../../../src/team/domain';
 import faker = require('faker');
-import { Journey } from '../../../src/shared/domain';
 
 export class MatchBuilder {
   static random(): Match {

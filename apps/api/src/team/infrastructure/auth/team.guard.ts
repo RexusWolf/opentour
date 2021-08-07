@@ -7,6 +7,7 @@ import {
 import { QueryBus } from '@nestjs/cqrs';
 import { AuthGuard } from '@nestjs/passport';
 import { Role } from '@opentour/contracts';
+
 import { GetTeamQuery } from '../../application';
 import { TeamView } from '../read-model/schema/team.schema';
 

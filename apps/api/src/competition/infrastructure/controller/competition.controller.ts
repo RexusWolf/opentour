@@ -29,6 +29,7 @@ import {
 } from '@opentour/contracts';
 import { Response } from 'express';
 import { ACGuard, UseRoles } from 'nest-access-control';
+
 import {
   CompetitionIdAlreadyTakenError,
   CompetitionIdNotFoundError,

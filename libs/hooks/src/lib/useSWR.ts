@@ -4,8 +4,8 @@ import {
   RankingDTO,
   TeamDTO,
 } from '@opentour/contracts';
-import useSWR from 'swr';
 import { useSession } from 'next-auth/client';
+import useSWR from 'swr';
 
 export function useCompetition(id: string): CompetitionDTO {
   const [session, loading] = useSession();

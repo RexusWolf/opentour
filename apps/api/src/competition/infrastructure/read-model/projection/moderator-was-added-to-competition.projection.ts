@@ -16,7 +16,6 @@ export class ModeratorWasAddedToCompetitionProjection
   ) {}
 
   async handle(event: ModeratorWasAddedToCompetition) {
-    console.log('HEY IM UPDATING');
     await this.competitionModel
       .updateOne(
         { _id: event.id },

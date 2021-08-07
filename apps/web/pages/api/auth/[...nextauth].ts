@@ -1,7 +1,7 @@
 import jose from 'jose';
 import { NextApiRequest, NextApiResponse } from 'next';
 import NextAuth, { NextAuthOptions } from 'next-auth';
-import { session, signIn } from 'next-auth/client';
+import { v4 as uuid } from 'uuid';
 
 import UCOProvider from '../../../lib/auth/providers/UCOProvider';
 
@@ -45,9 +45,8 @@ const options = {
 
       delete user.access_token;
       session.roles = user.roles;
+      session.id = user.id;
       session.access_token = await jose.JWT.sign(user, secret, signingOptions);
-
-      console.debug('session', session, user);
 
       return session;
     },
@@ -55,6 +54,7 @@ const options = {
       if (account?.access_token) {
         token.roles = ['ROLE_USER'];
         token.access_token = account.access_token;
+        token.id = uuid();
       }
       return Promise.resolve(token);
     },

@@ -1,6 +1,9 @@
 import { Button, Dialog, Grid, TextField, Typography } from '@material-ui/core';
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
 import { CreateCompetitionDTO } from '@opentour/contracts';
+import { Session } from 'next-auth';
+import { useSession } from 'next-auth/client';
+import { session } from 'passport';
 import React from 'react';
 import { mutate } from 'swr';
 import { v4 as uuid } from 'uuid';
@@ -10,29 +13,37 @@ import { doRequest } from '../../utils/doRequest';
 import { CounterButton } from './CounterButton';
 
 type Props = {
-  userId: string;
   open: boolean;
   onClose: () => void;
 };
 
-export async function createCompetition(competition: CreateCompetitionDTO) {
-  doRequest({ method: 'POST', url: '/competitions', data: competition });
+export async function createCompetition(
+  competition: CreateCompetitionDTO,
+  session: Session
+) {
+  if (session) {
+    doRequest({
+      method: 'POST',
+      url: '/competitions',
+      data: { ...competition, moderatorId: session.id },
+    });
+  }
 }
 
 export const CompetitionWizard: React.FunctionComponent<Props> = ({
   open,
   onClose,
-  userId,
 }) => {
+  const [session, loading] = useSession();
   const classes = useStyles();
   const [sport, setSport] = React.useState<string>('');
   const [type, setType] = React.useState<string>('');
 
   const initialValues: CreateCompetitionDTO = {
-    id: userId,
+    id: uuid(),
     name: '',
     sportName: sport,
-    moderatorId: userId,
+    moderatorId: '',
     type,
     scoreSystem: {
       victory: 0,
@@ -52,7 +63,7 @@ export const CompetitionWizard: React.FunctionComponent<Props> = ({
   };
 
   const handleCreateCompetition = async () => {
-    await createCompetition(competitionValues);
+    !loading && (await createCompetition(competitionValues, session!));
 
     mutate('/api/competitions');
 

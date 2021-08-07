@@ -8,5 +8,8 @@
   "ignorePatterns": ["!**/*"],
   "env": {
     "jest": true
+  },
+  "rules": {
+    "@next/next/no-img-element": "off"
   }
 }

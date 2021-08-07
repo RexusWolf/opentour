@@ -4,6 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { JwtPayloadInterface, UserDTO } from '@opentour/contracts';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { v4 as uuid } from 'uuid';
+
 import { CreateUserCommand, GetUserByEmailQuery } from '../../user/application';
 
 @Injectable()
@@ -23,14 +24,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
     if (!user) {
       const event = new CreateUserCommand({
-        userId: uuid(),
+        userId: payload.id,
         password: 'password',
         email: payload.email,
         roles: payload.roles,
       });
-      await this.commandBus.execute(event);
+      return await this.commandBus.execute(event);
     }
-
     return user;
   }
 }

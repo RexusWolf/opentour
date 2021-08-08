@@ -1,7 +1,6 @@
 import jose from 'jose';
 import { NextApiRequest, NextApiResponse } from 'next';
 import NextAuth, { NextAuthOptions } from 'next-auth';
-import { v4 as uuid } from 'uuid';
 
 import UCOProvider from '../../../lib/auth/providers/UCOProvider';
 
@@ -54,7 +53,7 @@ const options = {
       if (account?.access_token) {
         token.roles = ['ROLE_USER'];
         token.access_token = account.access_token;
-        token.id = uuid();
+        token.id = account.id;
       }
       return Promise.resolve(token);
     },

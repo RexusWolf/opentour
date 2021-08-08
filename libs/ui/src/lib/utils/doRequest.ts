@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export async function doRequest(params: {
-  method: 'POST' | 'PUT';
+  method: 'POST' | 'PUT' | 'DELETE';
   url: string;
   data?: any;
 }) {

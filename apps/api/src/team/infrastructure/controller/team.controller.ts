@@ -7,6 +7,7 @@ import {
   Get,
   HttpCode,
   NotFoundException,
+  Param,
   Post,
   Query,
   Res,
@@ -127,7 +128,7 @@ export class TeamController {
     possession: 'own',
   })
   @UseGuards(TeamGuard, ACGuard)
-  async remove(@Query('id') id: string): Promise<TeamDTO> {
+  async remove(@Param('id') id: string): Promise<TeamDTO> {
     try {
       return this.teamService.deleteTeam(id);
     } catch (error) {

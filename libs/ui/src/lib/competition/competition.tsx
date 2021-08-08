@@ -64,7 +64,9 @@ export const Competition: React.FunctionComponent<Props> = ({
 
   const hasMinimumTeams = () => {
     if (teams) {
-      if (teams.length > 1) return true;
+      if (teams.length > 1) {
+        return true;
+      }
     }
     return false;
   };
@@ -81,7 +83,7 @@ export const Competition: React.FunctionComponent<Props> = ({
       url: `/competitions/${competitionId}/start`,
     });
 
-    window.location.reload();
+    //window.location.reload();
   };
 
   const nextRound = async (competitionId: string) => {
@@ -107,7 +109,6 @@ export const Competition: React.FunctionComponent<Props> = ({
   const handleStartCompetition = async () => {
     await generateMatches(teams, competition.id, competition.type);
     await startCompetition(competition.id);
-    window.location.reload();
   };
 
   const handleNextRound = async () => {
@@ -135,9 +136,7 @@ export const Competition: React.FunctionComponent<Props> = ({
         matches={matches}
         ranking={ranking}
         teams={teams}
-        competitionType={competition.type}
-        competitionScoreSystem={competition.scoreSystem}
-        currentJourney={competition.currentJourney}
+        competition={competition}
       />
       <Grid container className={classes.container}>
         <Grid item container alignItems="center" xs={8}>

@@ -20,7 +20,8 @@ type Team = {
 
 @EventsHandler(MatchResultWasModified)
 export class RankingWasUpdatedProjection
-  implements IViewUpdater<MatchResultWasModified> {
+  implements IViewUpdater<MatchResultWasModified>
+{
   constructor(
     @Inject('RANKING_MODEL')
     private readonly rankingModel: Model<RankingView>
@@ -31,7 +32,9 @@ export class RankingWasUpdatedProjection
       .findOne({ competitionId: event.competitionId })
       .exec();
 
-    if (!ranking) return;
+    if (!ranking) {
+      return;
+    }
 
     const localTeamIndex = this.getTeamIndex(event.localTeam.id, ranking.teams);
     const visitorTeamIndex = this.getTeamIndex(
@@ -89,9 +92,8 @@ export class RankingWasUpdatedProjection
       : localTeam.matchesPlayed.push(localTeamMatch);
 
     existingVisitorMatchIndex !== -1
-      ? (visitorTeam.matchesPlayed[
-          existingVisitorMatchIndex
-        ] = visitorTeamMatch)
+      ? (visitorTeam.matchesPlayed[existingVisitorMatchIndex] =
+          visitorTeamMatch)
       : visitorTeam.matchesPlayed.push(visitorTeamMatch);
 
     return {
@@ -110,18 +112,16 @@ export class RankingWasUpdatedProjection
       };
     }
     if (localTeamScore > visitorTeamScore) {
-      const { localTeamMatch, visitorTeamMatch } = this.getLocalWonMatches(
-        event
-      );
+      const { localTeamMatch, visitorTeamMatch } =
+        this.getLocalWonMatches(event);
 
       return {
         localTeamMatch,
         visitorTeamMatch,
       };
     }
-    const { localTeamMatch, visitorTeamMatch } = this.getLocalLostMatches(
-      event
-    );
+    const { localTeamMatch, visitorTeamMatch } =
+      this.getLocalLostMatches(event);
 
     return {
       localTeamMatch,

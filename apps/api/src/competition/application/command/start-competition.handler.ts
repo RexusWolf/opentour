@@ -47,10 +47,18 @@ export class StartCompetitionHandler
   }
 
   private getStartingRound(numberOfTeams: number) {
-    if (numberOfTeams > 16) return 'Dieciseisavos';
-    if (numberOfTeams > 8) return 'Octavos';
-    if (numberOfTeams > 4) return 'Cuartos';
-    if (numberOfTeams > 2) return 'Semifinal';
+    if (numberOfTeams > 16) {
+      return 'Dieciseisavos';
+    }
+    if (numberOfTeams > 8) {
+      return 'Octavos';
+    }
+    if (numberOfTeams > 4) {
+      return 'Cuartos';
+    }
+    if (numberOfTeams > 2) {
+      return 'Semifinal';
+    }
     return 'Final';
   }
 }

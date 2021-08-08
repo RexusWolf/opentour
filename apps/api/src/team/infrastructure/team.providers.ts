@@ -2,6 +2,8 @@ import { Provider } from '@nestjs/common';
 import { Connection } from 'mongoose';
 
 import { DATABASE_CONNECTION } from '../../common/database/database.provider';
+import { COMPETITIONS } from '../../competition/domain';
+import { CompetitionEventStore } from '../../competition/infrastructure/eventstore/competitions.event-store';
 import { TEAMS } from '../domain';
 import { TeamEventStore } from './eventstore/team.event-store';
 import { TeamMapper } from './eventstore/team.mapper';
@@ -17,6 +19,10 @@ export const TeamProviders: Provider[] = [
   {
     provide: TEAMS,
     useClass: TeamEventStore,
+  },
+  {
+    provide: COMPETITIONS,
+    useClass: CompetitionEventStore,
   },
   {
     provide: TeamMapper,

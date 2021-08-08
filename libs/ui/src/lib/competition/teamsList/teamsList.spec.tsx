@@ -7,6 +7,8 @@ import { TeamList } from './teamsList';
 describe('TeamList', () => {
   const defaultProps = {
     teams: [],
+    competitionHasStarted: true,
+    moderatorIds: [],
   };
 
   it('should render successfully', () => {
@@ -16,7 +18,7 @@ describe('TeamList', () => {
 
   it('should render a list with the teams and a remove button for each team', () => {
     const team = aTeam();
-    const { getByText } = render(<TeamList teams={[team]} />);
+    const { getByText } = render(<TeamList {...defaultProps} teams={[team]} />);
     getByText(team.name);
     getByText('Eliminar');
   });

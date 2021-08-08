@@ -19,10 +19,18 @@ export async function generateMatches(
 }
 
 function getStartingRound(numberOfTeams: number) {
-  if (numberOfTeams > 16) return 'Dieciseisavos';
-  if (numberOfTeams > 8) return 'Octavos';
-  if (numberOfTeams > 4) return 'Cuartos';
-  if (numberOfTeams > 2) return 'Semifinal';
+  if (numberOfTeams > 16) {
+    return 'Dieciseisavos';
+  }
+  if (numberOfTeams > 8) {
+    return 'Octavos';
+  }
+  if (numberOfTeams > 4) {
+    return 'Cuartos';
+  }
+  if (numberOfTeams > 2) {
+    return 'Semifinal';
+  }
   return 'Final';
 }
 
@@ -56,6 +64,7 @@ export function generateTournamentMatches(
   teams: TeamDTO[],
   competitionId: string
 ): CreateMatchDTO[] {
+  console.log(teams);
   const startingRound = getStartingRound(teams.length);
   const matchesForRound = createMatchesForRound(startingRound);
   const numberOfTeamsClassified = getNumberOfClassifiedTeams(
@@ -145,10 +154,18 @@ function getNumberOfClassifiedTeams(
   numberOfTeams: number,
   startingRound: string
 ) {
-  if (startingRound === 'Dieciseisavos') return 32 - numberOfTeams;
-  if (startingRound === 'Octavos') return 16 - numberOfTeams;
-  if (startingRound === 'Cuartos') return 8 - numberOfTeams;
-  if (startingRound === 'Semifinal') return 4 - numberOfTeams;
+  if (startingRound === 'Dieciseisavos') {
+    return 32 - numberOfTeams;
+  }
+  if (startingRound === 'Octavos') {
+    return 16 - numberOfTeams;
+  }
+  if (startingRound === 'Cuartos') {
+    return 8 - numberOfTeams;
+  }
+  if (startingRound === 'Semifinal') {
+    return 4 - numberOfTeams;
+  }
   return 0;
 }
 
@@ -177,10 +194,18 @@ function updateNextRoundMatchesWithTeams(
 }
 
 function getNextJourney(journey: string) {
-  if (journey === 'Dieciseisavos') return 'Octavos';
-  if (journey === 'Octavos') return 'Cuartos';
-  if (journey === 'Cuartos') return 'Semifinal';
-  if (journey === 'Semifinal') return 'Final';
+  if (journey === 'Dieciseisavos') {
+    return 'Octavos';
+  }
+  if (journey === 'Octavos') {
+    return 'Cuartos';
+  }
+  if (journey === 'Cuartos') {
+    return 'Semifinal';
+  }
+  if (journey === 'Semifinal') {
+    return 'Final';
+  }
 }
 
 function getTeamPairs(teamsArray: TeamDTO[]) {

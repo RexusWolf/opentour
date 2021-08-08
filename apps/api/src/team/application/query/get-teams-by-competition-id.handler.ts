@@ -10,13 +10,14 @@ import { GetTeamsByCompetitionIdQuery } from './get-teams-by-competition-id.quer
 
 @QueryHandler(GetTeamsByCompetitionIdQuery)
 export class GetTeamsByCompetitionIdHandler
-  implements IQueryHandler<GetTeamsByCompetitionIdQuery> {
+  implements IQueryHandler<GetTeamsByCompetitionIdQuery>
+{
   constructor(@Inject(TEAM_MODEL) private teamModel: Model<TeamView>) {}
   async execute(
     query: GetTeamsByCompetitionIdQuery
   ): Promise<TeamView[] | null> {
     return await this.teamModel
-      .find({ competitionId: query.competitionId })
+      .find({ competitionId: query.competitionId, deleted: undefined })
       .exec();
   }
 }

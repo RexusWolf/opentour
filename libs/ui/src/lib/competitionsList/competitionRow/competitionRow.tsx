@@ -14,9 +14,15 @@ export type Props = {
 };
 
 const getSportIconByName = (sportName: string) => {
-  if (sportName === 'Fútbol') return <SportsSoccerIcon />;
-  if (sportName === 'Baloncesto') return <SportsBasketballIcon />;
-  if (sportName === 'Voleibol') return <SportsVolleyballIcon />;
+  if (sportName === 'Fútbol') {
+    return <SportsSoccerIcon />;
+  }
+  if (sportName === 'Baloncesto') {
+    return <SportsBasketballIcon />;
+  }
+  if (sportName === 'Voleibol') {
+    return <SportsVolleyballIcon />;
+  }
 };
 
 export const CompetitionRow: React.FunctionComponent<Props> = (props) => {

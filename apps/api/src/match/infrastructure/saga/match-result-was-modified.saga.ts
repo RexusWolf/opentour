@@ -81,10 +81,18 @@ export class MatchResultWasModifiedSaga
   }
 
   private getNextJourney(journey: string) {
-    if (journey === 'Dieciseisavos') return 'Octavos';
-    if (journey === 'Octavos') return 'Cuartos';
-    if (journey === 'Cuartos') return 'Semifinal';
-    if (journey === 'Semifinal') return 'Final';
+    if (journey === 'Dieciseisavos') {
+      return 'Octavos';
+    }
+    if (journey === 'Octavos') {
+      return 'Cuartos';
+    }
+    if (journey === 'Cuartos') {
+      return 'Semifinal';
+    }
+    if (journey === 'Semifinal') {
+      return 'Final';
+    }
   }
 
   private getNextMatchId(

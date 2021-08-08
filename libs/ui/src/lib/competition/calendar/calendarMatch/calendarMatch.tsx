@@ -76,8 +76,12 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
   };
 
   const canModifyMatch = () => {
-    if (!editable) return false;
-    if (hasBothTeams()) return true;
+    if (!editable) {
+      return false;
+    }
+    if (hasBothTeams()) {
+      return true;
+    }
 
     return false;
   };

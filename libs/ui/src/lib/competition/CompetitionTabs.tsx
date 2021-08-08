@@ -1,5 +1,6 @@
 import { Tab, Tabs } from '@material-ui/core';
 import {
+  CompetitionDTO,
   CompetitionScoreSystem,
   MatchDTO,
   RankingDTO,
@@ -17,19 +18,16 @@ export type CompetitionTabsProps = {
   matches: MatchDTO[];
   teams: TeamDTO[];
   ranking: RankingDTO;
-  competitionType: string;
-  currentJourney?: string;
-  competitionScoreSystem: CompetitionScoreSystem;
+  competition: CompetitionDTO;
 };
 
 export const CompetitionTabs = ({
   matches,
   teams,
   ranking,
-  competitionType,
-  competitionScoreSystem,
-  currentJourney,
+  competition,
 }: CompetitionTabsProps) => {
+  const { type, scoreSystem, currentJourney, hasStarted } = competition;
   const [tabIndex, setTabIndex] = React.useState(0);
   const handleChange = (
     event: React.ChangeEvent<unknown>,
@@ -43,13 +41,17 @@ export const CompetitionTabs = ({
       <Tabs indicatorColor="primary" value={tabIndex} onChange={handleChange}>
         <Tab label="Equipos" />
         <Tab label="Calendario" />
-        {competitionType === 'LIGA' && <Tab label="Ranking" />}
+        {type === 'LIGA' && <Tab label="Ranking" />}
       </Tabs>
       <CompetitionTab value={tabIndex} index={0}>
-        <TeamList teams={teams} />
+        <TeamList
+          competitionHasStarted={hasStarted}
+          teams={teams}
+          moderatorIds={competition.moderatorIds}
+        />
       </CompetitionTab>
       <CompetitionTab value={tabIndex} index={1}>
-        {competitionType === 'LIGA' ? (
+        {type === 'LIGA' ? (
           <LeagueCalendar matches={matches} />
         ) : (
           <TournamentCalendar
@@ -58,9 +60,9 @@ export const CompetitionTabs = ({
           />
         )}
       </CompetitionTab>
-      {competitionType === 'LIGA' && (
+      {type === 'LIGA' && (
         <CompetitionTab value={tabIndex} index={2}>
-          <Ranking ranking={ranking} scoreSystem={competitionScoreSystem} />
+          <Ranking ranking={ranking} scoreSystem={scoreSystem} />
         </CompetitionTab>
       )}
     </>

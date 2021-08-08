@@ -20,7 +20,9 @@ const options = {
       return jose.JWT.sign(token as never, secret, signingOptions);
     },
     decode: async ({ secret, token, maxAge }) => {
-      if (!token) return null;
+      if (!token) {
+        return null;
+      }
 
       const verificationOptions = {
         maxTokenAge: `${maxAge}s`,

@@ -74,6 +74,8 @@ export const Competition: React.FunctionComponent<Props> = ({
       method: 'PUT',
       url: `/competitions/${competitionId}/start`,
     });
+
+    window.location.reload();
   };
 
   const nextRound = async (competitionId: string) => {
@@ -81,6 +83,8 @@ export const Competition: React.FunctionComponent<Props> = ({
       method: 'PUT',
       url: `/competitions/${competitionId}/nextRound`,
     });
+
+    window.location.reload();
   };
 
   const inviteModerator = async (
@@ -107,7 +111,7 @@ export const Competition: React.FunctionComponent<Props> = ({
 
   const handleInviteModerator = async () => {
     await inviteModerator(competition.id, moderatorEmail);
-    //window.location.reload();
+    window.location.reload();
   };
 
   return (

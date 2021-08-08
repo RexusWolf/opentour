@@ -19,7 +19,7 @@ export function useCompetitions(): CompetitionDTO[] {
   const [session, loading] = useSession();
 
   const { data, error } = useSWR(
-    !loading ? ['/api/competitions', session.access_token] : null,
+    !loading ? ['/api/competitions', session!.access_token] : null,
     fetchUrl
   );
 
@@ -39,7 +39,8 @@ export function useMatchesByCompetitionId(competitionId: string): MatchDTO[] {
 
   const { data, error } = useSWR(
     [`/api/matches/{competitionId}/matches?competitionId=${competitionId}`],
-    fetchUrl
+    fetchUrl,
+    { revalidateOnMount: true }
   );
 
   return data;

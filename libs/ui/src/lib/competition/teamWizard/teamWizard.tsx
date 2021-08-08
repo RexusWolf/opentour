@@ -17,6 +17,8 @@ export type Props = {
 
 export async function createTeam(team: CreateTeamDTO) {
   doRequest({ method: 'POST', url: '/teams', data: team });
+
+  window.location.reload();
 }
 
 export const TeamWizard: React.FunctionComponent<Props> = ({
@@ -51,9 +53,7 @@ export const TeamWizard: React.FunctionComponent<Props> = ({
       logo: teamLogo,
     };
 
-    console.log(team);
     await createTeam(team);
-    window.location.reload();
     onClose();
   };
 

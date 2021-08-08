@@ -27,6 +27,8 @@ export async function createCompetition(
       url: '/competitions',
       data: { ...competition, moderatorId: session.id },
     });
+
+    window.location.reload();
   }
 }
 
@@ -64,8 +66,6 @@ export const CompetitionWizard: React.FunctionComponent<Props> = ({
 
   const handleCreateCompetition = async () => {
     !loading && (await createCompetition(competitionValues, session!));
-
-    mutate('/api/competitions');
 
     onClose();
   };

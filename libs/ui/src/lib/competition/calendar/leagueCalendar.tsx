@@ -16,6 +16,7 @@ export const LeagueCalendar: React.FunctionComponent<Props> = ({ matches }) => {
       {matchesInList.length ? (
         matchesInList.map((match, index) => (
           <CalendarMatch
+            competitionType="LIGA"
             allowDrawn={true}
             editable={true}
             key={index}

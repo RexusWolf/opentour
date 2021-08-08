@@ -46,6 +46,7 @@ export const TournamentCalendar: React.FunctionComponent<Props> = ({
               key={index}
               match={match}
               editable={match.journey === currentJourney}
+              competitionType="TORNEO"
             />
           ))}
         </Grid>
@@ -66,6 +67,7 @@ export const TournamentCalendar: React.FunctionComponent<Props> = ({
               key={index}
               match={match}
               editable={match.journey === currentJourney}
+              competitionType="TORNEO"
             />
           ))}
         </Grid>
@@ -86,6 +88,7 @@ export const TournamentCalendar: React.FunctionComponent<Props> = ({
               key={index}
               match={match}
               editable={match.journey === currentJourney}
+              competitionType="TORNEO"
             />
           ))}
         </Grid>
@@ -106,6 +109,7 @@ export const TournamentCalendar: React.FunctionComponent<Props> = ({
               key={index}
               match={match}
               editable={match.journey === currentJourney}
+              competitionType="TORNEO"
             />
           ))}
         </Grid>

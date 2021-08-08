@@ -12,6 +12,7 @@ type CalendarMatchProps = {
   match: MatchDTO;
   editable: boolean;
   allowDrawn: boolean;
+  competitionType: string;
 };
 
 const modifyMatch = async (matchId: string, editMatchDTO: EditMatchDTO) => {
@@ -26,6 +27,7 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
   match,
   editable,
   allowDrawn,
+  competitionType,
 }) => {
   const classes = useStyles();
 
@@ -80,6 +82,18 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
     return false;
   };
 
+  const resultText = () => {
+    let resultText = 'Resultado';
+    if (competitionType === 'TORNEO' && editable) {
+      resultText = resultText + ' provisional';
+    }
+    return (
+      <Typography color="textSecondary" className={classes.containerItem}>
+        {resultText}: {result.localTeamScore} - {result.visitorTeamScore}{' '}
+      </Typography>
+    );
+  };
+
   return (
     <Grid
       container
@@ -91,12 +105,7 @@ export const CalendarMatch: React.FunctionComponent<CalendarMatchProps> = ({
       sm={12}
     >
       <Grid container item direction="column" xs={8}>
-        {isScheduled && (
-          <Typography color="textSecondary" className={classes.containerItem}>
-            Resultado {finished ? 'final' : 'provisional'}:{' '}
-            {result.localTeamScore} - {result.visitorTeamScore}{' '}
-          </Typography>
-        )}
+        {isScheduled && resultText()}
         <Typography color="textSecondary" className={classes.containerItem}>
           {match.journey !== '-' ? match.journey : null}
         </Typography>

@@ -1,4 +1,4 @@
-import { Typography } from '@material-ui/core';
+import { Tooltip, Typography } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -85,7 +85,15 @@ export const Ranking: React.FunctionComponent<Props> = ({
   const rankingTeams = ranking
     ? getRankingTeamsFromRanking(ranking, scoreSystem)
     : null;
-  const statistics = ['PJ', 'V', 'E', 'D', 'Pts', 'Últimos 5'];
+
+  const statistics = [
+    { name: 'Partidos Jugados', abbreviation: 'PJ' },
+    { name: 'Victorias', abbreviation: 'V' },
+    { name: 'Empates', abbreviation: 'E' },
+    { name: 'Derrotas', abbreviation: 'D' },
+    { name: 'Puntos', abbreviation: 'P' },
+    { name: 'Últimos 5', abbreviation: 'Últimos 5' },
+  ];
   return (
     <>
       {rankingTeams ? (
@@ -95,9 +103,11 @@ export const Ranking: React.FunctionComponent<Props> = ({
               <TableRow>
                 <TableCell>Club</TableCell>
                 {statistics.map((statistic, index) => (
-                  <TableCell key={index} align="right">
-                    {statistic}
-                  </TableCell>
+                  <Tooltip title={statistic.name} placement="top">
+                    <TableCell key={index} align="center">
+                      {statistic.abbreviation}
+                    </TableCell>
+                  </Tooltip>
                 ))}
               </TableRow>
             </TableHead>

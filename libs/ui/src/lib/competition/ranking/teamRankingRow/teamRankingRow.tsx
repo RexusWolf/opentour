@@ -21,22 +21,22 @@ export const TeamRankingRow: React.FunctionComponent<Props> = ({ team }) => {
       <TableCell component="th" scope="row">
         <TeamSlot name={team.name} logo={team.logo} />
       </TableCell>
-      <TableCell width="5%" align="right">
+      <TableCell width="5%" align="center">
         {team.matchPlayeds}
       </TableCell>
-      <TableCell width="5%" align="right">
+      <TableCell width="5%" align="center">
         {team.victories}
       </TableCell>
-      <TableCell width="5%" align="right">
+      <TableCell width="5%" align="center">
         {team.ties}
       </TableCell>
-      <TableCell width="5%" align="right">
+      <TableCell width="5%" align="center">
         {team.defeats}
       </TableCell>
-      <TableCell width="5%" align="right">
+      <TableCell width="5%" align="center">
         {team.points}
       </TableCell>
-      <TableCell width="10%" align="right">
+      <TableCell width="10%" align="center">
         {team.lastFive.map((matchResult, index) => {
           return matchResult === 'victory' ? (
             <Icon key={index} className={classes.greenColor}>

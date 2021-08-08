@@ -69,6 +69,12 @@ export const Competition: React.FunctionComponent<Props> = ({
     return false;
   };
 
+  const isModerator = () => {
+    if (!loading) {
+      return competition.moderatorIds.includes(session!.id as string);
+    }
+  };
+
   const startCompetition = async (competitionId: string) => {
     await doRequest({
       method: 'PUT',
@@ -147,6 +153,7 @@ export const Competition: React.FunctionComponent<Props> = ({
             )}
             variant="contained"
             onClick={handleInviteModerator}
+            disabled={!isModerator()}
           >
             Invitar moderador
           </Button>
@@ -159,7 +166,8 @@ export const Competition: React.FunctionComponent<Props> = ({
               variant="contained"
               disabled={
                 competition.currentJourney === 'Final' ||
-                !roundMatchesAreFinished()
+                !roundMatchesAreFinished() ||
+                !isModerator()
               }
               onClick={handleNextRound}
             >
@@ -185,7 +193,9 @@ export const Competition: React.FunctionComponent<Props> = ({
             className={classes.containerItem}
             color="primary"
             variant="contained"
-            disabled={!hasMinimumTeams() || competition.hasStarted}
+            disabled={
+              !hasMinimumTeams() || competition.hasStarted || !isModerator()
+            }
             onClick={handleStartCompetition}
           >
             Comenzar competición

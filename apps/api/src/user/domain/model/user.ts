@@ -1,21 +1,18 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 
 import {
-  UserPasswordWasUpdated,
   UserRoleWasAdded,
   UserRoleWasRemoved,
   UserWasCreated,
   UserWasDeleted,
 } from '../event';
 import { EmailAddress } from './email-address';
-import { Password } from './password';
 import { Role } from './role';
 import { UserId } from './user-id';
 
 export class User extends AggregateRoot {
   private _userId: UserId;
   private _email: EmailAddress;
-  private _password: Password;
   private _roles: Role[];
   private _deleted?: Date;
 
@@ -23,14 +20,10 @@ export class User extends AggregateRoot {
     super();
   }
 
-  public static add(
-    userId: UserId,
-    email: EmailAddress,
-    password: Password
-  ): User {
+  public static add(userId: UserId, email: EmailAddress): User {
     const user = new User();
 
-    user.apply(new UserWasCreated(userId.value, email.value, password.value));
+    user.apply(new UserWasCreated(userId.value, email.value));
 
     return user;
   }
@@ -41,10 +34,6 @@ export class User extends AggregateRoot {
 
   get email(): EmailAddress {
     return this._email;
-  }
-
-  get password(): Password {
-    return this._password;
   }
 
   get roles(): Role[] {
@@ -71,14 +60,6 @@ export class User extends AggregateRoot {
     this.apply(new UserRoleWasRemoved(this.id.value, role.value));
   }
 
-  updatePassword(password: Password): void {
-    if (this._password.equals(password)) {
-      return;
-    }
-
-    this.apply(new UserPasswordWasUpdated(this.id.value, password.value));
-  }
-
   delete(): void {
     if (this._deleted) {
       return;
@@ -90,7 +71,6 @@ export class User extends AggregateRoot {
   private onUserWasCreated(event: UserWasCreated) {
     this._userId = UserId.fromString(event.id);
     this._email = EmailAddress.fromString(event.email);
-    this._password = Password.fromString(event.password);
     this._roles = [];
     this._deleted = undefined;
   }
@@ -103,10 +83,6 @@ export class User extends AggregateRoot {
     this._roles = this._roles.filter(
       (item: Role) => !item.equals(Role.fromString(event.role))
     );
-  }
-
-  private onUserPasswordWasUpdated(event: UserPasswordWasUpdated) {
-    this._password = Password.fromString(event.password);
   }
 
   private onUserWasDeleted(event: UserWasDeleted) {

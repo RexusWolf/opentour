@@ -25,7 +25,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (!user) {
       const event = new CreateUserCommand({
         userId: payload.id,
-        password: 'password',
         email: payload.email,
         roles: payload.roles,
       });

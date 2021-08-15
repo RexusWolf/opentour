@@ -4,7 +4,6 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import {
   EmailAddress,
   EmailAlreadyTakenError,
-  Password,
   Role,
   User,
   UserId,
@@ -26,8 +25,6 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     const userId = UserId.fromString(command.userId);
     const email = EmailAddress.fromString(command.email);
 
-    const password = Password.fromString(command.password);
-
     if (await this.users.find(userId)) {
       throw UserIdAlreadyTakenError.with(userId);
     }
@@ -36,7 +33,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
       throw EmailAlreadyTakenError.with(email);
     }
 
-    const user = User.add(userId, email, password);
+    const user = User.add(userId, email);
     command.roles.map((role: string) => user.addRole(Role.fromString(role)));
 
     this.users.save(user);

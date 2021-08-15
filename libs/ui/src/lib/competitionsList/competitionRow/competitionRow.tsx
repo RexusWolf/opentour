@@ -28,7 +28,7 @@ const getSportIconByName = (sportName: string) => {
 export const CompetitionRow: React.FunctionComponent<Props> = (props) => {
   const classes = useStyles();
 
-  const { id, name, type, sportName, moderatorIds } = props.competition;
+  const { id, name, type, sportName } = props.competition;
 
   const competitionRoute = '/competition/' + id;
 

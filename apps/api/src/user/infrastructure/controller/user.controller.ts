@@ -20,17 +20,22 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { CreateUserDTO, EditUserDTO, Role, UserDTO } from '@opentour/contracts';
+import {
+  AddRoleToUserDTO,
+  CreateUserDTO,
+  RemoveRoleFromUserDTO,
+  Role,
+  UserDTO,
+} from '@opentour/contracts';
 import { Response } from 'express';
-
 import { Roles } from '../../../auth/security/roles.decorator';
-import { AuthService } from '../../../auth/services/auth.service';
 import {
   CreateUserCommand,
   DeleteUserCommand,
   GetUserQuery,
   GetUsersQuery,
-  UpdateUserCommand,
+  AddRoleToUserCommand,
+  RemoveRoleFromUserCommand,
 } from '../../application';
 import { UserIdNotFoundError } from '../../domain';
 
@@ -39,25 +44,16 @@ import { UserIdNotFoundError } from '../../domain';
 @Controller('users')
 @UseInterceptors(ClassSerializerInterceptor)
 export class UserController {
-  constructor(
-    private authService: AuthService,
-    private queryBus: QueryBus,
-    private commandBus: CommandBus
-  ) {}
+  constructor(private queryBus: QueryBus, private commandBus: CommandBus) {}
 
   @Post()
   @ApiResponse({ status: 200, description: 'User created' })
   async create(@Body() createUserDto: CreateUserDTO): Promise<UserDTO> {
     try {
-      const password = await this.authService.encodePassword(
-        createUserDto.plainPassword
-      );
-
       return await this.commandBus.execute(
         new CreateUserCommand({
           userId: createUserDto.id,
           email: createUserDto.email,
-          password,
           roles: createUserDto.roles,
         })
       );
@@ -115,14 +111,14 @@ export class UserController {
     }
   }
 
-  @Put(':id')
+  @Put(':id/addRole')
   @Roles(Role.Admin)
-  @ApiOperation({ summary: 'Updated user' })
-  @ApiResponse({ status: 200, description: 'User updated' })
+  @ApiOperation({ summary: 'Add role to user' })
+  @ApiResponse({ status: 200, description: 'User role was added' })
   @ApiResponse({ status: 404, description: 'Not found' })
-  async update(
+  async addRole(
     @Query('id') id: string,
-    @Body() editUserDTO: EditUserDTO
+    @Body() addRoleToUserDTO: AddRoleToUserDTO
   ): Promise<UserDTO> {
     try {
       const user = await this.queryBus.execute<GetUserQuery, UserDTO>(
@@ -132,12 +128,37 @@ export class UserController {
       if (!user) throw new NotFoundException();
 
       return this.commandBus.execute(
-        new UpdateUserCommand(
-          id,
-          editUserDTO.email,
-          editUserDTO.plainPassword,
-          editUserDTO.roles
-        )
+        new AddRoleToUserCommand(id, addRoleToUserDTO.role)
+      );
+    } catch (e) {
+      if (e instanceof UserIdNotFoundError) {
+        throw new NotFoundException('User not found');
+      } else if (e instanceof Error) {
+        throw new BadRequestException(e.message);
+      } else {
+        throw new BadRequestException('Server error');
+      }
+    }
+  }
+
+  @Put(':id/removeRole')
+  @Roles(Role.Admin)
+  @ApiOperation({ summary: 'Remove role from user' })
+  @ApiResponse({ status: 200, description: 'Role was removed from user' })
+  @ApiResponse({ status: 404, description: 'Not found' })
+  async removeRole(
+    @Query('id') id: string,
+    @Body() removeRoleFromUserDTO: RemoveRoleFromUserDTO
+  ): Promise<UserDTO> {
+    try {
+      const user = await this.queryBus.execute<GetUserQuery, UserDTO>(
+        new GetUserQuery(id)
+      );
+
+      if (!user) throw new NotFoundException();
+
+      return this.commandBus.execute(
+        new RemoveRoleFromUserCommand(id, removeRoleFromUserDTO.role)
       );
     } catch (e) {
       if (e instanceof UserIdNotFoundError) {

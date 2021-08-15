@@ -2,9 +2,9 @@ import {
   Competition,
   CompetitionId,
   CompetitionName,
+  SportName,
 } from '../../../src/competition/domain';
 import { Score } from '../../../src/competition/domain/model/score';
-import { SportName } from '../../../src/sport/domain';
 import { UserId } from '../../../src/user/domain';
 import { CompetitionTypeBuilder } from './CompetitionTypeBuilder';
 import faker = require('faker');

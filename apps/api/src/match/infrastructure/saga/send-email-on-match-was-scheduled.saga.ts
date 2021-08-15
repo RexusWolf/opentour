@@ -3,7 +3,6 @@ import { CommandBus, EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { Model } from 'mongoose';
 
 import { SendEmailCommand } from '../../../shared/emails/commands/send-email.command';
-import EmailAddress from '../../../shared/emails/EmailAddress';
 import { MatchWasScheduledEmail } from '../../../shared/emails/templates/MatchWasScheduledEmail';
 import { TeamView } from '../../../team/infrastructure/read-model/schema/team.schema';
 import { UserId, USERS, Users } from '../../../user/domain';

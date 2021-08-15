@@ -3,10 +3,9 @@ import { CommandBus, EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { Model } from 'mongoose';
 
 import { SendEmailCommand } from '../../../shared/emails/commands/send-email.command';
-import EmailAddress from '../../../shared/emails/EmailAddress';
 import { MatchResultWasModifiedEmail } from '../../../shared/emails/templates/MatchResultWasModifiedEmail';
 import { TeamView } from '../../../team/infrastructure/read-model/schema/team.schema';
-import { User, UserId, USERS, Users } from '../../../user/domain';
+import { UserId, USERS, Users } from '../../../user/domain';
 import { MatchResultWasModified } from '../../domain';
 
 @EventsHandler(MatchResultWasModified)

@@ -7,7 +7,7 @@ interface Props {
 export class Journey extends ValueObject<Props> {
   public static fromString(name: string): Journey {
     if (name.length === 0) {
-      throw new Error('Match journey cannot be empty');
+      throw new Error('Journey cannot be empty');
     }
 
     return new Journey({ value: name });

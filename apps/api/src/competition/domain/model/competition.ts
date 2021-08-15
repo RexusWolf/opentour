@@ -1,7 +1,5 @@
 import { AggregateRoot } from '@nestjs/cqrs';
-
 import { Journey } from '../../../shared/domain';
-import { SportName } from '../../../sport/domain';
 import { UserId } from '../../../user/domain';
 import { UpdateCompetitionCommand } from '../../application';
 import {
@@ -17,6 +15,7 @@ import { CompetitionId } from './competition-id';
 import { CompetitionName } from './competition-name';
 import { CompetitionType } from './competition-type';
 import { Score } from './score';
+import { SportName } from './sport-name';
 
 type ScoreSystem = { victory: Score; tie: Score; defeat: Score };
 

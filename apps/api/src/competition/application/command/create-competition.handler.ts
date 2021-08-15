@@ -1,7 +1,5 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-
-import { SportName } from '../../../sport/domain/model';
 import { UserId } from '../../../user/domain';
 import {
   CompetitionIdAlreadyTakenError,
@@ -13,6 +11,7 @@ import {
   CompetitionId,
   CompetitionName,
   CompetitionType,
+  SportName,
 } from '../../domain/model';
 import { Score } from '../../domain/model/score';
 import { CreateCompetitionCommand } from './create-competition.command';

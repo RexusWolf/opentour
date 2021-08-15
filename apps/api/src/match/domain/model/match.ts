@@ -209,4 +209,8 @@ export class Match extends AggregateRoot {
   private onMatchWasScheduled(event: MatchWasScheduled) {
     this._date = event.date;
   }
+
+  private onMatchWasDeleted(event: MatchWasDeleted) {
+    this._deleted = event.createdOn;
+  }
 }

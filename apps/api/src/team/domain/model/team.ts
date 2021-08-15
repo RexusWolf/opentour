@@ -81,4 +81,8 @@ export class Team extends AggregateRoot {
     this._captainId = UserId.fromString(event.captainId);
     this._logo = TeamLogo.fromString(event.logo);
   }
+
+  private onTeamWasDeleted(event: TeamWasDeleted) {
+    this._deleted = event.createdOn;
+  }
 }

@@ -199,4 +199,8 @@ export class Competition extends AggregateRoot {
   ) {
     this._currentJourney = Journey.fromString(event.nextJourney);
   }
+
+  private onCompetitionWasDeleted(event: CompetitionWasDeleted) {
+    this._deleted = event.createdOn;
+  }
 }

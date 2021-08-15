@@ -11,6 +11,9 @@ export class UserId extends ValueObject<Props> {
   }
 
   public static fromString(id: string): UserId {
+    if (id.length === 0) {
+      throw new Error('UserId cannot be empty');
+    }
     return new UserId({ value: id });
   }
 

@@ -64,7 +64,6 @@ export function generateTournamentMatches(
   teams: TeamDTO[],
   competitionId: string
 ): CreateMatchDTO[] {
-  console.log(teams);
   const startingRound = getStartingRound(teams.length);
   const matchesForRound = createMatchesForRound(startingRound);
   const numberOfTeamsClassified = getNumberOfClassifiedTeams(

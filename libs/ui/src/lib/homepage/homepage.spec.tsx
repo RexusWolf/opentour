@@ -1,4 +1,4 @@
-import { getByAltText, getByTestId, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import React from 'react';
 
 import { Homepage } from './homepage';
@@ -9,9 +9,8 @@ describe('Homepage', () => {
     expect(baseElement).toBeTruthy();
   });
   it('should render a layout with three buttons and an image', () => {
-    const { getByText, getByAltText } = render(<Homepage />);
+    const { getByText } = render(<Homepage />);
     getByText('Lista de Competiciones');
-    getByText('Mis competiciones');
     getByText('Crear competición');
   });
 });

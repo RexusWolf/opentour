@@ -1,11 +1,11 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+
 import {
   CompetitionIdNotFoundError,
-  Competitions,
   COMPETITIONS,
+  Competitions,
 } from '../../../competition/domain';
-
 import { TeamId, TeamIdNotFoundError, TEAMS, Teams } from '../../domain';
 import { DeleteTeamCommand } from './delete-team.command';
 

@@ -28,13 +28,14 @@ import {
   UserDTO,
 } from '@opentour/contracts';
 import { Response } from 'express';
+
 import { Roles } from '../../../auth/security/roles.decorator';
 import {
+  AddRoleToUserCommand,
   CreateUserCommand,
   DeleteUserCommand,
   GetUserQuery,
   GetUsersQuery,
-  AddRoleToUserCommand,
   RemoveRoleFromUserCommand,
 } from '../../application';
 import { UserIdNotFoundError } from '../../domain';

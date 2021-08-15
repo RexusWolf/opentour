@@ -1,12 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserBuilder } from '../builders/UserBuilder';
-import faker = require('faker');
-import { UserId, Users, USERS } from '../../../src/user/domain';
+
 import {
   DeleteUserCommand,
   DeleteUserHandler,
 } from '../../../src/user/application';
+import { UserId, USERS,Users } from '../../../src/user/domain';
 import { UserMapper } from '../../../src/user/infrastructure/repository/user.mapper';
+import { UserBuilder } from '../builders/UserBuilder';
+import faker = require('faker');
 
 describe('Delete team handler', () => {
   let command$: DeleteUserHandler;

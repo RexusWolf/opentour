@@ -3,9 +3,7 @@ import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
 import { CreateCompetitionDTO } from '@opentour/contracts';
 import { Session } from 'next-auth';
 import { useSession } from 'next-auth/client';
-import { session } from 'passport';
 import React from 'react';
-import { mutate } from 'swr';
 import { v4 as uuid } from 'uuid';
 
 import { useStyles } from '../../theme';

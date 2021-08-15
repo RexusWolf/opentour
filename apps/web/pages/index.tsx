@@ -1,7 +1,6 @@
 import { Homepage, Layout } from '@opentour/ui';
-import hi from 'date-fns/esm/locale/hi/index.js';
-import { useSession } from 'next-auth/client';
 import { useRouter } from 'next/dist/client/router';
+import { useSession } from 'next-auth/client';
 import React, { useEffect } from 'react';
 
 export default function Index() {

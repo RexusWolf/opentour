@@ -91,7 +91,7 @@ export const Ranking: React.FunctionComponent<Props> = ({
     { name: 'Victorias', abbreviation: 'V' },
     { name: 'Empates', abbreviation: 'E' },
     { name: 'Derrotas', abbreviation: 'D' },
-    { name: 'Puntos', abbreviation: 'P' },
+    { name: 'Puntos', abbreviation: 'Pts' },
     { name: 'Últimos 5', abbreviation: 'Últimos 5' },
   ];
   return (

@@ -2,12 +2,7 @@ import { AggregateRoot } from '@nestjs/cqrs';
 
 import { CompetitionId } from '../../../competition/domain';
 import { UserId } from '../../../user/domain';
-import {
-  MemberWasAddedToTeam,
-  MemberWasRemovedFromTeam,
-  TeamWasCreated,
-  TeamWasDeleted,
-} from '../event';
+import { TeamWasCreated, TeamWasDeleted } from '../event';
 import { TeamId } from './team-id';
 import { TeamLogo } from './team-logo';
 import { TeamName } from './team-name';
@@ -18,7 +13,6 @@ export class Team extends AggregateRoot {
   private _name: TeamName;
   private _logo: TeamLogo;
   private _captainId: UserId;
-  private _membersIds: UserId[];
   private _deleted: Date;
 
   private constructor() {
@@ -68,36 +62,8 @@ export class Team extends AggregateRoot {
     return this._captainId;
   }
 
-  get membersIds(): UserId[] {
-    return this._membersIds;
-  }
-
-  set membersIds(members: UserId[]) {
-    this._membersIds = members;
-  }
-
   isCaptain(userId: UserId): boolean {
     return this._captainId === userId;
-  }
-
-  isMember(userId: UserId): boolean {
-    return this._membersIds.some((item: UserId) => item.equals(userId));
-  }
-
-  addMember(userId: UserId): void {
-    if (this.isMember(userId)) {
-      return;
-    }
-
-    this.apply(new MemberWasAddedToTeam(this.id.value, userId.value));
-  }
-
-  removeMember(userId: UserId): void {
-    if (this.isMember(userId)) {
-      return;
-    }
-
-    this.apply(new MemberWasRemovedFromTeam(this.id.value, userId.value));
   }
 
   delete(): void {
@@ -113,7 +79,6 @@ export class Team extends AggregateRoot {
     this._competitionId = CompetitionId.fromString(event.competitionId);
     this._name = TeamName.fromString(event.name);
     this._captainId = UserId.fromString(event.captainId);
-    this._membersIds = [UserId.fromString(event.captainId)];
     this._logo = TeamLogo.fromString(event.logo);
   }
 }

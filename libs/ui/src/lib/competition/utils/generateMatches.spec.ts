@@ -42,7 +42,7 @@ describe('Generate matches', () => {
     expect(finalMatches).toHaveLength(1);
   });
 
-  it.only('should generate an extra match if teams are not divisible by 4', () => {
+  it('should generate an extra match if teams are not divisible by 4', () => {
     const teams = [
       TeamDTOBuilder.random(),
       TeamDTOBuilder.random(),
@@ -75,7 +75,6 @@ export class TeamDTOBuilder {
       competitionId: faker.datatype.uuid(),
       name: faker.name.title(),
       captainId: faker.datatype.uuid(),
-      membersIds: [faker.datatype.uuid()],
       logo: faker.image.imageUrl(),
     };
   }

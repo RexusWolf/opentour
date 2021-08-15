@@ -8,7 +8,6 @@ import {
   DeleteTeamHandler,
   GetTeamHandler,
   GetTeamsHandler,
-  UpdateTeamHandler,
 } from '../application';
 import { GetTeamsByCompetitionIdHandler } from '../application/query/get-teams-by-competition-id.handler';
 import { TeamController } from './controller/team.controller';
@@ -17,11 +16,7 @@ import { TeamWasDeletedProjection } from './read-model/projection/team-was-delet
 import { TeamService } from './service/team.service';
 import { TeamProviders } from './team.providers';
 
-const CommandHandlers = [
-  CreateTeamHandler,
-  DeleteTeamHandler,
-  UpdateTeamHandler,
-];
+const CommandHandlers = [CreateTeamHandler, DeleteTeamHandler];
 const QueryHandlers = [
   GetTeamsByCompetitionIdHandler,
   GetTeamHandler,

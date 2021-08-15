@@ -18,7 +18,6 @@ export class TeamWasCreatedProjection implements IViewUpdater<TeamWasCreated> {
       competitionId: event.competitionId,
       name: event.name,
       captainId: event.captainId,
-      membersIds: null,
       logo: event.logo,
       deleted: null,
     });

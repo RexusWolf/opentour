@@ -25,8 +25,6 @@ export const TeamList: React.FunctionComponent<Props> = ({
 
   const canModerateTeam = (moderatorIds: string[], teamCaptainId: string) => {
     if (!loading) {
-      console.log(session);
-      console.log(teamCaptainId);
       if (session!.id === teamCaptainId) {
         return true;
       }

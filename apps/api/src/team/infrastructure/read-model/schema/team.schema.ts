@@ -5,7 +5,6 @@ export const TeamSchema = new Schema({
   competitionId: String,
   name: String,
   captainId: String,
-  membersIds: [String],
   logo: String,
   deleted: Date,
 });
@@ -15,7 +14,6 @@ export interface TeamView extends Document {
   readonly competitionId: string;
   readonly name: string;
   readonly captainId: string;
-  readonly membersIds: string[];
   readonly logo: string;
   readonly deleted: Date;
 }

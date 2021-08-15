@@ -1,14 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { Role } from '@opentour/contracts';
 
-import faker = require('faker');
-import { USERS, Users } from '../../../src/user/domain';
 import {
   AddRoleToUserCommand,
   AddRoleToUserHandler,
 } from '../../../src/user/application';
-import { Role } from '@opentour/contracts';
-import { UserBuilder } from '../builders/UserBuilder';
+import { USERS, Users } from '../../../src/user/domain';
 import { UserMapper } from '../../../src/user/infrastructure/repository/user.mapper';
+import { UserBuilder } from '../builders/UserBuilder';
+
+import faker = require('faker');
 
 describe('Add role to user handler', () => {
   let command$: AddRoleToUserHandler;

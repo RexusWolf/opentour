@@ -3,6 +3,5 @@ export class TeamDTO {
   competitionId: string;
   name: string;
   captainId: string;
-  membersIds: string[];
   logo: string;
 }

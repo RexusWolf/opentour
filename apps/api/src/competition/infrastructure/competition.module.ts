@@ -14,7 +14,6 @@ import {
   GetCompetitionsHandler,
   StartCompetitionHandler,
   StartNextRoundOfCompetitionHandler,
-  UpdateCompetitionHandler,
 } from '../application';
 import { GetCompetitionRankingHandler } from '../application/query/get-competition-ranking.handler';
 import { competitionProviders } from './competition.providers';
@@ -27,7 +26,6 @@ import { CompetitionService } from './service/competition.service';
 const CommandHandlers = [
   CreateCompetitionHandler,
   DeleteCompetitionHandler,
-  UpdateCompetitionHandler,
   StartCompetitionHandler,
   StartNextRoundOfCompetitionHandler,
   AddModeratorToCompetitionHandler,

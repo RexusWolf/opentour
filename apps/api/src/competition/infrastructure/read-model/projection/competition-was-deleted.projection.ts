@@ -7,7 +7,8 @@ import { CompetitionView } from '../schema/competition.schema';
 
 @ViewUpdaterHandler(CompetitionWasDeleted)
 export class CompetitionWasDeletedProjection
-  implements IViewUpdater<CompetitionWasDeleted> {
+  implements IViewUpdater<CompetitionWasDeleted>
+{
   constructor(
     @Inject('COMPETITION_MODEL')
     private readonly competitionModel: Model<CompetitionView>
@@ -15,7 +16,7 @@ export class CompetitionWasDeletedProjection
 
   async handle(event: CompetitionWasDeleted) {
     await this.competitionModel
-      .updateOne({ _id: event.id }, { $set: { deleted: new Date() } })
+      .updateOne({ _id: event.id }, { $set: { deleted: event.createdOn } })
       .exec();
   }
 }

@@ -23,7 +23,6 @@ import {
 import {
   CompetitionDTO,
   CreateCompetitionDTO,
-  EditCompetitionDTO,
   RankingDTO,
   Resource,
 } from '@opentour/contracts';
@@ -98,36 +97,6 @@ export class CompetitionController {
     } catch (error) {
       if (error instanceof CompetitionIdNotFoundError) {
         throw new NotFoundException('Competition with provided id not found');
-      } else if (error instanceof Error) {
-        throw new BadRequestException(error.message);
-      } else {
-        throw new BadRequestException('Server error');
-      }
-    }
-  }
-
-  @Put(':id')
-  @ApiOperation({ summary: 'Update competition' })
-  @ApiResponse({ status: 204, description: 'Competition updated' })
-  @ApiResponse({ status: 404, description: 'Not found' })
-  @UseRoles({
-    resource: Resource.Competition,
-    action: 'update',
-    possession: 'own',
-  })
-  @UseGuards(CompetitionGuard, ACGuard)
-  async update(
-    @Param('id') id: string,
-    @Body() editCompetitionDTO: EditCompetitionDTO
-  ) {
-    try {
-      return await this.competitionService.updateCompetition(id, {
-        name: editCompetitionDTO.name,
-        moderatorIds: editCompetitionDTO.moderatorIds,
-      });
-    } catch (error) {
-      if (error instanceof CompetitionIdNotFoundError) {
-        throw new NotFoundException('Competition not found');
       } else if (error instanceof Error) {
         throw new BadRequestException(error.message);
       } else {

@@ -1,5 +1,6 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+
 import { UserId } from '../../../user/domain';
 import {
   CompetitionIdAlreadyTakenError,

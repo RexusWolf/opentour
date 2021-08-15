@@ -7,7 +7,8 @@ import { MatchView } from '../schema/match.schema';
 
 @ViewUpdaterHandler(MatchWasDeleted)
 export class MatchWasDeletedProjection
-  implements IViewUpdater<MatchWasDeleted> {
+  implements IViewUpdater<MatchWasDeleted>
+{
   constructor(
     @Inject('MATCH_MODEL')
     private readonly matchModel: Model<MatchView>
@@ -15,7 +16,7 @@ export class MatchWasDeletedProjection
 
   async handle(event: MatchWasDeleted) {
     await this.matchModel
-      .updateOne({ _id: event.id }, { $set: { deleted: new Date() } })
+      .updateOne({ _id: event.id }, { $set: { deleted: event.createdOn } })
       .exec();
   }
 }

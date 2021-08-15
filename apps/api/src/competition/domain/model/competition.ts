@@ -1,13 +1,12 @@
 import { AggregateRoot } from '@nestjs/cqrs';
+
 import { Journey } from '../../../shared/domain';
 import { UserId } from '../../../user/domain';
-import { UpdateCompetitionCommand } from '../../application';
 import {
   CompetitionModeratorWasRemoved,
   CompetitionWasCreated,
   CompetitionWasDeleted,
   CompetitionWasStarted,
-  CompetitionWasUpdated,
   ModeratorWasAddedToCompetition,
 } from '../event';
 import { CompetitionNextRoundWasStarted } from '../event/competition-next-round-was-started.event';
@@ -70,10 +69,6 @@ export class Competition extends AggregateRoot {
     return this._name;
   }
 
-  set name(name: CompetitionName) {
-    this._name = name;
-  }
-
   get type(): CompetitionType {
     return this._type;
   }
@@ -94,16 +89,8 @@ export class Competition extends AggregateRoot {
     return this._hasStarted;
   }
 
-  set hasStarted(hasStarted: boolean) {
-    this._hasStarted = hasStarted;
-  }
-
   get currentJourney(): Journey | undefined {
     return this._currentJourney;
-  }
-
-  set currentJourney(journey: Journey | undefined) {
-    this._currentJourney = journey;
   }
 
   start(currentJourney?: string) {
@@ -143,17 +130,6 @@ export class Competition extends AggregateRoot {
     }
 
     this.apply(new CompetitionWasDeleted(this._id.value));
-  }
-
-  update(command: UpdateCompetitionCommand): void {
-    this.name = CompetitionName.fromString(command.name);
-    this.updateModerators(command.moderatorIds);
-    const event = new CompetitionWasUpdated(
-      this._id.value,
-      this._name.value,
-      this._moderatorIds.map((id) => id.value)
-    );
-    this.apply(event);
   }
 
   private updateModerators(newModeratorIds: string[]) {

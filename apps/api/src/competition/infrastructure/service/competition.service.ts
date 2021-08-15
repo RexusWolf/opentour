@@ -15,7 +15,6 @@ import {
   GetCompetitionQuery,
   GetCompetitionsQuery,
   StartCompetitionCommand,
-  UpdateCompetitionCommand,
 } from '../../application';
 import { StartNextRoundOfCompetitionCommand } from '../../application/command/start-next-round-of-competition.command';
 import { GetCompetitionRankingQuery } from '../../application/query/get-competition-ranking.query';
@@ -49,16 +48,6 @@ export class CompetitionService {
 
   async deleteCompetition(id: string) {
     return this.commandBus.execute(new DeleteCompetitionCommand(id));
-  }
-
-  async updateCompetition(
-    id: string,
-    editCompetitionDTO: EditCompetitionDTO
-  ): Promise<void> {
-    const { name, moderatorIds } = editCompetitionDTO;
-    return this.commandBus.execute(
-      new UpdateCompetitionCommand(id, { name, moderatorIds })
-    );
   }
 
   async startCompetition(id: string): Promise<void> {

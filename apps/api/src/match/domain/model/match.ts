@@ -92,16 +92,8 @@ export class Match extends AggregateRoot {
     return this._date;
   }
 
-  set date(date: Date | undefined) {
-    this._date = date;
-  }
-
   get result(): MatchResult {
     return this._result;
-  }
-
-  set result(result: MatchResult) {
-    this._result = result;
   }
 
   isScheduled(): boolean {

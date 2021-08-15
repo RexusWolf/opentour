@@ -14,7 +14,7 @@ export class TeamWasDeletedProjection implements IViewUpdater<TeamWasDeleted> {
 
   async handle(event: TeamWasDeleted) {
     await this.teamModel
-      .updateOne({ _id: event.id }, { $set: { deleted: new Date() } })
+      .updateOne({ _id: event.id }, { $set: { deleted: event.createdOn } })
       .exec();
   }
 }

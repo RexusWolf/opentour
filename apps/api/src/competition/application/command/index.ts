@@ -8,5 +8,3 @@ export * from './start-competition.command';
 export * from './start-competition.handler';
 export * from './start-next-round-of-competition.command';
 export * from './start-next-round-of-competition.handler';
-export * from './update-competition.command';
-export * from './update-competition.handler';

@@ -1,11 +1,9 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import { transporter } from '../../../config/mailerService';
 import {
   EmailAddress,
   EmailNotFoundError,
-  UserId,
   USERS,
   Users,
 } from '../../../user/domain';

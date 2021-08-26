@@ -5,9 +5,7 @@ import { Session } from 'next-auth';
 import { useSession } from 'next-auth/client';
 import React from 'react';
 import { v4 as uuid } from 'uuid';
-
 import { useStyles } from '../../theme';
-import { doRequest } from '../../utils/doRequest';
 import { CounterButton } from './CounterButton';
 
 type Props = {
@@ -20,11 +18,27 @@ export async function createCompetition(
   session: Session
 ) {
   if (session) {
-    doRequest({
-      method: 'POST',
-      url: '/competitions',
-      data: { ...competition, moderatorId: session.id },
-    });
+    console.log(
+      '🚀 ~ file: competitionWizard.tsx ~ line 28 ~ session.token',
+      session
+    );
+    console.log(
+      '🚀 ~ file: competitionWizard.tsx ~ line 28 ~ session.token',
+      session.access_token
+    );
+    await fetch(
+      `${
+        process.env.NEXT_PUBLIC_API_URL || process.env.NX_PUBLIC_API_URL
+      }/api/competitions`,
+      {
+        method: 'Post',
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(competition),
+      }
+    );
 
     window.location.reload();
   }
@@ -43,7 +57,6 @@ export const CompetitionWizard: React.FunctionComponent<Props> = ({
     id: uuid(),
     name: '',
     sportName: sport,
-    moderatorId: '',
     type,
     scoreSystem: {
       victory: 0,

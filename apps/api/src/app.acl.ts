@@ -6,7 +6,8 @@ export const acl: RolesBuilder = new RolesBuilder();
 // prettier-ignore
 acl
   .grant(Role.User)
-    .createOwn(Resource.Competition)
+    .createAny(Resource.Competition)
+    .createAny(Resource.Team)
     .readAny(Resource.Competition)
     .readAny(Resource.Match)
     .readAny(Resource.Team)

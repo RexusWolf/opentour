@@ -13,12 +13,12 @@ export class CreateCompetitionCommand implements ICommand {
     defeat: number;
   };
 
-  constructor(competition: CreateCompetitionDTO) {
-    this.id = competition.id;
-    this.name = competition.name;
-    this.type = competition.type;
-    this.sportName = competition.sportName;
-    this.moderatorId = competition.moderatorId;
-    this.scoreSystem = competition.scoreSystem;
+  constructor(createCompetitionDTO: CreateCompetitionDTO, moderatorId: string) {
+    this.id = createCompetitionDTO.id;
+    this.name = createCompetitionDTO.name;
+    this.type = createCompetitionDTO.type;
+    this.sportName = createCompetitionDTO.sportName;
+    this.scoreSystem = createCompetitionDTO.scoreSystem;
+    this.moderatorId = moderatorId;
   }
 }

@@ -37,10 +37,18 @@ export class TeamGuard extends AuthGuard('jwt') {
     }
 
     const team: TeamView = context.switchToHttp().getRequest()?.team;
+    console.log(
+      '🚀 ~ file: team.guard.ts ~ line 40 ~ TeamGuard ~ handleRequest ~ team',
+      team
+    );
 
     if (team && team.captainId === user.id) {
       user?.roles.push(Role.TeamOwner);
     }
+    console.log(
+      '🚀 ~ file: team.guard.ts ~ line 51 ~ TeamGuard ~ handleRequest ~ user',
+      user
+    );
 
     return user;
   }

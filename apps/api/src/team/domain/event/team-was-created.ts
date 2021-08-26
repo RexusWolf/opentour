@@ -1,4 +1,3 @@
-import { CreateTeamDTO } from '@opentour/contracts';
 import { StorableEvent } from 'event-sourcing-nestjs';
 
 export class TeamWasCreated extends StorableEvent {
@@ -11,12 +10,18 @@ export class TeamWasCreated extends StorableEvent {
   readonly captainId: string;
   readonly logo: string;
 
-  constructor(createTeamDTO: CreateTeamDTO) {
+  constructor(params: {
+    id: string;
+    competitionId: string;
+    name: string;
+    captainId: string;
+    logo: string;
+  }) {
     super();
-    this.id = createTeamDTO.id;
-    this.competitionId = createTeamDTO.competitionId;
-    this.name = createTeamDTO.name;
-    this.captainId = createTeamDTO.captainId;
-    this.logo = createTeamDTO.logo;
+    this.id = params.id;
+    this.competitionId = params.competitionId;
+    this.name = params.name;
+    this.captainId = params.captainId;
+    this.logo = params.logo;
   }
 }

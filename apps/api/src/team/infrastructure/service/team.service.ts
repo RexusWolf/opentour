@@ -20,10 +20,18 @@ export class TeamService {
     private readonly teamMapper: TeamMapper
   ) {}
 
-  async createTeam(createTeamDTO: CreateTeamDTO) {
-    const { id, competitionId, name, captainId, logo } = createTeamDTO;
+  async createTeam(params: { createTeamDto: CreateTeamDTO; userId: string }) {
+    const { id, competitionId, name, logo } = params.createTeamDto;
     return this.commandBus.execute(
-      new CreateTeamCommand({ id, competitionId, name, captainId, logo })
+      new CreateTeamCommand(
+        {
+          id,
+          competitionId,
+          name,
+          logo,
+        },
+        params.userId
+      )
     );
   }
 

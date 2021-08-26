@@ -32,17 +32,22 @@ export class CompetitionService {
     private rankingMapper: RankingMapper
   ) {}
 
-  async createCompetition(params: CreateCompetitionDTO) {
-    const { id, name, sportName, type, moderatorId, scoreSystem } = params;
+  async createCompetition(
+    createCompetitionDTO: CreateCompetitionDTO,
+    userId: string
+  ) {
+    const { id, name, sportName, type, scoreSystem } = createCompetitionDTO;
     return this.commandBus.execute(
-      new CreateCompetitionCommand({
-        id,
-        name,
-        sportName,
-        type,
-        moderatorId,
-        scoreSystem,
-      })
+      new CreateCompetitionCommand(
+        {
+          id,
+          name,
+          sportName,
+          type,
+          scoreSystem,
+        },
+        userId
+      )
     );
   }
 

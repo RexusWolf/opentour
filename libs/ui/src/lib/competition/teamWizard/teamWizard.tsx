@@ -1,11 +1,11 @@
 import { Button, Dialog, Grid, TextField, Typography } from '@material-ui/core';
 import { CreateTeamDTO } from '@opentour/contracts';
+import { Session } from 'next-auth';
 import { useSession } from 'next-auth/client';
 import React from 'react';
 import { v4 as uuid } from 'uuid';
 
 import { useStyles } from '../../theme';
-import { doRequest } from '../../utils/doRequest';
 import { LogoSelector } from './logoSelector';
 
 export type Props = {
@@ -15,8 +15,22 @@ export type Props = {
   availableTeamLogos: string[];
 };
 
-export async function createTeam(team: CreateTeamDTO) {
-  doRequest({ method: 'POST', url: '/teams', data: team });
+export async function createTeam(team: CreateTeamDTO, session: Session) {
+  if (session) {
+    await fetch(
+      `${
+        process.env.NEXT_PUBLIC_API_URL || process.env.NX_PUBLIC_API_URL
+      }/api/teams`,
+      {
+        method: 'Post',
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(team),
+      }
+    );
+  }
 
   window.location.reload();
 }
@@ -49,11 +63,10 @@ export const TeamWizard: React.FunctionComponent<Props> = ({
       id: uuid(),
       name,
       competitionId,
-      captainId: !loading ? (session!.id as string) : '',
       logo: teamLogo,
     };
 
-    await createTeam(team);
+    await createTeam(team, session!);
     onClose();
   };
 

@@ -19,9 +19,10 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { CreateTeamDTO, Resource, TeamDTO } from '@opentour/contracts';
+import { CreateTeamDTO, Resource, TeamDTO, UserDTO } from '@opentour/contracts';
 import { Response } from 'express';
 import { ACGuard, UseRoles } from 'nest-access-control';
+import { User } from '../../../shared/decorators/user.decorator';
 
 import {
   TeamIdAlreadyTakenError,
@@ -37,12 +38,28 @@ import { TeamService } from '../service/team.service';
 export class TeamController {
   constructor(private readonly teamService: TeamService) {}
 
-  @Post()
   @ApiOperation({ summary: 'Create team' })
+  @UseRoles({
+    resource: Resource.Team,
+    action: 'create',
+    possession: 'any',
+  })
+  @UseGuards(TeamGuard, ACGuard)
+  @Post()
   @ApiResponse({ status: 204, description: 'Create team' })
-  async create(@Body() createTeamDto: CreateTeamDTO): Promise<TeamDTO> {
+  async create(
+    @Body() createTeamDto: CreateTeamDTO,
+    @User() user: UserDTO
+  ): Promise<TeamDTO> {
+    console.log(
+      '🚀 ~ file: team.controller.ts ~ line 54 ~ TeamController ~ user',
+      user
+    );
     try {
-      return await this.teamService.createTeam(createTeamDto);
+      return await this.teamService.createTeam({
+        createTeamDto,
+        userId: user.id,
+      });
     } catch (error) {
       if (error instanceof TeamIdAlreadyTakenError) {
         throw new ConflictException(error.message);

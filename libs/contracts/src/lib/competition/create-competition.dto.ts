@@ -3,7 +3,6 @@ export class CreateCompetitionDTO {
   name: string;
   type: string;
   sportName: string;
-  moderatorId: string;
   scoreSystem: {
     victory: number;
     tie: number;

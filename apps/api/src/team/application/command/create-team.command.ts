@@ -8,11 +8,11 @@ export class CreateTeamCommand implements ICommand {
   readonly captainId: string;
   readonly logo: string;
 
-  constructor(createTeamDTO: CreateTeamDTO) {
+  constructor(createTeamDTO: CreateTeamDTO, userId: string) {
     this.id = createTeamDTO.id;
     this.competitionId = createTeamDTO.competitionId;
     this.name = createTeamDTO.name;
-    this.captainId = createTeamDTO.captainId;
+    this.captainId = userId;
     this.logo = createTeamDTO.logo;
   }
 }

@@ -25,9 +25,12 @@ import {
   CreateCompetitionDTO,
   RankingDTO,
   Resource,
+  Role,
+  UserDTO,
 } from '@opentour/contracts';
 import { Response } from 'express';
 import { ACGuard, UseRoles } from 'nest-access-control';
+import { User } from '../../../shared/decorators/user.decorator';
 
 import {
   CompetitionIdAlreadyTakenError,
@@ -45,13 +48,21 @@ export class CompetitionController {
 
   @ApiOperation({ summary: 'Create competition' })
   @ApiResponse({ status: 204, description: 'Create competition' })
+  @UseRoles({
+    resource: Resource.Competition,
+    action: 'create',
+    possession: 'any',
+  })
+  @UseGuards(CompetitionGuard, ACGuard)
   @Post()
   async create(
-    @Body() createCompetitionDto: CreateCompetitionDTO
+    @Body() createCompetitionDto: CreateCompetitionDTO,
+    @User() user: UserDTO
   ): Promise<CompetitionDTO> {
     try {
       return await this.competitionService.createCompetition(
-        createCompetitionDto
+        createCompetitionDto,
+        user.id
       );
     } catch (error) {
       if (error instanceof CompetitionIdAlreadyTakenError) {

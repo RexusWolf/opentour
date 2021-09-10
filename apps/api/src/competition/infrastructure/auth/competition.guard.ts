@@ -41,10 +41,6 @@ export class CompetitionGuard extends AuthGuard('jwt') {
     const competition: CompetitionView = context
       .switchToHttp()
       .getRequest()?.competition;
-    console.log(
-      '🚀 ~ file: competition.guard.ts ~ line 44 ~ CompetitionGuard ~ handleRequest ~ competition',
-      competition
-    );
 
     if (competition && competition.moderatorIds.includes(user.id)) {
       user?.roles.push(Role.CompetitionOwner);

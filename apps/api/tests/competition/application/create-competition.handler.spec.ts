@@ -31,18 +31,20 @@ describe('Create competition handler', () => {
 
   it('should create a new competition', async () => {
     await command$.execute(
-      new CreateCompetitionCommand({
-        id: competition.id.value,
-        name: competition.name.value,
-        type: competition.type.value,
-        sportName: competition.sportName.value,
-        moderatorId: competition.moderatorIds[0].value,
-        scoreSystem: {
-          victory: competition.scoreSystem.victory.value,
-          tie: competition.scoreSystem.tie.value,
-          defeat: competition.scoreSystem.defeat.value,
+      new CreateCompetitionCommand(
+        {
+          id: competition.id.value,
+          name: competition.name.value,
+          type: competition.type.value,
+          sportName: competition.sportName.value,
+          scoreSystem: {
+            victory: competition.scoreSystem.victory.value,
+            tie: competition.scoreSystem.tie.value,
+            defeat: competition.scoreSystem.defeat.value,
+          },
         },
-      })
+        competition.moderatorIds[0].value
+      )
     );
 
     expect(competitions.save).toHaveBeenCalledTimes(1);
@@ -52,18 +54,20 @@ describe('Create competition handler', () => {
 
     await expect(() =>
       command$.execute(
-        new CreateCompetitionCommand({
-          id: competition.id.value,
-          name: competition.name.value,
-          type: competition.type.value,
-          sportName: competition.sportName.value,
-          moderatorId: competition.moderatorIds[0].value,
-          scoreSystem: {
-            victory: competition.scoreSystem.victory.value,
-            tie: competition.scoreSystem.tie.value,
-            defeat: competition.scoreSystem.defeat.value,
+        new CreateCompetitionCommand(
+          {
+            id: competition.id.value,
+            name: competition.name.value,
+            type: competition.type.value,
+            sportName: competition.sportName.value,
+            scoreSystem: {
+              victory: competition.scoreSystem.victory.value,
+              tie: competition.scoreSystem.tie.value,
+              defeat: competition.scoreSystem.defeat.value,
+            },
           },
-        })
+          competition.moderatorIds[0].value
+        )
       )
     ).rejects.toThrow();
 

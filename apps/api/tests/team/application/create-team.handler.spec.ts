@@ -31,13 +31,15 @@ describe('Create team handler', () => {
 
   it('should create a new team', async () => {
     await command$.execute(
-      new CreateTeamCommand({
-        id: team.id.value,
-        competitionId: team.competitionId.value,
-        captainId: team.captainId.value,
-        logo: team.logo.value,
-        name: team.name.value,
-      })
+      new CreateTeamCommand(
+        {
+          id: team.id.value,
+          competitionId: team.competitionId.value,
+          logo: team.logo.value,
+          name: team.name.value,
+        },
+        team.captainId.value
+      )
     );
 
     expect(teams.save).toHaveBeenCalledTimes(1);
@@ -47,13 +49,15 @@ describe('Create team handler', () => {
 
     await expect(() =>
       command$.execute(
-        new CreateTeamCommand({
-          id: team.id.value,
-          competitionId: team.competitionId.value,
-          captainId: team.captainId.value,
-          logo: team.logo.value,
-          name: team.name.value,
-        })
+        new CreateTeamCommand(
+          {
+            id: team.id.value,
+            competitionId: team.competitionId.value,
+            logo: team.logo.value,
+            name: team.name.value,
+          },
+          team.captainId.value
+        )
       )
     ).rejects.toThrow();
 

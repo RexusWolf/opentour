@@ -30,8 +30,8 @@ import {
 } from '@opentour/contracts';
 import { Response } from 'express';
 import { ACGuard, UseRoles } from 'nest-access-control';
-import { User } from '../../../shared/decorators/user.decorator';
 
+import { User } from '../../../shared/decorators/user.decorator';
 import {
   CompetitionIdAlreadyTakenError,
   CompetitionIdNotFoundError,

@@ -5,6 +5,7 @@ import { Session } from 'next-auth';
 import { useSession } from 'next-auth/client';
 import React from 'react';
 import { v4 as uuid } from 'uuid';
+
 import { useStyles } from '../../theme';
 import { CounterButton } from './CounterButton';
 
@@ -18,14 +19,6 @@ export async function createCompetition(
   session: Session
 ) {
   if (session) {
-    console.log(
-      '🚀 ~ file: competitionWizard.tsx ~ line 28 ~ session.token',
-      session
-    );
-    console.log(
-      '🚀 ~ file: competitionWizard.tsx ~ line 28 ~ session.token',
-      session.access_token
-    );
     await fetch(
       `${
         process.env.NEXT_PUBLIC_API_URL || process.env.NX_PUBLIC_API_URL

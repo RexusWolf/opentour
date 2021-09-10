@@ -22,8 +22,8 @@ import {
 import { CreateTeamDTO, Resource, TeamDTO, UserDTO } from '@opentour/contracts';
 import { Response } from 'express';
 import { ACGuard, UseRoles } from 'nest-access-control';
-import { User } from '../../../shared/decorators/user.decorator';
 
+import { User } from '../../../shared/decorators/user.decorator';
 import {
   TeamIdAlreadyTakenError,
   TeamIdNotFoundError,
@@ -51,10 +51,6 @@ export class TeamController {
     @Body() createTeamDto: CreateTeamDTO,
     @User() user: UserDTO
   ): Promise<TeamDTO> {
-    console.log(
-      '🚀 ~ file: team.controller.ts ~ line 54 ~ TeamController ~ user',
-      user
-    );
     try {
       return await this.teamService.createTeam({
         createTeamDto,

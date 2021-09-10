@@ -7,7 +7,8 @@ import { CompetitionView } from '../schema/competition.schema';
 
 @ViewUpdaterHandler(CompetitionWasCreated)
 export class CompetitionWasCreatedProjection
-  implements IViewUpdater<CompetitionWasCreated> {
+  implements IViewUpdater<CompetitionWasCreated>
+{
   constructor(
     @Inject('COMPETITION_MODEL')
     private readonly competitionModel: Model<CompetitionView>
@@ -26,6 +27,7 @@ export class CompetitionWasCreatedProjection
         tie: event.scoreSystem.tie,
         defeat: event.scoreSystem.defeat,
       },
+      deleted: null,
     });
 
     await competitionView.save();

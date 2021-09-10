@@ -20,6 +20,7 @@ import { competitionProviders } from './competition.providers';
 import { CompetitionController } from './controller/competition.controller';
 import { CompetitionEventStore } from './eventstore/competitions.event-store';
 import { ProjectionHandlers } from './read-model/projection';
+import { CompetitionWasDeletedSaga } from './saga/delete-competition.saga';
 import { SendEmailOnCompetitionWasStartedSaga } from './saga/send-email-on-competition-was-started.saga';
 import { CompetitionService } from './service/competition.service';
 
@@ -38,7 +39,7 @@ const QueryHandlers = [
   SendEmailHandler,
 ];
 
-const Sagas = [SendEmailOnCompetitionWasStartedSaga];
+const Sagas = [SendEmailOnCompetitionWasStartedSaga, CompetitionWasDeletedSaga];
 
 @Module({
   controllers: [CompetitionController],

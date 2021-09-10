@@ -83,7 +83,7 @@ export const Competition: React.FunctionComponent<Props> = ({
       url: `/competitions/${competitionId}/start`,
     });
 
-    //window.location.reload();
+    window.location.reload();
   };
 
   const nextRound = async (competitionId: string) => {

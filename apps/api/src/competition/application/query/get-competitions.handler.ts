@@ -10,13 +10,14 @@ import { GetCompetitionsQuery } from './get-competitions.query';
 
 @QueryHandler(GetCompetitionsQuery)
 export class GetCompetitionsHandler
-  implements IQueryHandler<GetCompetitionsQuery> {
+  implements IQueryHandler<GetCompetitionsQuery>
+{
   constructor(
     @Inject(COMPETITION_MODEL) private competitionModel: Model<CompetitionView>
   ) {}
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async execute(query: GetCompetitionsQuery): Promise<CompetitionView[]> {
-    return await this.competitionModel.find().exec();
+    return await this.competitionModel.find({ deleted: null }).exec();
   }
 }

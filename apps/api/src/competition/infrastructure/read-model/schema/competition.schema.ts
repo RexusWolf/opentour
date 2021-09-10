@@ -13,6 +13,7 @@ export const CompetitionSchema = new Schema({
     tie: Number,
     defeat: Number,
   },
+  deleted: Date || null,
 });
 
 export interface CompetitionView extends Document {
@@ -28,6 +29,7 @@ export interface CompetitionView extends Document {
     tie: number;
     defeat: number;
   };
+  readonly deleted: Date | null;
 }
 
 export const COMPETITION_MODEL = 'COMPETITION_MODEL';
